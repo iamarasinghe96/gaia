@@ -1,0 +1,3 @@
+Place your profile photo here named: profile.jpg
+The image will be displayed in the About section.
+Recommended: square crop, min 400x400px.

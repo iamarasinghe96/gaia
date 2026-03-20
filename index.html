@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gaia Symbiosis</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #080f0a;
+      --surface:  #0e1a11;
+      --card:     #111c14;
+      --border:   #1e3323;
+      --green:    #4ade80;
+      --green-dim:#2d7a48;
+      --teal:     #2dd4bf;
+      --text:     #e2efe6;
+      --muted:    #7a9e84;
+      --radius:   14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 6vw;
+      backdrop-filter: blur(16px);
+      background: rgba(8,15,10,0.75);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo img { width: 40px; height: 40px; }
+    .nav-logo span { font-size: 1.05rem; font-weight: 600; color: var(--text); letter-spacing: 0.03em; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta {
+      background: transparent; border: 1px solid var(--green-dim);
+      color: var(--green); padding: 0.45rem 1.2rem; border-radius: 99px;
+      font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--green); color: var(--bg); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; text-align: center;
+      padding: 8rem 6vw 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,222,128,0.07) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+    .hero-logo { width: 120px; height: 120px; margin-bottom: 2rem; }
+    .hero-label {
+      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 700; line-height: 1.15; margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #e2efe6 30%, var(--green) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      max-width: 560px; font-size: 1.05rem; color: var(--muted);
+      margin: 0 auto 2.5rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: var(--green); color: var(--bg); border: none;
+      padding: 0.75rem 2rem; border-radius: 99px; font-size: 0.95rem;
+      font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,222,128,0.25); }
+    .btn-outline {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text); padding: 0.75rem 2rem; border-radius: 99px;
+      font-size: 0.95rem; cursor: pointer; transition: all 0.2s; text-decoration: none;
+      display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--green-dim); color: var(--green); }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 6vw; }
+    .section-label {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 0.75rem;
+    }
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700;
+      margin-bottom: 1rem; line-height: 1.2;
+    }
+    .section-intro { max-width: 600px; color: var(--muted); margin-bottom: 3.5rem; font-size: 1rem; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--surface); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .about-img-wrap {
+      position: relative; border-radius: var(--radius); overflow: hidden;
+      aspect-ratio: 1; max-width: 380px;
+    }
+    .about-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .about-img-wrap::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom right, transparent 60%, rgba(74,222,128,0.12));
+      border-radius: var(--radius);
+    }
+    .about-text h2 { margin-bottom: 0.5rem; }
+    .about-role { color: var(--green); font-size: 0.9rem; margin-bottom: 1.25rem; }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .about-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .chip {
+      font-size: 0.75rem; padding: 0.3rem 0.85rem; border-radius: 99px;
+      border: 1px solid var(--border); color: var(--muted);
+      background: var(--card);
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--bg); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 2rem; transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green-dim), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .service-card:hover { border-color: var(--green-dim); transform: translateY(-4px); }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+    .service-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text); }
+    .service-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+    .service-tag {
+      display: inline-block; margin-top: 1.25rem; font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--green);
+      border: 1px solid var(--green-dim); padding: 0.2rem 0.65rem; border-radius: 99px;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--surface); }
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.75rem; transition: all 0.3s; display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .project-card:hover { border-color: var(--green-dim); transform: translateY(-3px); }
+    .project-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .project-badge {
+      font-size: 0.68rem; padding: 0.2rem 0.65rem; border-radius: 99px;
+      background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .project-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .project-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; flex: 1; }
+    .project-link {
+      font-size: 0.8rem; color: var(--green); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.3rem; margin-top: auto;
+      transition: gap 0.2s;
+    }
+    .project-link:hover { gap: 0.6rem; }
+
+    /* ── BOOKING ── */
+    #booking { background: var(--bg); }
+    .booking-wrap {
+      max-width: 600px; margin: 0 auto;
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 2.5rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; }
+    input, select, textarea {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text);
+      border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.9rem; font-family: inherit;
+      transition: border-color 0.2s; width: 100%;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--green-dim);
+    }
+    select option { background: var(--surface); }
+    textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      width: 100%; padding: 0.85rem; border: none; background: var(--green);
+      color: var(--bg); font-size: 1rem; font-weight: 600; border-radius: 99px;
+      cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
+    }
+    .form-submit:hover { box-shadow: 0 8px 30px rgba(74,222,128,0.25); transform: translateY(-1px); }
+    .form-note { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 0.75rem; }
+    .form-success {
+      display: none; text-align: center; padding: 2rem;
+      color: var(--green); font-size: 1.1rem;
+    }
+    .form-error { display: none; text-align: center; padding: 1rem; color: #f87171; font-size: 0.9rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 3rem 6vw 2rem;
+      display: flex; flex-direction: column; gap: 2rem;
+    }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; }
+    .footer-brand .nav-logo { margin-bottom: 0.75rem; }
+    .footer-brand p { color: var(--muted); font-size: 0.85rem; max-width: 280px; }
+    .footer-contact { font-size: 0.85rem; color: var(--muted); }
+    .footer-contact p { margin-bottom: 0.3rem; }
+    .footer-contact a { color: var(--green); text-decoration: none; }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; font-size: 0.78rem; color: var(--muted); text-align: center; }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .about-img-wrap { max-width: 240px; margin: 0 auto; }
+      .form-row { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="#hero">
+    <img src="assets/logo.svg" alt="Gaia Symbiosis logo" />
+    <span>Gaia Symbiosis</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#booking">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="#booking">Book a call</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <img class="hero-logo" src="assets/logo.svg" alt="Gaia Symbiosis" />
+  <p class="hero-label">AI · Sustainability · Automation</p>
+  <h1>Technology that<br/>works with nature</h1>
+  <p class="hero-sub">
+    Gaia Symbiosis builds intelligent, low-maintenance systems for organisations
+    that need powerful, custom technology without the ongoing overhead.
+  </p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="#booking">Book a free consultation</a>
+    <a class="btn-outline" href="#services">Explore services</a>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap reveal">
+      <img src="assets/profile.jpg" alt="Founder of Gaia Symbiosis"
+           onerror="this.style.background='#1e3323';this.style.display='flex';this.alt='Photo coming soon'" />
+    </div>
+    <div class="about-text reveal">
+      <p class="section-label">Who we are</p>
+      <h2>Built by a founder who does it all</h2>
+      <p class="about-role">Founder &amp; Developer · Gaia Symbiosis · Feb 2025 – Present</p>
+      <p>
+        Gaia Symbiosis is a one-person powerhouse studio based in Albury, NSW.
+        From initial concept through design, development, and client implementation —
+        every solution is crafted end-to-end with a singular focus: intelligent technology
+        that genuinely solves problems and then quietly gets out of the way.
+      </p>
+      <p>
+        The studio co-develops and deploys AI-human hybrid solutions addressing
+        real sustainability and efficiency challenges for local governments, healthcare
+        providers, and businesses who need enterprise-grade capability without
+        enterprise-grade costs.
+      </p>
+      <div class="about-chips">
+        <span class="chip">AI / Automation</span>
+        <span class="chip">Healthcare Tech</span>
+        <span class="chip">Government Systems</span>
+        <span class="chip">Offline-First Design</span>
+        <span class="chip">Web Applications</span>
+        <span class="chip">Process Automation</span>
+        <span class="chip">Sustainability</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <p class="section-label reveal">What we do</p>
+  <h2 class="reveal">High-power. Low-maintenance.<br/>Built to last.</h2>
+  <p class="section-intro reveal">
+    Every solution is custom-engineered to be quietly powerful — no subscriptions,
+    no fragile dependencies, no constant hand-holding. You get a system that simply works.
+  </p>
+
+  <div class="services-grid">
+
+    <div class="service-card reveal">
+      <div class="service-icon">🤖</div>
+      <h3>Intelligent Automation Systems</h3>
+      <p>
+        Replace slow, error-prone manual workflows with AI-driven processes that handle
+        validation, approvals, and reporting automatically. Designed to run unattended —
+        minimal upkeep, maximum throughput.
+      </p>
+      <span class="service-tag">AI · Workflow · Compliance</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon">🏥</div>
+      <h3>Healthcare &amp; Clinical Solutions</h3>
+      <p>
+        Offline-first patient management, queue systems, and referral tools built for
+        clinical environments where reliability is non-negotiable. Zero cloud dependency,
+        zero maintenance burden, complete patient lifecycle management.
+      </p>
+      <span class="service-tag">Healthcare · Privacy · Offline</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon">🏛️</div>
+      <h3>Government &amp; Regulatory Technology</h3>
+      <p>
+        Intelligent systems for government agencies requiring real-time compliance checking,
+        automated approvals, and transparent audit trails — transitioning legacy manual
+        processes into responsive digital infrastructure.
+      </p>
+      <span class="service-tag">GovTech · Compliance · Aviation</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon">🌐</div>
+      <h3>Custom Web Applications</h3>
+      <p>
+        Responsive, real-time web apps tailored to your exact operational needs — from
+        live event management to QR-based service queues. No bloated frameworks, no
+        unnecessary complexity.
+      </p>
+      <span class="service-tag">Web · Real-Time · UX</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon">📊</div>
+      <h3>Data, Reporting &amp; ESG Tools</h3>
+      <p>
+        Desktop-first reporting tools that generate client-ready outputs from raw data
+        in seconds. ESG scorecards, budget trackers, and planning automation — built
+        for people who value their time.
+      </p>
+      <span class="service-tag">ESG · Reporting · Automation</span>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon">♻️</div>
+      <h3>Sustainable Technology Strategy</h3>
+      <p>
+        Advisory and implementation for organisations ready to embed sustainability into
+        their operations through technology. Solutions that reduce waste, improve
+        transparency, and align with long-term environmental goals.
+      </p>
+      <span class="service-tag">Sustainability · Strategy · AI</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <p class="section-label reveal">Work</p>
+  <h2 class="reveal">Selected projects</h2>
+  <p class="section-intro reveal">
+    A cross-section of delivered solutions spanning aviation, healthcare, government, and automation.
+  </p>
+
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <span class="project-badge">Government</span>
+        <span class="project-badge">Aviation</span>
+      </div>
+      <h3>Drone Flight Approval System — CAA Sri Lanka</h3>
+      <p>
+        Intelligent automated flight approval system for the Civil Aviation Authority of Sri Lanka.
+        Pilots log flight plans in real-time; the system validates 500 m airspace restriction zones
+        and instantly approves compliant flights — replacing manual pre-approval entirely.
+      </p>
+      <a class="project-link" href="#" target="_blank">View project ↗</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <span class="project-badge">Healthcare</span>
+        <span class="project-badge">Offline-First</span>
+      </div>
+      <h3>Clinic Management System</h3>
+      <p>
+        Comprehensive offline-first clinic solution for a local healthcare facility. Manages
+        complete patient lifecycles — medical history, appointment scheduling, and real-time
+        queue management — with zero cloud dependency and zero maintenance overhead.
+      </p>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <span class="project-badge">Healthcare</span>
+        <span class="project-badge">AI</span>
+      </div>
+      <h3>My AWH Office — AI Patient Admission &amp; Referral Tool</h3>
+      <p>
+        AI-powered patient admission database and referral letter generator built for doctors
+        at Albury Wodonga Health, dramatically reducing admin time for clinical staff.
+      </p>
+      <a class="project-link" href="#" target="_blank">View project ↗</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <span class="project-badge">Healthcare</span>
+        <span class="project-badge">Patient UX</span>
+      </div>
+      <h3>AWH Patient Information Centre</h3>
+      <p>
+        Post-surgery care guidance system for Albury Wodonga Health. Helps patients navigate
+        recovery and keeps all stakeholders — clinical and administrative — accurately informed.
+      </p>
+      <a class="project-link" href="#" target="_blank">View project ↗</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <span class="project-badge">ESG</span>
+        <span class="project-badge">Automation</span>
+      </div>
+      <h3>ESG Scorecard Generation Tool</h3>
+      <p>
+        Offline-first desktop tool for rapid ESG reporting. Paste a single Excel row and receive
+        a professionally formatted, client-ready ESG Scorecard — eliminating manual formatting entirely.
+      </p>
+      <a class="project-link" href="#" target="_blank">View project ↗</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <span class="project-badge">Web App</span>
+        <span class="project-badge">Real-Time</span>
+      </div>
+      <h3>Real-Time Seating Arrangement App</h3>
+      <p>
+        Public web app for event guests to locate seats instantly. Displays hall layout and
+        neighbours, with live automatic updates driven from a linked Google Sheet — zero
+        on-the-day friction for organisers.
+      </p>
+      <a class="project-link" href="#" target="_blank">View project ↗</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <span class="project-badge">Government</span>
+        <span class="project-badge">QR / Queue</span>
+      </div>
+      <h3>QR Code Scanner &amp; Queue Management — NSW Service Centres</h3>
+      <p>
+        Eliminates paper applications at NSW Service Centres. Applicants encode their details
+        in a QR code; staff scan to instantly populate their system — no cloud, no data risk,
+        full on-the-spot editing support.
+      </p>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <span class="project-badge">Automation</span>
+        <span class="project-badge">Excel</span>
+      </div>
+      <h3>Wedding Planner Automation (Excel)</h3>
+      <p>
+        Comprehensive Excel planner that auto-generates a complete event agenda, budget tracker,
+        and optimised table arrangements from a guest list — requiring minimal Excel knowledge
+        to operate.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── BOOKING ── -->
+<section id="booking">
+  <p class="section-label reveal">Get in touch</p>
+  <h2 class="reveal">Book a free consultation</h2>
+  <p class="section-intro reveal">
+    Tell us about your challenge. We'll follow up within 24 hours to schedule a call.
+  </p>
+
+  <div class="booking-wrap reveal">
+    <form id="bookingForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First name</label>
+          <input type="text" id="fname" name="firstName" required placeholder="Jane" />
+        </div>
+        <div class="form-group">
+          <label for="lname">Last name</label>
+          <input type="text" id="lname" name="lastName" required placeholder="Smith" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="jane@company.com" />
+      </div>
+      <div class="form-group">
+        <label for="org">Organisation (optional)</label>
+        <input type="text" id="org" name="organisation" placeholder="Your company or agency" />
+      </div>
+      <div class="form-group">
+        <label for="service">Area of interest</label>
+        <select id="service" name="service">
+          <option value="">— Select a service —</option>
+          <option>Intelligent Automation Systems</option>
+          <option>Healthcare &amp; Clinical Solutions</option>
+          <option>Government &amp; Regulatory Technology</option>
+          <option>Custom Web Applications</option>
+          <option>Data, Reporting &amp; ESG Tools</option>
+          <option>Sustainable Technology Strategy</option>
+          <option>Not sure — let's talk</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">Tell us about your project</label>
+        <textarea id="message" name="message" required
+          placeholder="Briefly describe the problem you're trying to solve…"></textarea>
+      </div>
+      <button type="submit" class="form-submit" id="submitBtn">Send enquiry</button>
+      <p class="form-note">📍 Albury, NSW · 6.634 Loma Place · Response within 24 hours</p>
+    </form>
+    <div class="form-success" id="formSuccess">
+      ✅ Thank you! Your enquiry has been received.<br/>
+      <span style="font-size:0.85rem;color:var(--muted)">We'll be in touch within 24 hours.</span>
+    </div>
+    <div class="form-error" id="formError">
+      Something went wrong. Please email us directly.
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="nav-logo" href="#hero">
+        <img src="assets/logo.svg" alt="Gaia Symbiosis" />
+        <span>Gaia Symbiosis</span>
+      </a>
+      <p>AI-human hybrid solutions for a sustainable, efficient future.</p>
+    </div>
+    <div class="footer-contact">
+      <p>📍 6.634 Loma Place, Albury NSW</p>
+      <p>🌐 <a href="#booking">Book a consultation</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Gaia Symbiosis · All rights reserved
+  </div>
+</footer>
+
+<script>
+  /* ── Scroll reveal ── */
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── Booking form → Google Sheets via Apps Script ── */
+  // STEP 1: Create a Google Apps Script Web App (see README-booking.md)
+  // STEP 2: Paste your deployed URL below
+  const APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+  document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    const data = {
+      timestamp:    new Date().toISOString(),
+      firstName:    e.target.firstName.value,
+      lastName:     e.target.lastName.value,
+      email:        e.target.email.value,
+      organisation: e.target.organisation.value,
+      service:      e.target.service.value,
+      message:      e.target.message.value,
+    };
+
+    if (APPS_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+      // Dev fallback — show success without real submission
+      showSuccess();
+      return;
+    }
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      showSuccess();
+    } catch (err) {
+      document.getElementById('formError').style.display = 'block';
+      btn.textContent = 'Send enquiry';
+      btn.disabled = false;
+    }
+  });
+
+  function showSuccess() {
+    document.getElementById('bookingForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  /* ── Smooth nav highlight ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--green)' : '';
+    });
+  });
+</script>
+
+</body>
+</html>
