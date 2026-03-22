@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+  <defs>
+    <style>
+      .logo-path {
+        fill: none;
+        stroke: #c1549c;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .logo-animate {
+        stroke-dasharray: 1200;
+        stroke-dashoffset: 1200;
+        animation: draw 4s ease-in-out infinite;
+      }
+      @keyframes draw {
+        0%   { stroke-dashoffset: 1200; opacity: 0.2; }
+        55%  { stroke-dashoffset: 0;    opacity: 1; }
+        80%  { stroke-dashoffset: 0;    opacity: 1; }
+        100% { stroke-dashoffset: -1200; opacity: 0.2; }
+      }
+      .logo-glow {
+        stroke-dasharray: 1200;
+        stroke-dashoffset: 1200;
+        animation: draw 4s ease-in-out infinite;
+        stroke: #ffcb3e;
+        stroke-width: 0.8;
+        opacity: 0.5;
+        filter: blur(2.5px);
+      }
+    </style>
+  </defs>
+
+  <!-- Outer circle / Earth sphere -->
+  <circle class="logo-path logo-animate" cx="100" cy="100" r="72"/>
+
+  <!-- Glow duplicate -->
+  <circle class="logo-path logo-glow" cx="100" cy="100" r="72"/>
+
+  <!-- Leaf / symbiosis shape - left leaf -->
+  <path class="logo-path logo-animate"
+    d="M100,50 C70,60 50,80 55,110 C60,135 80,148 100,150
+       C80,130 68,110 72,90 C76,72 90,60 100,50Z"/>
+
+  <!-- Leaf / symbiosis shape - right leaf -->
+  <path class="logo-path logo-animate"
+    d="M100,50 C130,60 150,80 145,110 C140,135 120,148 100,150
+       C120,130 132,110 128,90 C124,72 110,60 100,50Z"/>
+
+  <!-- Central vein / AI spine -->
+  <path class="logo-path logo-animate"
+    d="M100,50 C97,80 97,120 100,150"/>
+
+  <!-- Symbiosis arc top -->
+  <path class="logo-path logo-animate"
+    d="M68,72 C80,58 120,58 132,72"/>
+
+  <!-- Symbiosis arc bottom -->
+  <path class="logo-path logo-animate"
+    d="M68,128 C80,142 120,142 132,128"/>
+
+  <!-- Node dots (AI nodes) -->
+  <circle class="logo-path logo-animate" cx="100" cy="50"  r="3"/>
+  <circle class="logo-path logo-animate" cx="100" cy="150" r="3"/>
+  <circle class="logo-path logo-animate" cx="55"  cy="110" r="2.5"/>
+  <circle class="logo-path logo-animate" cx="145" cy="110" r="2.5"/>
+  <circle class="logo-path logo-animate" cx="100" cy="100" r="5"/>
+</svg>

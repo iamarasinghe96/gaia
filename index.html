@@ -4,20 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gaia Symbiosis</title>
-  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/pictures/logo.svg" type="image/svg+xml" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #f0faf7;
-      --surface:  #dff2ea;
+      --bg:       #fdf8f5;
+      --surface:  #f6ecf4;
       --card:     #ffffff;
-      --border:   #b2ddd0;
-      --green:    #165b6d;
-      --green-dim:#57abad;
-      --teal:     #199e72;
-      --text:     #0d2e2a;
-      --muted:    #4a7a72;
+      --border:   #e8d4e6;
+      --green:    #7e549f;
+      --green-dim:#c1549c;
+      --teal:     #fb836f;
+      --yellow:   #ffcb3e;
+      --text:     #2a1528;
+      --muted:    #7a5070;
       --radius:   14px;
     }
 
@@ -37,7 +38,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 6vw;
       backdrop-filter: blur(16px);
-      background: rgba(240,250,247,0.88);
+      background: rgba(253,248,245,0.90);
       border-bottom: 1px solid var(--border);
       transition: background 0.3s;
     }
@@ -64,19 +65,19 @@
     }
     .hero-glow {
       position: absolute; width: 600px; height: 600px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(22,91,109,0.09) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(193,84,156,0.08) 0%, transparent 70%);
       top: 50%; left: 50%; transform: translate(-50%,-50%);
       pointer-events: none;
     }
     .hero-logo { width: 120px; height: 120px; margin-bottom: 2rem; }
     .hero-label {
       font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--green); margin-bottom: 1rem;
+      color: var(--teal); margin-bottom: 1rem;
     }
     h1 {
       font-size: clamp(2.4rem, 6vw, 4.2rem);
       font-weight: 700; line-height: 1.15; margin-bottom: 1.25rem;
-      background: linear-gradient(135deg, var(--text) 20%, var(--teal) 100%);
+      background: linear-gradient(135deg, #7e549f 0%, #c1549c 55%, #fb836f 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .hero-sub {
@@ -90,7 +91,7 @@
       font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none;
       display: inline-block;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(22,91,109,0.22); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(126,84,159,0.22); }
     .btn-outline {
       background: transparent; border: 1px solid var(--border);
       color: var(--text); padding: 0.75rem 2rem; border-radius: 99px;
@@ -103,7 +104,7 @@
     section { padding: 6rem 6vw; }
     .section-label {
       font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--green); margin-bottom: 0.75rem;
+      color: var(--teal); margin-bottom: 0.75rem;
     }
     h2 {
       font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700;
@@ -127,7 +128,7 @@
     }
     .about-img-wrap::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom right, transparent 60%, rgba(22,91,109,0.08));
+      background: linear-gradient(to bottom right, transparent 60%, rgba(193,84,156,0.07));
       border-radius: var(--radius);
     }
     .about-text h2 { margin-bottom: 0.5rem; }
@@ -162,8 +163,8 @@
     .service-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
     .service-tag {
       display: inline-block; margin-top: 1.25rem; font-size: 0.7rem;
-      letter-spacing: 0.1em; text-transform: uppercase; color: var(--green);
-      border: 1px solid var(--green-dim); padding: 0.2rem 0.65rem; border-radius: 99px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal);
+      border: 1px solid rgba(251,131,111,0.5); padding: 0.2rem 0.65rem; border-radius: 99px;
     }
 
     /* ── PROJECTS ── */
@@ -216,13 +217,13 @@
       color: #fff; font-size: 1rem; font-weight: 600; border-radius: 99px;
       cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
     }
-    .form-submit:hover { box-shadow: 0 8px 30px rgba(22,91,109,0.22); transform: translateY(-1px); }
+    .form-submit:hover { box-shadow: 0 8px 30px rgba(126,84,159,0.22); transform: translateY(-1px); }
     .form-note { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 0.75rem; }
     .form-success {
       display: none; text-align: center; padding: 2rem;
       color: var(--green); font-size: 1.1rem;
     }
-    .form-error { display: none; text-align: center; padding: 1rem; color: #ef564b; font-size: 0.9rem; }
+    .form-error { display: none; text-align: center; padding: 1rem; color: #fb836f; font-size: 0.9rem; }
 
     /* ── FOOTER ── */
     footer {
@@ -261,7 +262,7 @@
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-logo" href="#hero">
-    <img src="assets/logo.svg" alt="Gaia Symbiosis logo" />
+    <img src="assets/pictures/logo.svg" alt="Gaia Symbiosis logo" />
     <span>Gaia Symbiosis</span>
   </a>
   <ul class="nav-links">
@@ -276,7 +277,7 @@
 <!-- ── HERO ── -->
 <section id="hero">
   <div class="hero-glow"></div>
-  <img class="hero-logo" src="assets/logo.svg" alt="Gaia Symbiosis" />
+  <img class="hero-logo" src="assets/pictures/logo.svg" alt="Gaia Symbiosis" />
   <p class="hero-label">AI · Sustainability · Automation</p>
   <h1>Technology that<br/>works with nature</h1>
   <p class="hero-sub">
@@ -294,7 +295,7 @@
   <div class="about-grid">
     <div class="about-img-wrap reveal">
       <img src="assets/profile.jpg" alt="Founder of Gaia Symbiosis"
-           onerror="this.style.background='#ccdfc5';this.style.display='flex';this.alt='Photo coming soon'" />
+           onerror="this.style.background='#e8d4e6';this.style.display='flex';this.alt='Photo coming soon'" />
     </div>
     <div class="about-text reveal">
       <p class="section-label">Who we are</p>
@@ -618,7 +619,7 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a class="nav-logo" href="#hero">
-        <img src="assets/logo.svg" alt="Gaia Symbiosis" />
+        <img src="assets/pictures/logo.svg" alt="Gaia Symbiosis" />
         <span>Gaia Symbiosis</span>
       </a>
       <p>AI-human hybrid solutions for a sustainable, efficient future.</p>
