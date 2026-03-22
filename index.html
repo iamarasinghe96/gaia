@@ -9,15 +9,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #f4f9f1;
-      --surface:  #eaf2e5;
+      --bg:       #f0faf7;
+      --surface:  #dff2ea;
       --card:     #ffffff;
-      --border:   #ccdfc5;
-      --green:    #1f7a46;
-      --green-dim:#5aad7e;
-      --teal:     #0d9488;
-      --text:     #1a2e20;
-      --muted:    #527059;
+      --border:   #b2ddd0;
+      --green:    #165b6d;
+      --green-dim:#57abad;
+      --teal:     #199e72;
+      --text:     #0d2e2a;
+      --muted:    #4a7a72;
       --radius:   14px;
     }
 
@@ -37,7 +37,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 6vw;
       backdrop-filter: blur(16px);
-      background: rgba(244,249,241,0.88);
+      background: rgba(240,250,247,0.88);
       border-bottom: 1px solid var(--border);
       transition: background 0.3s;
     }
@@ -64,7 +64,7 @@
     }
     .hero-glow {
       position: absolute; width: 600px; height: 600px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(31,122,70,0.06) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(22,91,109,0.09) 0%, transparent 70%);
       top: 50%; left: 50%; transform: translate(-50%,-50%);
       pointer-events: none;
     }
@@ -76,7 +76,7 @@
     h1 {
       font-size: clamp(2.4rem, 6vw, 4.2rem);
       font-weight: 700; line-height: 1.15; margin-bottom: 1.25rem;
-      background: linear-gradient(135deg, var(--text) 30%, var(--green) 100%);
+      background: linear-gradient(135deg, var(--text) 20%, var(--teal) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .hero-sub {
@@ -90,7 +90,7 @@
       font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none;
       display: inline-block;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(31,122,70,0.18); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(22,91,109,0.22); }
     .btn-outline {
       background: transparent; border: 1px solid var(--border);
       color: var(--text); padding: 0.75rem 2rem; border-radius: 99px;
@@ -127,7 +127,7 @@
     }
     .about-img-wrap::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom right, transparent 60%, rgba(31,122,70,0.07));
+      background: linear-gradient(to bottom right, transparent 60%, rgba(22,91,109,0.08));
       border-radius: var(--radius);
     }
     .about-text h2 { margin-bottom: 0.5rem; }
@@ -156,7 +156,8 @@
     }
     .service-card:hover { border-color: var(--green-dim); transform: translateY(-4px); }
     .service-card:hover::before { opacity: 1; }
-    .service-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+    .service-icon { width: 2.4rem; height: 2.4rem; margin-bottom: 1.1rem; color: var(--green); }
+    .service-icon svg { width: 100%; height: 100%; display: block; }
     .service-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text); }
     .service-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
     .service-tag {
@@ -215,13 +216,13 @@
       color: #fff; font-size: 1rem; font-weight: 600; border-radius: 99px;
       cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
     }
-    .form-submit:hover { box-shadow: 0 8px 30px rgba(31,122,70,0.18); transform: translateY(-1px); }
+    .form-submit:hover { box-shadow: 0 8px 30px rgba(22,91,109,0.22); transform: translateY(-1px); }
     .form-note { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 0.75rem; }
     .form-success {
       display: none; text-align: center; padding: 2rem;
       color: var(--green); font-size: 1.1rem;
     }
-    .form-error { display: none; text-align: center; padding: 1rem; color: #f87171; font-size: 0.9rem; }
+    .form-error { display: none; text-align: center; padding: 1rem; color: #ef564b; font-size: 0.9rem; }
 
     /* ── FOOTER ── */
     footer {
@@ -336,7 +337,12 @@
   <div class="services-grid">
 
     <div class="service-card reveal">
-      <div class="service-icon">🤖</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="7" y="7" width="10" height="10" rx="1.5"/>
+          <path d="M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3"/>
+        </svg>
+      </div>
       <h3>Intelligent Automation Systems</h3>
       <p>
         Replace slow, error-prone manual workflows with AI-driven processes that handle
@@ -347,7 +353,12 @@
     </div>
 
     <div class="service-card reveal">
-      <div class="service-icon">🏥</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9.5"/>
+          <path d="M12 7.5v9M7.5 12h9"/>
+        </svg>
+      </div>
       <h3>Healthcare &amp; Clinical Solutions</h3>
       <p>
         Offline-first patient management, queue systems, and referral tools built for
@@ -358,7 +369,12 @@
     </div>
 
     <div class="service-card reveal">
-      <div class="service-icon">🏛️</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 22h18M4 22V12M20 22V12M12 3L2 12h20L12 3z"/>
+          <path d="M7 12v10M12 12v10M17 12v10"/>
+        </svg>
+      </div>
       <h3>Government &amp; Regulatory Technology</h3>
       <p>
         Intelligent systems for government agencies requiring real-time compliance checking,
@@ -369,7 +385,12 @@
     </div>
 
     <div class="service-card reveal">
-      <div class="service-icon">🌐</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9.5"/>
+          <path d="M2.5 12h19M12 2.5c-3 3.5-4.5 6.5-4.5 9.5s1.5 6 4.5 9.5M12 2.5c3 3.5 4.5 6.5 4.5 9.5s-1.5 6-4.5 9.5"/>
+        </svg>
+      </div>
       <h3>Custom Web Applications</h3>
       <p>
         Responsive, real-time web apps tailored to your exact operational needs — from
@@ -380,7 +401,11 @@
     </div>
 
     <div class="service-card reveal">
-      <div class="service-icon">📊</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 20h18M6 20V12M10 20V6M14 20V9M18 20V4"/>
+        </svg>
+      </div>
       <h3>Data, Reporting &amp; ESG Tools</h3>
       <p>
         Desktop-first reporting tools that generate client-ready outputs from raw data
@@ -391,7 +416,12 @@
     </div>
 
     <div class="service-card reveal">
-      <div class="service-icon">♻️</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+      </div>
       <h3>Sustainable Technology Strategy</h3>
       <p>
         Advisory and implementation for organisations ready to embed sustainability into
@@ -570,10 +600,11 @@
           placeholder="Briefly describe the problem you're trying to solve…"></textarea>
       </div>
       <button type="submit" class="form-submit" id="submitBtn">Send enquiry</button>
-      <p class="form-note">📍 Albury, NSW · 6.634 Loma Place · Response within 24 hours</p>
+      <p class="form-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-1px;margin-right:3px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Albury, NSW · 6.634 Loma Place · Response within 24 hours</p>
     </form>
     <div class="form-success" id="formSuccess">
-      ✅ Thank you! Your enquiry has been received.<br/>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 0.75rem;display:block"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+      Thank you! Your enquiry has been received.<br/>
       <span style="font-size:0.85rem;color:var(--muted)">We'll be in touch within 24 hours.</span>
     </div>
     <div class="form-error" id="formError">
@@ -593,8 +624,8 @@
       <p>AI-human hybrid solutions for a sustainable, efficient future.</p>
     </div>
     <div class="footer-contact">
-      <p>📍 6.634 Loma Place, Albury NSW</p>
-      <p>🌐 <a href="#booking">Book a consultation</a></p>
+      <p><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-2px;margin-right:5px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>6.634 Loma Place, Albury NSW</p>
+      <p><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg><a href="#booking">Book a consultation</a></p>
     </div>
   </div>
   <div class="footer-bottom">
