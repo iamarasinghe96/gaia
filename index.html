@@ -9,15 +9,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #080f0a;
-      --surface:  #0e1a11;
-      --card:     #111c14;
-      --border:   #1e3323;
-      --green:    #4ade80;
-      --green-dim:#2d7a48;
-      --teal:     #2dd4bf;
-      --text:     #e2efe6;
-      --muted:    #7a9e84;
+      --bg:       #f4f9f1;
+      --surface:  #eaf2e5;
+      --card:     #ffffff;
+      --border:   #ccdfc5;
+      --green:    #1f7a46;
+      --green-dim:#5aad7e;
+      --teal:     #0d9488;
+      --text:     #1a2e20;
+      --muted:    #527059;
       --radius:   14px;
     }
 
@@ -37,7 +37,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 6vw;
       backdrop-filter: blur(16px);
-      background: rgba(8,15,10,0.75);
+      background: rgba(244,249,241,0.88);
       border-bottom: 1px solid var(--border);
       transition: background 0.3s;
     }
@@ -64,7 +64,7 @@
     }
     .hero-glow {
       position: absolute; width: 600px; height: 600px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(74,222,128,0.07) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(31,122,70,0.06) 0%, transparent 70%);
       top: 50%; left: 50%; transform: translate(-50%,-50%);
       pointer-events: none;
     }
@@ -76,7 +76,7 @@
     h1 {
       font-size: clamp(2.4rem, 6vw, 4.2rem);
       font-weight: 700; line-height: 1.15; margin-bottom: 1.25rem;
-      background: linear-gradient(135deg, #e2efe6 30%, var(--green) 100%);
+      background: linear-gradient(135deg, var(--text) 30%, var(--green) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .hero-sub {
@@ -85,12 +85,12 @@
     }
     .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
     .btn-primary {
-      background: var(--green); color: var(--bg); border: none;
+      background: var(--green); color: #fff; border: none;
       padding: 0.75rem 2rem; border-radius: 99px; font-size: 0.95rem;
       font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none;
       display: inline-block;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,222,128,0.25); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(31,122,70,0.18); }
     .btn-outline {
       background: transparent; border: 1px solid var(--border);
       color: var(--text); padding: 0.75rem 2rem; border-radius: 99px;
@@ -127,7 +127,7 @@
     }
     .about-img-wrap::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom right, transparent 60%, rgba(74,222,128,0.12));
+      background: linear-gradient(to bottom right, transparent 60%, rgba(31,122,70,0.07));
       border-radius: var(--radius);
     }
     .about-text h2 { margin-bottom: 0.5rem; }
@@ -212,10 +212,10 @@
     textarea { resize: vertical; min-height: 110px; }
     .form-submit {
       width: 100%; padding: 0.85rem; border: none; background: var(--green);
-      color: var(--bg); font-size: 1rem; font-weight: 600; border-radius: 99px;
+      color: #fff; font-size: 1rem; font-weight: 600; border-radius: 99px;
       cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
     }
-    .form-submit:hover { box-shadow: 0 8px 30px rgba(74,222,128,0.25); transform: translateY(-1px); }
+    .form-submit:hover { box-shadow: 0 8px 30px rgba(31,122,70,0.18); transform: translateY(-1px); }
     .form-note { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 0.75rem; }
     .form-success {
       display: none; text-align: center; padding: 2rem;
@@ -293,7 +293,7 @@
   <div class="about-grid">
     <div class="about-img-wrap reveal">
       <img src="assets/profile.jpg" alt="Founder of Gaia Symbiosis"
-           onerror="this.style.background='#1e3323';this.style.display='flex';this.alt='Photo coming soon'" />
+           onerror="this.style.background='#ccdfc5';this.style.display='flex';this.alt='Photo coming soon'" />
     </div>
     <div class="about-text reveal">
       <p class="section-label">Who we are</p>
