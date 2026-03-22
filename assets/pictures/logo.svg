@@ -1,6 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
   <defs>
     <style>
+      /*
+       * ── HOW TO USE YOUR OWN LOGO ──────────────────────────────────────────
+       * 1. Delete the placeholder shapes below (everything after </defs>).
+       * 2. Paste your logo's <path>, <circle>, <rect> etc. elements here.
+       * 3. Add  class="logo-path logo-animate"  to every element you want drawn.
+       *    For the yellow glow duplicate, add  class="logo-path logo-glow"  instead.
+       * 4. Add  pathLength="1"  to every <path>/<circle>/<rect> — this makes the
+       *    animation work regardless of how long or short your actual paths are.
+       *
+       * Example:
+       *   <path class="logo-path logo-animate" pathLength="1" d="M10,10 L90,90"/>
+       * ─────────────────────────────────────────────────────────────────────
+       */
+
       .logo-path {
         fill: none;
         stroke: #c1549c;
@@ -8,20 +22,25 @@
         stroke-linecap: round;
         stroke-linejoin: round;
       }
+
+      /* stroke-dasharray/offset of 1 works because pathLength="1" normalises
+         every path to a virtual length of 1, no matter its real pixel length. */
       .logo-animate {
-        stroke-dasharray: 1200;
-        stroke-dashoffset: 1200;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
         animation: draw 4s ease-in-out infinite;
       }
+
       @keyframes draw {
-        0%   { stroke-dashoffset: 1200; opacity: 0.2; }
-        55%  { stroke-dashoffset: 0;    opacity: 1; }
-        80%  { stroke-dashoffset: 0;    opacity: 1; }
-        100% { stroke-dashoffset: -1200; opacity: 0.2; }
+        0%   { stroke-dashoffset:  1; opacity: 0.2; }
+        55%  { stroke-dashoffset:  0; opacity: 1;   }
+        80%  { stroke-dashoffset:  0; opacity: 1;   }
+        100% { stroke-dashoffset: -1; opacity: 0.2; }
       }
+
       .logo-glow {
-        stroke-dasharray: 1200;
-        stroke-dashoffset: 1200;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
         animation: draw 4s ease-in-out infinite;
         stroke: #ffcb3e;
         stroke-width: 0.8;
@@ -31,38 +50,34 @@
     </style>
   </defs>
 
-  <!-- Outer circle / Earth sphere -->
-  <circle class="logo-path logo-animate" cx="100" cy="100" r="72"/>
+  <!-- ── PLACEHOLDER LOGO (replace everything below with your own paths) ── -->
 
-  <!-- Glow duplicate -->
-  <circle class="logo-path logo-glow" cx="100" cy="100" r="72"/>
+  <!-- Outer circle -->
+  <circle class="logo-path logo-animate" pathLength="1" cx="100" cy="100" r="72"/>
+  <circle class="logo-path logo-glow"    pathLength="1" cx="100" cy="100" r="72"/>
 
-  <!-- Leaf / symbiosis shape - left leaf -->
-  <path class="logo-path logo-animate"
+  <!-- Left leaf -->
+  <path class="logo-path logo-animate" pathLength="1"
     d="M100,50 C70,60 50,80 55,110 C60,135 80,148 100,150
        C80,130 68,110 72,90 C76,72 90,60 100,50Z"/>
 
-  <!-- Leaf / symbiosis shape - right leaf -->
-  <path class="logo-path logo-animate"
+  <!-- Right leaf -->
+  <path class="logo-path logo-animate" pathLength="1"
     d="M100,50 C130,60 150,80 145,110 C140,135 120,148 100,150
        C120,130 132,110 128,90 C124,72 110,60 100,50Z"/>
 
-  <!-- Central vein / AI spine -->
-  <path class="logo-path logo-animate"
+  <!-- Central vein -->
+  <path class="logo-path logo-animate" pathLength="1"
     d="M100,50 C97,80 97,120 100,150"/>
 
-  <!-- Symbiosis arc top -->
-  <path class="logo-path logo-animate"
-    d="M68,72 C80,58 120,58 132,72"/>
+  <!-- Arcs -->
+  <path class="logo-path logo-animate" pathLength="1" d="M68,72  C80,58  120,58  132,72"/>
+  <path class="logo-path logo-animate" pathLength="1" d="M68,128 C80,142 120,142 132,128"/>
 
-  <!-- Symbiosis arc bottom -->
-  <path class="logo-path logo-animate"
-    d="M68,128 C80,142 120,142 132,128"/>
-
-  <!-- Node dots (AI nodes) -->
-  <circle class="logo-path logo-animate" cx="100" cy="50"  r="3"/>
-  <circle class="logo-path logo-animate" cx="100" cy="150" r="3"/>
-  <circle class="logo-path logo-animate" cx="55"  cy="110" r="2.5"/>
-  <circle class="logo-path logo-animate" cx="145" cy="110" r="2.5"/>
-  <circle class="logo-path logo-animate" cx="100" cy="100" r="5"/>
+  <!-- Node dots -->
+  <circle class="logo-path logo-animate" pathLength="1" cx="100" cy="50"  r="3"/>
+  <circle class="logo-path logo-animate" pathLength="1" cx="100" cy="150" r="3"/>
+  <circle class="logo-path logo-animate" pathLength="1" cx="55"  cy="110" r="2.5"/>
+  <circle class="logo-path logo-animate" pathLength="1" cx="145" cy="110" r="2.5"/>
+  <circle class="logo-path logo-animate" pathLength="1" cx="100" cy="100" r="5"/>
 </svg>
