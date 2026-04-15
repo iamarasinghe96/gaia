@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       showMessage('error',
-        'Something went wrong sending your request. Please email me directly at hello@gaiasymbiosis.com');
+        'Something went wrong sending your request. Please email me directly at iamarasinghe96@gmail.com');
     } finally {
       setLoading(false);
     }
