@@ -3,16 +3,7 @@
    Nav, scroll animations, project filter, profile image
    ===================================================== */
 
-import PROFILE_IMAGE_B64 from '../assets/images/profile.js';
-
 document.addEventListener('DOMContentLoaded', () => {
-
-  /* ── Profile image ── */
-  const profileImg = document.getElementById('profile-img');
-  if (profileImg) {
-    profileImg.src = PROFILE_IMAGE_B64;
-    profileImg.alt = 'Founder profile photo';
-  }
 
   /* ── Sticky nav ── */
   const nav = document.getElementById('nav');
