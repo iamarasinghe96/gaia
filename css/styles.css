@@ -305,12 +305,20 @@ section { padding: 5rem 0; }
   align-items: center;
 }
 .about-photo-wrap { position: relative; flex-shrink: 0; }
-.about-photo {
+.about-photo-frame {
   width: 220px; height: 220px;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden;
   border: 4px solid var(--bg);
   box-shadow: var(--shadow-md);
+}
+.about-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  transform: scale(1.25);
+  transform-origin: center center;
+  display: block;
 }
 .about-photo-badge {
   position: absolute;
