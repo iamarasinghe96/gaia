@@ -385,9 +385,12 @@ section { padding: 5rem 0; }
 .service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 .service-card:hover::before { transform: scaleY(1); }
 .service-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.1rem;
+  color: var(--primary);
+  width: 40px;
+  height: 40px;
 }
+.service-icon svg { display: block; }
 .service-card h3 {
   color: var(--text);
   margin-bottom: 0.5rem;
@@ -449,7 +452,8 @@ section { padding: 5rem 0; }
 .tag-webapp      { background: rgba(30,100,200,0.10); color: #1a4a9a; }
 .tag-automation  { background: rgba(120,80,160,0.10); color: #5a2a90; }
 .tag-tool        { background: rgba(0,140,130,0.10);  color: #006058; }
-.project-icon { font-size: 1.8rem; margin-bottom: 0.7rem; }
+.project-icon { margin-bottom: 0.8rem; color: var(--primary); width: 32px; height: 32px; }
+.project-icon svg { display: block; }
 .project-card h3 { color: var(--text); margin-bottom: 0.4rem; font-size: 1rem; }
 .project-card p { font-size: 0.87rem; margin-bottom: 1rem; }
 .project-link {
@@ -482,10 +486,13 @@ section { padding: 5rem 0; }
   gap: 0.8rem;
 }
 .perk-icon {
-  font-size: 1.2rem;
   flex-shrink: 0;
   margin-top: 2px;
+  color: var(--accent);
+  width: 24px;
+  height: 24px;
 }
+.perk-icon svg { display: block; }
 .perk-text { font-size: 0.9rem; }
 .perk-text strong { display: block; color: var(--text); font-size: 0.92rem; }
 
