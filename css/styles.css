@@ -164,8 +164,9 @@ section { padding: 5rem 0; }
 .nav-links a:hover { color: var(--primary); }
 .nav-links a:hover::after { width: 100%; }
 .nav-cta { margin-left: 1rem; }
-/* Prevent nav highlight logic from overriding button text colours */
-.nav-links .btn { color: #fff !important; }
+/* Prevent nav link styles from affecting the CTA button */
+.nav-links .btn { color: #fff !important; padding-bottom: 0.75rem; }
+.nav-links .btn::after { display: none; }
 
 /* Hamburger */
 .hamburger {
