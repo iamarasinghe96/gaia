@@ -139,7 +139,7 @@ section { padding: 5rem 0; }
   color: var(--primary);
   letter-spacing: 0.03em;
 }
-.nav-logo img { width: 36px; height: auto; }
+.nav-logo img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 .nav-links {
   display: flex;
   align-items: center;
@@ -292,6 +292,9 @@ section { padding: 5rem 0; }
 }
 .hero-logo-wrap img {
   width: clamp(90px, 12vw, 140px);
+  height: clamp(90px, 12vw, 140px);
+  border-radius: 50%;
+  object-fit: cover;
   filter: drop-shadow(0 8px 24px rgba(45,90,61,0.15));
 }
 
