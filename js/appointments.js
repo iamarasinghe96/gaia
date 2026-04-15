@@ -34,7 +34,7 @@
    ===================================================== */
 
 // ── USER MUST SET THIS URL ──────────────────────────────
-const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyihGWLqm7E5Uh-PS27GYOqtpn-qZzFGMe1_QGiWOWZPvnHBPyeuZPxQEILoEQoXEuJZQ/exec';
 // ────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
