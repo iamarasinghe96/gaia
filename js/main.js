@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
     });
     navLinks.forEach(link => {
+      if (link.classList.contains('btn')) return; // never recolour button links
       link.style.color = link.getAttribute('href') === '#' + current
         ? 'var(--primary)'
         : '';
