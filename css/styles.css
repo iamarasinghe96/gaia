@@ -225,7 +225,6 @@ p { color: var(--muted); }
 .about-photo-frame { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 1063 / 720; background: var(--bg-alt); box-shadow: var(--shadow); position: relative; z-index: 1; }
 .about-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 1.2s var(--ease); }
 .about-photo:hover img { transform: scale(1.04); }
-.about-photo::before { content: ''; position: absolute; inset: 1.25rem -1.25rem -1.25rem 1.25rem; border: 1.5px solid var(--blue); border-radius: var(--radius-lg); }
 .about-card { position: absolute; z-index: 2; left: 1.25rem; bottom: -1.5rem; background: #fff; border-radius: var(--radius); padding: .9rem 1.1rem; box-shadow: var(--shadow); display: flex; align-items: center; gap: .75rem; }
 .about-card strong { display: block; font-size: .9rem; }
 .about-card span { color: var(--blue); font-size: .78rem; font-weight: 600; }
@@ -245,7 +244,7 @@ p { color: var(--muted); }
 
 /* Stats */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); margin-top: 5rem; }
-.stat { padding: 2rem 1.5rem 0; border-left: 1px solid var(--border); }
+.stat { padding: 2rem 1.5rem 1.5rem; border-left: 1px solid var(--border); }
 .stat:first-child { border-left: 0; padding-left: 0; }
 .stat-num { font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.04em; line-height: 1; }
 .stat-num em { font-style: normal; color: var(--blue); }
@@ -426,11 +425,10 @@ a.contact-item:hover { border-color: var(--blue); transform: translateX(4px); }
   .award .about-actions { justify-content: center; }
   .hero-visual { max-width: 210px; }
   .grid-3, .process, .check-list, .form-row, .mock-cols { grid-template-columns: 1fr; }
-  .stats { grid-template-columns: 1fr 1fr; }
-  .stat { padding: 1.5rem 1rem 0; }
-  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stats { grid-template-columns: 1fr 1fr; border-top: 0; }
+  .stat { padding: 1.5rem 1rem 1.5rem 1.25rem; border-top: 1px solid var(--border); }
+  .stat:nth-child(odd) { border-left: 0; padding-left: 0; }
   .about-card { left: .75rem; bottom: -1.25rem; }
-  .about-photo::before { inset: 1rem -.6rem -.6rem 1rem; }
   .form-card { padding: 1.5rem; }
   .cta-band { padding: 3.25rem 1.25rem; border-radius: 20px; }
   .cta-band::after { border-radius: 19px; }
