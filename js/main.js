@@ -1,85 +1,118 @@
-/* =====================================================
-   Gaia Symbiosis — main.js
-   Nav, scroll animations, project filter, profile image
-   ===================================================== */
+document.documentElement.classList.add('js');
 
 document.addEventListener('DOMContentLoaded', () => {
+  const nav = document.querySelector('.nav');
+  const darkTop = document.querySelector('.hero, .page-hero');
 
-  /* ── Sticky nav ── */
-  const nav = document.getElementById('nav');
-  const SCROLL_THRESHOLD = 60;
-  const updateNav = () => {
-    nav.classList.toggle('scrolled', window.scrollY > SCROLL_THRESHOLD);
+  /* Nav: transparent over dark hero, solid elsewhere */
+  const setNav = () => {
+    const limit = darkTop ? darkTop.offsetHeight - 80 : 0;
+    nav.classList.toggle('is-solid', window.scrollY > limit);
   };
-  window.addEventListener('scroll', updateNav, { passive: true });
-  updateNav();
+  setNav();
+  window.addEventListener('scroll', setNav, { passive: true });
+  window.addEventListener('resize', setNav);
 
-  /* ── Mobile hamburger ── */
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('nav-mobile');
-  hamburger.addEventListener('click', () => {
-    const open = hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open', open);
-    hamburger.setAttribute('aria-expanded', open);
-  });
+  /* Mobile menu */
+  const burger = document.querySelector('.hamburger');
+  const menu = document.getElementById('mobile-menu');
+  if (burger && menu) {
+    const close = () => { burger.setAttribute('aria-expanded', 'false'); menu.classList.remove('open'); };
+    burger.addEventListener('click', () => {
+      const open = burger.getAttribute('aria-expanded') !== 'true';
+      burger.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('open', open);
+      if (open) nav.classList.add('is-solid'); else setNav();
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { close(); setNav(); } });
+  }
 
-  // Close mobile menu when a link is clicked
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', false);
+  /* Scroll reveal */
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add('in'));
+  }
+
+  /* Animated counters */
+  const counters = document.querySelectorAll('[data-count]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const runCounter = el => {
+    const target = Number(el.dataset.count);
+    if (reduce) { el.textContent = target; return; }
+    const start = performance.now();
+    const dur = 1600;
+    const tick = now => {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  if (counters.length && 'IntersectionObserver' in window) {
+    const co = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { runCounter(e.target); co.unobserve(e.target); } });
+    }, { threshold: 0.6 });
+    counters.forEach(c => co.observe(c));
+  }
+
+  /* Cursor-follow glow on cards */
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
     });
   });
 
-  /* ── IntersectionObserver for scroll reveal ── */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-
-  /* ── Project filter ── */
+  /* Project filter */
   const chips = document.querySelectorAll('.chip[data-filter]');
-  const projectCards = document.querySelectorAll('.project-card[data-category]');
-
+  const projects = document.querySelectorAll('.project[data-category]');
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
-      chips.forEach(c => c.classList.remove('active'));
+      chips.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
       chip.classList.add('active');
-
-      const filter = chip.dataset.filter;
-      projectCards.forEach(card => {
-        if (filter === 'all' || card.dataset.category === filter) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
+      chip.setAttribute('aria-pressed', 'true');
+      const f = chip.dataset.filter;
+      projects.forEach(p => {
+        const show = f === 'all' || p.dataset.category === f;
+        p.classList.toggle('is-hidden', !show);
+        p.classList.remove('is-entering');
+        if (show) { void p.offsetWidth; p.classList.add('is-entering'); }
       });
     });
   });
 
-  /* ── Smooth active nav link highlight on scroll ── */
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-  const highlightNav = () => {
-    let current = '';
-    sections.forEach(sec => {
-      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+  /* Waitlist forms (tool placeholder pages) open a pre-filled email */
+  document.querySelectorAll('form.waitlist').forEach(form => {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const input = form.querySelector('input[type="email"]');
+      const msg = form.parentElement.querySelector('.waitlist-msg');
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+      if (!ok) {
+        msg.textContent = 'Please enter a valid email address.';
+        msg.classList.add('err');
+        input.focus();
+        return;
+      }
+      const tool = form.dataset.tool || 'a Gaia Symbiosis tool';
+      const subject = encodeURIComponent(`Waitlist: ${tool}`);
+      const body = encodeURIComponent(`Please add ${input.value.trim()} to the ${tool} waitlist.`);
+      window.location.href = `mailto:iamarasinghe96@gmail.com?subject=${subject}&body=${body}`;
+      msg.classList.remove('err');
+      msg.textContent = "Thanks! Your email app should open. Send it and you're on the list.";
+      form.reset();
     });
-    navLinks.forEach(link => {
-      if (link.classList.contains('btn')) return; // never recolour button links
-      link.style.color = link.getAttribute('href') === '#' + current
-        ? 'var(--primary)'
-        : '';
-    });
-  };
-  window.addEventListener('scroll', highlightNav, { passive: true });
-  highlightNav();
+  });
 
+  /* Footer year */
+  document.querySelectorAll('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
 });

@@ -1,479 +1,493 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-AU">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Gaia Symbiosis — AI and intelligent automation solutions for sustainable business transformation. Healthcare IT, Government systems, Web applications, and more." />
-  <title>Gaia Symbiosis — AI &amp; Automation for a Sustainable Future</title>
-  <link rel="icon" type="image/png" href="assets/face2.png" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gaia Symbiosis | AI Automation, Healthcare IT &amp; Custom Software in Australia</title>
+  <meta name="description" content="Gaia Symbiosis builds AI automation, healthcare IT, government systems and custom web apps. Founder-led, end-to-end delivery from Albury, NSW, Australia." />
+  <meta name="author" content="Indika Amarasinghe" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#05070d" />
+  <link rel="canonical" href="https://gaiasymbiosis.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gaia Symbiosis" />
+  <meta property="og:locale" content="en_AU" />
+  <meta property="og:url" content="https://gaiasymbiosis.com/" />
+  <meta property="og:title" content="Gaia Symbiosis | AI Automation &amp; Custom Software" />
+  <meta property="og:description" content="AI automation, healthcare IT, government systems and web apps. Built end to end by one accountable founder." />
+  <meta property="og:image" content="https://gaiasymbiosis.com/assets/logo-512.png" />
+  <meta property="og:image:alt" content="Gaia Symbiosis logo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gaia Symbiosis | AI Automation &amp; Custom Software" />
+  <meta name="twitter:description" content="AI automation, healthcare IT, government systems and web apps. Built end to end by one accountable founder." />
+  <meta name="twitter:image" content="https://gaiasymbiosis.com/assets/logo-512.png" />
+
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/logo-96.png" />
+  <link rel="apple-touch-icon" href="assets/logo-512.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="css/styles.css" />
+  <script>document.documentElement.classList.add('js')</script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://gaiasymbiosis.com/#organization",
+        "name": "Gaia Symbiosis",
+        "url": "https://gaiasymbiosis.com/",
+        "logo": "https://gaiasymbiosis.com/assets/logo-512.png",
+        "image": "https://gaiasymbiosis.com/assets/logo-512.png",
+        "description": "AI automation, healthcare IT, government systems and custom web applications, delivered end to end.",
+        "email": "iamarasinghe96@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Albury", "addressRegion": "NSW", "addressCountry": "AU" },
+        "areaServed": ["AU", "Worldwide"],
+        "founder": { "@id": "https://gaiasymbiosis.com/#founder" },
+        "sameAs": ["https://www.linkedin.com/in/indika96/"],
+        "knowsAbout": ["Artificial intelligence", "Workflow automation", "Healthcare IT", "Government software", "Web application development", "ESG reporting"]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://gaiasymbiosis.com/#founder",
+        "name": "Indika Amarasinghe",
+        "jobTitle": "Founder",
+        "worksFor": { "@id": "https://gaiasymbiosis.com/#organization" },
+        "image": "https://gaiasymbiosis.com/assets/profile-840.jpg",
+        "sameAs": ["https://www.linkedin.com/in/indika96/"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://gaiasymbiosis.com/#website",
+        "url": "https://gaiasymbiosis.com/",
+        "name": "Gaia Symbiosis",
+        "publisher": { "@id": "https://gaiasymbiosis.com/#organization" },
+        "inLanguage": "en-AU"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ════════════════════════════════════════
-       NAV
-  ════════════════════════════════════════ -->
-  <nav id="nav" role="navigation" aria-label="Main navigation">
+  <header class="nav" role="banner">
     <div class="container nav-inner">
-      <a href="#hero" class="nav-logo" aria-label="Gaia Symbiosis — home">
-        <img src="assets/face2.png" alt="Gaia Symbiosis logo" width="36" height="38" />
-        Gaia Symbiosis
+      <a href="index.html" class="brand" aria-label="Gaia Symbiosis home">
+        <img src="assets/logo-96.png" alt="" width="38" height="38" />
+        <span>Gaia Symbiosis<small>AI × Human</small></span>
       </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="services.html">Services</a></li>
+          <li><a href="services.html#tools">Tools</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact" class="btn btn-primary btn-sm">Book a call</a></li>
+        </ul>
+      </nav>
+      <button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="services.html">Services</a>
+    <a href="services.html#tools">Tools</a>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="btn btn-primary">Book a call</a>
+  </div>
 
-      <ul class="nav-links" role="list">
-        <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#book" class="btn btn-primary nav-cta">Book a Call</a></li>
-      </ul>
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-grid"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+      </div>
+      <div class="container hero-inner">
+        <div>
+          <p class="hero-badge reveal"><b>New</b> CV Builder &amp; Job Search tools are coming soon</p>
+          <h1 id="hero-title" class="reveal" style="--d:.08s">Intelligent systems,<br /><span class="grad">built for real work.</span></h1>
+          <p class="hero-sub reveal" style="--d:.16s">Gaia Symbiosis designs and builds AI automation, healthcare IT, government platforms and custom web apps. One founder takes it from first idea to live system, with nothing lost in hand-offs.</p>
+          <div class="hero-actions reveal" style="--d:.24s">
+            <a href="#contact" class="btn btn-primary">Book a discovery call
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="services.html" class="btn btn-ghost-light">Explore services</a>
+          </div>
+          <div class="hero-trust reveal" style="--d:.32s">
+            <div><strong>9+</strong>Systems shipped</div>
+            <div><strong>4</strong>Industries served</div>
+            <div><strong>1</strong>Point of contact</div>
+          </div>
+        </div>
+        <div class="hero-visual reveal" style="--d:.2s" aria-hidden="true">
+          <div class="ring"></div>
+          <div class="ring ring-2"></div>
+          <picture><source srcset="assets/logo-512.webp" type="image/webp" /><img class="hero-logo" src="assets/logo-512.png" alt="" width="360" height="360" fetchpriority="high" /></picture>
+        </div>
+      </div>
+      <a href="#services" class="scroll-cue" aria-label="Scroll to services"></a>
+    </section>
 
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>AI agents</span><span>Workflow automation</span><span>Healthcare IT</span><span>Government systems</span><span>Web applications</span><span>ESG reporting</span><span>Offline-first tools</span><span>Queue management</span>
+        <span>AI agents</span><span>Workflow automation</span><span>Healthcare IT</span><span>Government systems</span><span>Web applications</span><span>ESG reporting</span><span>Offline-first tools</span><span>Queue management</span>
+      </div>
     </div>
 
-    <div class="container">
-      <div id="nav-mobile" class="nav-mobile" role="list">
-        <a href="#about" role="listitem">About</a>
-        <a href="#services" role="listitem">Services</a>
-        <a href="#projects" role="listitem">Projects</a>
-        <a href="#book" class="btn btn-primary" role="listitem">Book a Call</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ════════════════════════════════════════
-       HERO
-  ════════════════════════════════════════ -->
-  <section id="hero">
-    <div class="container hero-inner">
-      <div class="hero-text">
-        <p class="hero-eyebrow">AI &amp; Sustainable Technology</p>
-        <h1 class="hero-title">
-          Intelligent Systems<br/>
-          for a <span class="primary-word">Greener</span>, <span class="accent-word">Smarter</span> World
-        </h1>
-        <p class="hero-desc">
-          End-to-end solutions spanning AI agents, healthcare IT, government compliance systems, and process automation — built to last, designed to scale, zero ongoing maintenance.
-        </p>
-        <div class="hero-actions">
-          <a href="#book" class="btn btn-primary">Book a Discovery Call</a>
-          <a href="#services" class="btn btn-outline">See Services</a>
-        </div>
-      </div>
-      <div class="hero-logo-wrap">
-        <img src="assets/face2.png" alt="Gaia Symbiosis animated logo" width="140" height="148" />
-      </div>
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════
-       ABOUT
-  ════════════════════════════════════════ -->
-  <section id="about">
-    <div class="container about-inner">
-      <div class="about-photo-wrap animate-on-scroll">
-        <div class="about-photo-frame">
-          <img
-            id="profile-img"
-            class="about-photo"
-            src="assets/profile.jpg"
-            alt="Indika Amarasinghe, Founder of Gaia Symbiosis"
-            width="220"
-            height="220"
-          />
-        </div>
-        <span class="about-photo-badge">Founder</span>
-      </div>
-
-      <div class="about-content">
-        <span class="section-label animate-on-scroll">About</span>
-        <h2 class="section-title animate-on-scroll">Indika Amarasinghe</h2>
-        <p class="section-sub animate-on-scroll">
-          I'm an end-to-end builder covering design, development, marketing, and client implementation. My work bridges AI intelligence and natural sustainability — creating technology that genuinely helps organisations thrive while respecting the world they operate in.
-        </p>
-        <div class="about-meta animate-on-scroll">
-          <div class="about-meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-            </svg>
-            Albury, NSW
+    <!-- Services preview -->
+    <section class="section" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="section-head section-head--row">
+          <div class="reveal">
+            <p class="eyebrow">What we build</p>
+            <h2 id="services-title">Software that takes work off your team.</h2>
+            <p>Six areas of focus, each shipped end to end: discovery, design, build, launch and support.</p>
           </div>
-          <div class="about-meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/>
-            </svg>
-            iamarasinghe96@gmail.com
-          </div>
-        </div>
-        <a
-          href="https://www.linkedin.com/in/indika96/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="linkedin-badge animate-on-scroll"
-          aria-label="Connect on LinkedIn"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20.447 20.452H17.21v-5.569c0-1.328-.025-3.037-1.849-3.037-1.851 0-2.136 1.445-2.136 2.939v5.667H9.989V9h3.101v1.561h.044c.431-.817 1.484-1.678 3.054-1.678 3.265 0 3.867 2.149 3.867 4.945v6.624zM5.337 7.433a1.8 1.8 0 110-3.6 1.8 1.8 0 010 3.6zm1.55 13.019H3.785V9h3.102v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/>
-          </svg>
-          Connect on LinkedIn
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════
-       SERVICES
-  ════════════════════════════════════════ -->
-  <section id="services">
-    <div class="container">
-      <div class="services-header">
-        <span class="section-label animate-on-scroll">What I Do</span>
-        <h2 class="section-title animate-on-scroll">Services</h2>
-        <p class="section-sub animate-on-scroll">
-          From intelligent automation to mission-critical government systems — comprehensive technology solutions delivered end-to-end.
-        </p>
-      </div>
-
-      <div class="services-grid">
-
-        <div class="service-card animate-on-scroll">
-          <div class="service-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M18 9h3M3 15h3M18 15h3"/><circle cx="12" cy="12" r="2"/>
-            </svg>
-          </div>
-          <h3>AI &amp; Intelligent Automation</h3>
-          <p>Custom AI agents and intelligent workflow systems that replace manual processes with zero ongoing maintenance.</p>
-        </div>
-
-        <div class="service-card animate-on-scroll">
-          <div class="service-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>
-            </svg>
-          </div>
-          <h3>Healthcare IT Systems</h3>
-          <p>End-to-end clinic and hospital software: patient lifecycle, queue management, referral generation — offline-first.</p>
-        </div>
-
-        <div class="service-card animate-on-scroll">
-          <div class="service-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 10v11M12 10v11M16 10v11"/>
-            </svg>
-          </div>
-          <h3>Government &amp; Compliance Systems</h3>
-          <p>Mission-critical systems for regulatory bodies, fully automated, auditable, and built to last.</p>
-        </div>
-
-        <div class="service-card animate-on-scroll">
-          <div class="service-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M8 10l-2 2 2 2M16 10l2 2-2 2"/>
-            </svg>
-          </div>
-          <h3>Web Applications &amp; Portals</h3>
-          <p>Responsive, real-time web apps with live data sync and zero-cloud options for maximum resilience.</p>
-        </div>
-
-        <div class="service-card animate-on-scroll">
-          <div class="service-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-7"/>
-            </svg>
-          </div>
-          <h3>Data Tools &amp; ESG Reporting</h3>
-          <p>Offline-first desktop tools for data entry, formatting, and client-ready ESG report generation.</p>
-        </div>
-
-        <div class="service-card animate-on-scroll">
-          <div class="service-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-            </svg>
-          </div>
-          <h3>Process Automation</h3>
-          <p>Custom automation for repetitive business workflows — Excel, QR codes, documents, and scheduling.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════
-       PROJECTS
-  ════════════════════════════════════════ -->
-  <section id="projects">
-    <div class="container">
-      <div class="projects-header">
-        <span class="section-label animate-on-scroll">Portfolio</span>
-        <h2 class="section-title animate-on-scroll">Selected Projects</h2>
-        <p class="section-sub animate-on-scroll">
-          Real-world systems built for government agencies, hospitals, and businesses across multiple sectors.
-        </p>
-      </div>
-
-      <div class="filter-chips animate-on-scroll" role="group" aria-label="Filter projects by category">
-        <button class="chip active" data-filter="all">All</button>
-        <button class="chip" data-filter="government">Government</button>
-        <button class="chip" data-filter="healthcare">Healthcare</button>
-        <button class="chip" data-filter="webapp">Web App</button>
-        <button class="chip" data-filter="automation">Automation</button>
-        <button class="chip" data-filter="tool">Tool</button>
-      </div>
-
-      <div class="projects-grid">
-
-        <article class="project-card animate-on-scroll" data-category="government">
-          <span class="project-tag tag-government">Government</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="2.5"/><path d="M7.5 7.5l2 2M14.5 9.5l2-2M7.5 16.5l2-2M14.5 14.5l2 2"/><circle cx="6.5" cy="6.5" r="2"/><circle cx="17.5" cy="6.5" r="2"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/>
-            </svg>
-          </div>
-          <h3>Drone Flight Approval System</h3>
-          <p>End-to-end permit management and airspace clearance platform for the Civil Aviation Authority of Sri Lanka.</p>
-        </article>
-
-        <article class="project-card animate-on-scroll" data-category="healthcare">
-          <span class="project-tag tag-healthcare">Healthcare</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12l2 2 4-4"/>
-            </svg>
-          </div>
-          <h3>Clinic Management System</h3>
-          <p>Complete patient lifecycle management: registration, appointments, billing, and medical history — offline-first.</p>
-        </article>
-
-        <article class="project-card animate-on-scroll" data-category="healthcare">
-          <span class="project-tag tag-healthcare">Healthcare</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2l2.09 6.26H20l-5.18 3.76 1.98 6.1L12 14.52l-4.8 3.6 1.98-6.1L4 8.26h5.91L12 2z"/>
-            </svg>
-          </div>
-          <h3>My AWH Office</h3>
-          <p>AI-powered referral generator for Allied World Health, automating clinical documentation with zero manual entry.</p>
-        </article>
-
-        <article class="project-card animate-on-scroll" data-category="healthcare">
-          <span class="project-tag tag-healthcare">Healthcare</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2.5"/><path d="M13 10h5M13 14h4"/>
-            </svg>
-          </div>
-          <h3>AWH Patient Information Center</h3>
-          <p>Digital intake and patient information kiosk system for streamlined front-desk operations across AWH clinics.</p>
-        </article>
-
-        <article class="project-card animate-on-scroll" data-category="webapp">
-          <span class="project-tag tag-webapp">Web App</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
-            </svg>
-          </div>
-          <h3>Dynamic Portfolio Website</h3>
-          <p>CMS-driven portfolio with real-time project updates, contact management, and analytics dashboard.</p>
-        </article>
-
-        <article class="project-card animate-on-scroll" data-category="tool">
-          <span class="project-tag tag-tool">Tool</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 8C8 10 5.9 16.17 3.82 19.34l2.47 1.39L12 18c3-2 8-4 8-10V3l-3 5z"/><path d="M4 22c0-5 4-7 8-12"/>
-            </svg>
-          </div>
-          <h3>ESG Scorecard Generation Tool</h3>
-          <p>Offline-first desktop tool that transforms raw ESG data into formatted, client-ready sustainability scorecards.</p>
-        </article>
-
-        <article class="project-card animate-on-scroll" data-category="webapp">
-          <span class="project-tag tag-webapp">Web App</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="5" height="5" rx="1"/><rect x="10" y="3" width="5" height="5" rx="1"/><rect x="17" y="3" width="4" height="5" rx="1"/><rect x="3" y="10" width="5" height="5" rx="1"/><rect x="10" y="10" width="5" height="5" rx="1"/><rect x="17" y="10" width="4" height="5" rx="1"/><path d="M5 19h14"/>
-            </svg>
-          </div>
-          <h3>Real-time Seating Arrangement App</h3>
-          <p>Live drag-and-drop seating planner with multi-user sync, used for large events and corporate functions.</p>
-        </article>
-
-        <article class="project-card animate-on-scroll" data-category="automation">
-          <span class="project-tag tag-automation">Automation</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01"/>
-            </svg>
-          </div>
-          <h3>Wedding Planner Automation</h3>
-          <p>Excel-based automation suite covering vendor scheduling, budget tracking, and guest communication workflows.</p>
-        </article>
-
-        <article class="project-card animate-on-scroll" data-category="webapp">
-          <span class="project-tag tag-webapp">Web App</span>
-          <div class="project-icon" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><path d="M19 14v3M14 19h5M19 19h.01"/>
-            </svg>
-          </div>
-          <h3>QR Code Scanner &amp; Queue Management</h3>
-          <p>Real-time QR check-in system with live queue display and automatic SMS notifications for service counters.</p>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════
-       BOOK APPOINTMENT
-  ════════════════════════════════════════ -->
-  <section id="book">
-    <div class="container book-inner">
-
-      <div class="book-info">
-        <span class="section-label animate-on-scroll">Get Started</span>
-        <h2 class="section-title animate-on-scroll">Book a Discovery Call</h2>
-        <p class="section-sub animate-on-scroll">
-          Let's talk about your project. I'll listen, ask the right questions, and give you an honest assessment — no sales pitch.
-        </p>
-        <div class="book-perks animate-on-scroll">
-          <div class="book-perk">
-            <span class="perk-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
-              </svg>
-            </span>
-            <div class="perk-text">
-              <strong>30-minute session</strong>
-              Free, no commitment required
-            </div>
-          </div>
-          <div class="book-perk">
-            <span class="perk-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
-              </svg>
-            </span>
-            <div class="perk-text">
-              <strong>Scoped estimate</strong>
-              Clear deliverables and timeline within 48 hrs
-            </div>
-          </div>
-          <div class="book-perk">
-            <span class="perk-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>
-              </svg>
-            </span>
-            <div class="perk-text">
-              <strong>Confidential</strong>
-              Your information stays private, always
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="animate-on-scroll">
-        <form id="appointment-form" class="appointment-form" novalidate aria-label="Book an appointment">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input type="text" id="name" name="name" placeholder="Jane Smith" autocomplete="name" />
-              <span class="field-error" role="alert"></span>
-            </div>
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" placeholder="jane@company.com" autocomplete="email" />
-              <span class="field-error" role="alert"></span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="company">Company <span class="optional">(optional)</span></label>
-            <input type="text" id="company" name="company" placeholder="Your organisation" autocomplete="organization" />
-          </div>
-
-          <div class="form-group">
-            <label for="service">Service Interest</label>
-            <select id="service" name="service">
-              <option value="">Select a service…</option>
-              <option value="AI &amp; Intelligent Automation">AI &amp; Intelligent Automation</option>
-              <option value="Healthcare IT Systems">Healthcare IT Systems</option>
-              <option value="Government &amp; Compliance Systems">Government &amp; Compliance Systems</option>
-              <option value="Web Applications &amp; Portals">Web Applications &amp; Portals</option>
-              <option value="Data Tools &amp; ESG Reporting">Data Tools &amp; ESG Reporting</option>
-              <option value="Process Automation">Process Automation</option>
-              <option value="Other / Not sure yet">Other / Not sure yet</option>
-            </select>
-            <span class="field-error" role="alert"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="message">Tell me about your project <span class="optional">(optional)</span></label>
-            <textarea id="message" name="message" placeholder="Brief description of what you're looking to build or automate…"></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="datetime">Preferred Date &amp; Time</label>
-            <input type="datetime-local" id="datetime" name="datetime" />
-            <span class="field-error" role="alert"></span>
-          </div>
-
-          <button type="submit" id="submit-btn" class="btn btn-accent form-submit">
-            <span class="submit-text">Send Request</span>
-            <span class="submit-loader" aria-hidden="true">
-              <span></span><span></span><span></span>
-            </span>
-          </button>
-
-          <div id="form-message" class="form-message" role="status" aria-live="polite"></div>
-        </form>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════
-       FOOTER
-  ════════════════════════════════════════ -->
-  <footer id="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <a href="#hero" class="nav-logo" aria-label="Gaia Symbiosis — back to top">
-            <img src="assets/face2.png" alt="Gaia Symbiosis logo" width="30" height="32" />
-            Gaia Symbiosis
+          <a href="services.html" class="btn btn-outline reveal">All services
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <p>AI-human hybrid solutions for a sustainable, automated future.</p>
         </div>
-        <nav class="footer-links" aria-label="Footer navigation">
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#projects">Projects</a>
-          <a href="#book">Book a Call</a>
-          <a href="mailto:iamarasinghe96@gmail.com">iamarasinghe96@gmail.com</a>
-        </nav>
+        <div class="grid-3">
+          <article class="card reveal">
+            <span class="card-num">01</span>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9zM9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></div>
+            <h3>AI &amp; intelligent automation</h3>
+            <p>Custom AI agents and workflows that handle intake, documents and routine decisions, so your people can focus on the work that needs them.</p>
+            <a href="services.html#ai" class="link-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+          <article class="card reveal" style="--d:.08s">
+            <span class="card-num">02</span>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg></div>
+            <h3>Healthcare IT</h3>
+            <p>Clinic management, referrals, patient intake and queues. Offline-first and designed for the realities of front-desk and clinical teams.</p>
+            <a href="services.html#healthcare" class="link-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+          <article class="card reveal" style="--d:.16s">
+            <span class="card-num">03</span>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M4 10h16M12 3l9 5H3l9-5zM6 10v8M10 10v8M14 10v8M18 10v8"/></svg></div>
+            <h3>Government &amp; compliance</h3>
+            <p>Permit, approval and regulatory platforms that are auditable, secure and replace paper processes with clear digital workflows.</p>
+            <a href="services.html#government" class="link-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+          <article class="card reveal">
+            <span class="card-num">04</span>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20M6 6.5h.01M9 6.5h.01"/></svg></div>
+            <h3>Web apps &amp; portals</h3>
+            <p>Fast, responsive web applications with real-time sync, from client portals and booking systems to internal dashboards.</p>
+            <a href="services.html#web" class="link-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+          <article class="card reveal" style="--d:.08s">
+            <span class="card-num">05</span>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div>
+            <h3>Data tools &amp; ESG reporting</h3>
+            <p>Turn raw data into clean, client-ready reports and scorecards, with desktop tools that work even without an internet connection.</p>
+            <a href="services.html#data" class="link-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+          <article class="card reveal" style="--d:.16s">
+            <span class="card-num">06</span>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+            <h3>Process automation</h3>
+            <p>QR check-ins, document generation, spreadsheet automation and scheduling: the repetitive jobs your team does every day, done for them.</p>
+            <a href="services.html#automation" class="link-arrow">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section section--dark" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">How it works</p>
+          <h2 id="process-title">From conversation to working system.</h2>
+          <p>A simple, transparent process with one accountable person from start to finish.</p>
+        </div>
+        <div class="process">
+          <div class="step reveal"><h3>Discover</h3><p>A free call to map how your work happens today and where the real bottlenecks are.</p></div>
+          <div class="step reveal" style="--d:.08s"><h3>Design</h3><p>A clear scope, flows and interface designs, so you see the system before any code is written.</p></div>
+          <div class="step reveal" style="--d:.16s"><h3>Build</h3><p>Iterative delivery with regular demos. You test real features early, not just at the end.</p></div>
+          <div class="step reveal" style="--d:.24s"><h3>Launch &amp; support</h3><p>Deployment, training for your team, and ongoing support as your needs grow.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section class="section section--alt" id="work" aria-labelledby="work-title">
+      <div class="container">
+        <div class="section-head section-head--row">
+          <div class="reveal">
+            <p class="eyebrow">Selected work</p>
+            <h2 id="work-title">Systems in production.</h2>
+            <p>A selection of projects across government, healthcare, events and sustainability.</p>
+          </div>
+          <div class="filters reveal" role="group" aria-label="Filter projects">
+            <button class="chip active" type="button" data-filter="all" aria-pressed="true">All</button>
+            <button class="chip" type="button" data-filter="government" aria-pressed="false">Government</button>
+            <button class="chip" type="button" data-filter="healthcare" aria-pressed="false">Healthcare</button>
+            <button class="chip" type="button" data-filter="webapp" aria-pressed="false">Web apps</button>
+            <button class="chip" type="button" data-filter="automation" aria-pressed="false">Automation</button>
+          </div>
+        </div>
+        <div class="grid-3">
+          <article class="card project reveal" data-category="government">
+            <p class="project-tag">Government</p>
+            <h3>Drone Flight Approval System</h3>
+            <p>End-to-end permit management and airspace clearance platform for the Civil Aviation Authority of Sri Lanka.</p>
+          </article>
+          <article class="card project reveal" style="--d:.08s" data-category="healthcare">
+            <p class="project-tag">Healthcare</p>
+            <h3>Clinic Management System</h3>
+            <p>Complete patient lifecycle management covering registration, appointments, billing and medical history. Offline-first.</p>
+          </article>
+          <article class="card project reveal" style="--d:.16s" data-category="healthcare">
+            <p class="project-tag">Healthcare · AI</p>
+            <h3>My AWH Office</h3>
+            <p>AI-powered referral generator that automates clinical documentation and removes manual data entry.</p>
+          </article>
+          <article class="card project reveal" data-category="healthcare">
+            <p class="project-tag">Healthcare</p>
+            <h3>AWH Patient Information Center</h3>
+            <p>Digital intake and patient information kiosk for streamlined front-desk operations across clinics.</p>
+          </article>
+          <article class="card project reveal" style="--d:.08s" data-category="automation">
+            <p class="project-tag">Sustainability · Tool</p>
+            <h3>ESG Scorecard Generator</h3>
+            <p>Offline-first desktop tool that turns raw ESG data into formatted, client-ready sustainability scorecards.</p>
+          </article>
+          <article class="card project reveal" style="--d:.16s" data-category="webapp">
+            <p class="project-tag">Web app</p>
+            <h3>Real-time Seating Planner</h3>
+            <p>Live drag-and-drop seating planner with multi-user sync, used for large events and corporate functions.</p>
+          </article>
+          <article class="card project reveal" data-category="webapp">
+            <p class="project-tag">Web app</p>
+            <h3>QR Check-in &amp; Queue Management</h3>
+            <p>Real-time QR check-in with a live queue display and automatic SMS notifications for service counters.</p>
+          </article>
+          <article class="card project reveal" style="--d:.08s" data-category="automation">
+            <p class="project-tag">Automation</p>
+            <h3>Wedding Planner Automation</h3>
+            <p>Spreadsheet automation suite covering vendor scheduling, budget tracking and guest communication.</p>
+          </article>
+          <article class="card project reveal" style="--d:.16s" data-category="webapp">
+            <p class="project-tag">Web app</p>
+            <h3>Dynamic Portfolio Platform</h3>
+            <p>CMS-driven portfolio with real-time project updates, contact management and an analytics dashboard.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-photo reveal">
+            <div class="about-photo-frame">
+              <picture><source srcset="assets/profile-840.webp" type="image/webp" /><img src="assets/profile-840.jpg" alt="Indika Amarasinghe, founder of Gaia Symbiosis" width="840" height="1263" loading="lazy" decoding="async" /></picture>
+            </div>
+            <div class="about-card">
+              <span class="dot" aria-hidden="true"></span>
+              <div><strong>Available for projects</strong><span>Albury, NSW · remote worldwide</span></div>
+            </div>
+          </div>
+          <div class="about-text reveal" style="--d:.1s">
+            <p class="eyebrow">About the founder</p>
+            <h2 id="about-title">Hi, I'm Indika Amarasinghe.</h2>
+            <p class="lead">I build technology end to end, covering design, development, launch and client implementation.</p>
+            <p>Gaia Symbiosis is named for the balance I aim for in every project: the speed and intelligence of AI working alongside human judgement. You deal with the person who designs and writes your system, from the first call to long after launch.</p>
+            <ul class="check-list">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Design to deployment</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>No agency hand-offs</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Offline-first when it matters</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Support after launch</li>
+            </ul>
+            <div class="about-actions">
+              <a href="#contact" class="btn btn-dark">Work with me</a>
+              <a href="https://www.linkedin.com/in/indika96/" class="btn btn-outline" target="_blank" rel="noopener">LinkedIn profile</a>
+            </div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat reveal"><div class="stat-num"><span data-count="9">9</span><em>+</em></div><p>Production systems shipped</p></div>
+          <div class="stat reveal" style="--d:.08s"><div class="stat-num"><span data-count="4">4</span></div><p>Industries: health, government, events, ESG</p></div>
+          <div class="stat reveal" style="--d:.16s"><div class="stat-num"><span data-count="3">3</span></div><p>In-house products and tools</p></div>
+          <div class="stat reveal" style="--d:.24s"><div class="stat-num"><span data-count="1">1</span></div><p>Accountable person, start to finish</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tools teaser -->
+    <section class="section section--alt" aria-labelledby="tools-title">
+      <div class="container">
+        <div class="section-head section-head--center reveal">
+          <p class="eyebrow">Products</p>
+          <h2 id="tools-title">Tools you can use today.</h2>
+          <p>Alongside client work, Gaia Symbiosis builds its own products for job seekers and creatives.</p>
+        </div>
+        <div class="grid-3">
+          <article class="tool reveal">
+            <div class="tool-top">
+              <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></div>
+              <span class="status status--soon">Coming soon</span>
+            </div>
+            <h3>CV Builder</h3>
+            <p>Create clean, ATS-friendly CVs tailored to each role, with AI help to sharpen every line.</p>
+            <a href="tools/cv-builder.html" class="btn btn-ghost-light btn-sm">Learn more</a>
+          </article>
+          <article class="tool reveal" style="--d:.08s">
+            <div class="tool-top">
+              <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+              <span class="status status--soon">Coming soon</span>
+            </div>
+            <h3>Job Search Assistant</h3>
+            <p>Find relevant roles, track every application in one place and get insight into what is working.</p>
+            <a href="tools/job-search.html" class="btn btn-ghost-light btn-sm">Learn more</a>
+          </article>
+          <article class="tool reveal" style="--d:.16s">
+            <div class="tool-top">
+              <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+              <span class="status status--live">Live</span>
+            </div>
+            <h3>LushNote</h3>
+            <p>A live product from the Gaia Symbiosis family, available now at lushnote.com.au.</p>
+            <a href="https://lushnote.com.au" class="btn btn-primary btn-sm" target="_blank" rel="noopener">Visit LushNote
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container contact-grid">
+        <div class="reveal">
+          <p class="eyebrow">Get in touch</p>
+          <h2 id="contact-title">Let's talk about your project.</h2>
+          <p style="margin-top:1rem">Book a free 30-minute discovery call. Tell me what you're working on and I'll reply within one business day.</p>
+          <div class="contact-list">
+            <a class="contact-item" href="mailto:iamarasinghe96@gmail.com">
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+              <span><small>Email</small><strong>iamarasinghe96@gmail.com</strong></span>
+            </a>
+            <a class="contact-item" href="https://www.linkedin.com/in/indika96/" target="_blank" rel="noopener">
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></span>
+              <span><small>LinkedIn</small><strong>in/indika96</strong></span>
+            </a>
+            <div class="contact-item">
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+              <span><small>Based in</small><strong>Albury, NSW, Australia</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card reveal" style="--d:.1s">
+          <form id="appointment-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="f-name">Full name</label>
+                <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" />
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="form-group">
+                <label for="f-email">Email</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" placeholder="jane@company.com" />
+                <p class="field-error" role="alert"></p>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="f-company">Company <span>(optional)</span></label>
+                <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Acme Pty Ltd" />
+              </div>
+              <div class="form-group">
+                <label for="f-service">Interested in</label>
+                <select id="f-service" name="service">
+                  <option value="">Select a service</option>
+                  <option>AI &amp; Intelligent Automation</option>
+                  <option>Healthcare IT</option>
+                  <option>Government &amp; Compliance</option>
+                  <option>Web Apps &amp; Portals</option>
+                  <option>Data Tools &amp; ESG Reporting</option>
+                  <option>Process Automation</option>
+                  <option>Something else</option>
+                </select>
+                <p class="field-error" role="alert"></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-datetime">Preferred date &amp; time</label>
+              <input id="f-datetime" name="datetime" type="datetime-local" />
+              <p class="field-error" role="alert"></p>
+            </div>
+            <div class="form-group">
+              <label for="f-message">Tell me about your project <span>(optional)</span></label>
+              <textarea id="f-message" name="message" placeholder="What are you trying to achieve?"></textarea>
+            </div>
+            <button type="submit" id="submit-btn" class="btn btn-primary btn-block form-submit"><span class="btn-label">Request a call</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+            <p class="form-note">Your details are only used to arrange your call.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <a href="index.html" class="brand"><img src="assets/logo-96.png" alt="" width="38" height="38" loading="lazy" /><span>Gaia Symbiosis<small>AI × Human</small></span></a>
+          <p class="footer-about">AI automation, healthcare IT and custom software, built end to end from Albury, NSW.</p>
+          <div class="socials">
+            <a href="https://www.linkedin.com/in/indika96/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+            <a href="mailto:iamarasinghe96@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html#ai">AI &amp; automation</a></li>
+            <li><a href="services.html#healthcare">Healthcare IT</a></li>
+            <li><a href="services.html#government">Government</a></li>
+            <li><a href="services.html#web">Web apps</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="tools/cv-builder.html">CV Builder</a></li>
+            <li><a href="tools/job-search.html">Job Search</a></li>
+            <li><a href="https://lushnote.com.au" target="_blank" rel="noopener">LushNote</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
       </div>
       <div class="footer-bottom">
-        <span>Albury, NSW</span>
-        <span>&copy; <span id="year"></span> Gaia Symbiosis. All rights reserved.</span>
+        <p>© <span data-year>2026</span> Gaia Symbiosis. All rights reserved.</p>
+        <p>Albury, NSW, Australia</p>
       </div>
     </div>
   </footer>
 
-  <!-- ════════════════════════════════════════
-       SCRIPTS
-  ════════════════════════════════════════ -->
-  <script>
-    // Inline year so it works without JS modules on file://
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-  <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/appointments.js"></script>
-
+  <script src="js/main.js" defer></script>
+  <script src="js/appointments.js" defer></script>
 </body>
 </html>
