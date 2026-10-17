@@ -226,8 +226,8 @@ p { color: var(--muted); }
 .about-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 1.2s var(--ease); }
 .about-photo:hover img { transform: scale(1.04); }
 .photo-caption { position: absolute; top: 8%; left: 56%; right: 4%; pointer-events: none; color: var(--text); }
-.photo-caption strong { display: block; font-size: 6.2cqi; font-weight: 800; letter-spacing: -.04em; line-height: 1.02; }
-.photo-caption span { display: inline-block; margin-top: .45em; font-size: 3.6cqi; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+.photo-caption strong { display: block; font-size: clamp(1.15rem, 5.6vw, 2.2rem); font-size: 6.2cqi; font-weight: 800; letter-spacing: -.04em; line-height: 1.02; }
+.photo-caption span { display: inline-block; margin-top: .45em; font-size: clamp(.7rem, 3.2vw, 1.3rem); font-size: 3.6cqi; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
 .grad-blue { background: linear-gradient(100deg, #1d4ed8 0%, #2563eb 45%, #60a5fa 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 /* Award */
