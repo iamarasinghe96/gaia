@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const setNav = () => {
     const limit = darkTop ? darkTop.offsetHeight - 80 : 0;
     nav.classList.toggle('is-solid', window.scrollY > limit);
+    nav.classList.toggle('is-scrolled', window.scrollY > 8);
   };
   setNav();
   window.addEventListener('scroll', setNav, { passive: true });

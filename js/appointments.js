@@ -1,5 +1,5 @@
 /* =====================================================
-   Gaia Symbiosis — appointments.js
+   Gaia Symbiosis: appointments.js
    Appointment form → Google Sheets via Apps Script POST
    =====================================================
 
@@ -11,7 +11,7 @@
         Execute as: Me
         Who has access: Anyone
    4. Copy the deployment URL and paste it into GOOGLE_SCRIPT_URL below
-   5. Done — form submissions will appear in your linked Google Sheet
+   5. Done: form submissions will appear in your linked Google Sheet
 
    GOOGLE APPS SCRIPT (paste into script.google.com):
    ---------------------------------------------------
