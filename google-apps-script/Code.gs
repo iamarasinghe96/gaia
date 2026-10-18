@@ -8,15 +8,16 @@
  * 1. Open your Google Sheet, then Extensions > Apps Script.
  * 2. Replace everything in Code.gs with this file and click Save.
  * 3. Pick testSetup in the function dropdown, click Run, and allow the
- *    permissions. You should get a test email and a "Bookings" tab.
+ *    permissions. You should get a test email within a minute.
  * 4. Deploy > Manage deployments > edit (pencil) > Version: New version > Deploy.
  *    The web app URL stays the same. If you instead create a NEW deployment,
  *    put its URL in js/appointments.js (Execute as: Me, Who has access: Anyone).
  */
 
 const NOTIFY_EMAIL = 'iamarasinghe96@gmail.com';
-const SHEET_NAME = 'Bookings';
-const HEADERS = ['Timestamp', 'Name', 'Email', 'Company', 'Service', 'Preferred date & time', 'Message'];
+// Rows go into the first tab. Values are matched to columns by header name,
+// so existing columns can be in any order.
+const HEADERS = ['Timestamp', 'Name', 'Email', 'Company', 'Service', 'Message', 'Preferred Date & Time'];
 
 function doPost(e) {
   const p = (e && e.parameter) || {};
@@ -29,11 +30,13 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    getSheet_().appendRow([
-      new Date(),
-      clean_(p.name), clean_(p.email), clean_(p.company), clean_(p.service),
-      formatWhen_(p.datetime), clean_(p.message),
-    ]);
+    const sheet = getSheet_();
+    const values = {
+      timestamp: new Date(), name: clean_(p.name), email: clean_(p.email), company: clean_(p.company),
+      service: clean_(p.service), message: clean_(p.message), 'preferred date & time': formatWhen_(p.datetime),
+    };
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    sheet.appendRow(headers.map(h => { const v = values[String(h).trim().toLowerCase()]; return v === undefined ? '' : v; }));
   } finally {
     lock.releaseLock();
   }
@@ -50,7 +53,8 @@ function doPost(e) {
 
 /** Run this once from the editor to grant permissions and send yourself a test email. */
 function testSetup() {
-  getSheet_();
+  console.log('Writing to sheet: ' + getSheet_().getName());
+  console.log('Email quota left today: ' + MailApp.getRemainingDailyQuota());
   notify_({
     name: 'Test Person', email: NOTIFY_EMAIL, company: 'Test Co',
     service: 'AI & Intelligent Automation', datetime: '2026-10-20T10:30',
@@ -61,7 +65,7 @@ function testSetup() {
 function getSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   if (!ss) throw new Error('Open this script from the Google Sheet: Extensions > Apps Script.');
-  const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+  const sheet = ss.getSheets()[0];
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(HEADERS);
     sheet.setFrozenRows(1);
