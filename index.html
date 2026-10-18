@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Gaia Symbiosis | AI Automation, Healthcare IT &amp; Custom Software in Australia</title>
   <meta name="description" content="Gaia Symbiosis builds AI automation, healthcare IT, government systems and custom web apps. Founder-led, end-to-end delivery from Albury, NSW, Australia." />
   <meta name="author" content="Indika Amarasinghe" />
@@ -28,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="css/styles.css?v=20261018c" />
+  <link rel="stylesheet" href="css/styles.css?v=20261018d" />
   <script>document.documentElement.classList.add('js')</script>
 
   <script type="application/ld+json">
@@ -426,19 +428,19 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="f-name">Full name</label>
-                <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" />
+                <input id="f-name" name="name" type="text" maxlength="100" autocomplete="name" placeholder="Jane Smith" />
                 <p class="field-error" role="alert"></p>
               </div>
               <div class="form-group">
                 <label for="f-email">Email</label>
-                <input id="f-email" name="email" type="email" autocomplete="email" placeholder="jane@company.com" />
+                <input id="f-email" name="email" type="email" maxlength="254" autocomplete="email" placeholder="jane@company.com" />
                 <p class="field-error" role="alert"></p>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label for="f-company">Company <span>(optional)</span></label>
-                <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Acme Pty Ltd" />
+                <input id="f-company" name="company" type="text" maxlength="150" autocomplete="organization" placeholder="Acme Pty Ltd" />
               </div>
               <div class="form-group">
                 <label for="f-service">Interested in</label>
@@ -462,7 +464,7 @@
             </div>
             <div class="form-group">
               <label for="f-message">Tell me about your project <span>(optional)</span></label>
-              <textarea id="f-message" name="message" placeholder="What are you trying to achieve?"></textarea>
+              <textarea id="f-message" name="message" maxlength="3000" placeholder="What are you trying to achieve?"></textarea>
             </div>
             <div class="hp" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
             <button type="submit" id="submit-btn" class="btn btn-primary btn-block form-submit"><span class="btn-label">Request a call</span>
@@ -520,8 +522,8 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=20261018c" defer></script>
-  <script src="js/form-controls.js?v=20261018c" defer></script>
-  <script src="js/appointments.js?v=20261018c" defer></script>
+  <script src="js/main.js?v=20261018d" defer></script>
+  <script src="js/form-controls.js?v=20261018d" defer></script>
+  <script src="js/appointments.js?v=20261018d" defer></script>
 </body>
 </html>
