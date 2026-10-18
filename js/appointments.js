@@ -1,37 +1,5 @@
-/* =====================================================
-   Gaia Symbiosis: appointments.js
-   Appointment form → Google Sheets via Apps Script POST
-   =====================================================
-
-   SETUP INSTRUCTIONS
-   ------------------
-   1. Go to https://script.google.com → New project
-   2. Replace the default code with the doPost() function below (in comments)
-   3. Deploy → New deployment → Web App
-        Execute as: Me
-        Who has access: Anyone
-   4. Copy the deployment URL and paste it into GOOGLE_SCRIPT_URL below
-   5. Done: form submissions will appear in your linked Google Sheet
-
-   GOOGLE APPS SCRIPT (paste into script.google.com):
-   ---------------------------------------------------
-   function doPost(e) {
-     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-     const data = e.parameter;
-     sheet.appendRow([
-       new Date(),
-       data.name || '',
-       data.email || '',
-       data.company || '',
-       data.service || '',
-       data.message || '',
-       data.datetime || ''
-     ]);
-     return ContentService
-       .createTextOutput(JSON.stringify({ result: 'success' }))
-       .setMimeType(ContentService.MimeType.JSON);
-   }
-   ===================================================== */
+/* Gaia Symbiosis: booking form -> Google Apps Script (saves to Google Sheet, emails a notification).
+   The Apps Script code lives in google-apps-script/Code.gs; setup steps are at the top of that file. */
 
 // ── USER MUST SET THIS URL ──────────────────────────────
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyihGWLqm7E5Uh-PS27GYOqtpn-qZzFGMe1_QGiWOWZPvnHBPyeuZPxQEILoEQoXEuJZQ/exec';
@@ -52,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setLoading(true);
     hideMessage();
 
-    const formData = new FormData(form);
+    const body = new URLSearchParams(new FormData(form));
 
     // If placeholder URL, show helpful error instead of a network failure
     if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
@@ -63,21 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        body: formData,
-      });
-
-      // Apps Script returns 302 redirect on success when deployed as Web App
-      // fetch follows it and lands on JSON response
-      if (res.ok || res.redirected) {
-        showMessage('success',
-          '✓ Your request has been received! I\'ll be in touch within 24 hours.');
-        form.reset();
-      } else {
-        throw new Error(`Server responded with ${res.status}`);
-      }
+      const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body });
+      const data = await res.json().catch(() => ({}));
+      if (data.result !== 'success') throw new Error(data.message || `Unexpected response (${res.status})`);
+      showMessage('success', "Thanks, your request has been received. I'll be in touch within one business day.");
+      form.reset();
     } catch (err) {
+      console.error('Booking form:', err);
       showMessage('error',
         'Something went wrong sending your request. Please email me directly at iamarasinghe96@gmail.com');
     } finally {
