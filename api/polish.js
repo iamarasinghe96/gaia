@@ -27,9 +27,7 @@ const ALLOWED = new Set(['https://gaiasymbiosis.com', 'https://www.gaiasymbiosis
 export default makeHandler({
   apiKey: process.env.GROQ_API_KEY,
   isAllowedOrigin: origin =>
-    ALLOWED.has(origin) ||
-    (process.env.VERCEL_ENV !== 'production' && /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)) ||
-    (process.env.VERCEL_ENV === 'development' && /^http:\/\/localhost(:\d+)?$/.test(origin)),
+    ALLOWED.has(origin) || (process.env.VERCEL_ENV === 'development' && /^http:\/\/localhost(:\d+)?$/.test(origin)),
   verifyIdToken: async token => (await getAuth(app()).verifyIdToken(token)).uid,
   // Fixed-window counters in Firestore (ratelimits/{id}); browsers can't read or write them.
   allow: async (id, max, ttlSeconds) => {

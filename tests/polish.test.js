@@ -98,6 +98,18 @@ test('handler rejects missing or invalid sign-in', async () => {
   }
 });
 
+test('handler accepts requests from its own host, such as a vercel.app preview', async () => {
+  const res = mockRes();
+  await makeHandler(deps())(req({ headers: { origin: 'https://gaia-git-x.vercel.app', host: 'gaia-git-x.vercel.app', authorization: 'Bearer good' } }), res);
+  assert.equal(res.code, 200);
+});
+
+test('handler rejects requests with no Origin header', async () => {
+  const res = mockRes();
+  await makeHandler(deps())(req({ headers: { authorization: 'Bearer good' } }), res);
+  assert.equal(res.code, 403);
+});
+
 test('handler rejects other websites and non-POST requests', async () => {
   let res = mockRes();
   await makeHandler(deps())(req({ headers: { origin: 'https://evil.example', authorization: 'Bearer good' } }), res);
