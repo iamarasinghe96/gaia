@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com; frame-src https://gaia-symbiosis.firebaseapp.com https://accounts.google.com https://apis.google.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com; frame-src https://gaia-symbiosis.firebaseapp.com https://accounts.google.com https://apis.google.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>GetHired CV Prompt Builder: ATS-Optimised CV &amp; Cover Letter Prompts | Gaia Symbiosis</title>
 <meta name="description" content="Free ATS-optimised CV and cover letter builder. Build your profile once, paste a job description, get tailored prompts for Claude, then export a formatted Word document. Sign in with Google to save everything.">
@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018j">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018k">
 </head>
 <body>
 
@@ -273,18 +273,12 @@
           <div class="panel-number">&#x2728;</div>
           <div class="panel-meta">
             <div class="panel-title">Polish with AI: fix grammar and wording, keep the structure</div>
-            <div class="panel-desc">For when you've finished filling in your profile</div>
+            <div class="panel-desc">Fixes spelling, grammar and punctuation only. Names, dates, links and figures are never changed.</div>
           </div>
         </div>
       </div>
       <div class="polish-body">
-        <div class="toolbar" style="padding:0 0 12px;border:0;background:transparent">
-          <button class="btn btn-amber" onclick="copyPolishPrompt()">&#x2398; Copy polish prompt</button>
-        </div>
-        <textarea id="polish-text" class="field-input" rows="6" placeholder="Paste the AI's corrected CV Bank here (the code block, or the whole reply)..."></textarea>
-        <div class="toolbar" style="padding:12px 0 0;border:0;background:transparent">
-          <button class="btn btn-green" onclick="checkPolished(false)">&#x2714; Check &amp; Import</button>
-        </div>
+        <button class="btn btn-lg copy-prompt is-ready polish-btn" id="polish-btn" onclick="polishProfile()"><span class="cp-icon">&#x2728;</span><span class="cp-label">Polish my profile</span></button>
         <div id="polish-report" class="polish-report"></div>
       </div>
     </div>
@@ -511,10 +505,12 @@
     <section class="panel help-card">
       <h2>&#x2728; Polish with AI</h2>
       <ol>
-        <li>When your profile is done, click <strong>Copy polish prompt</strong> at the bottom of the Profile Builder. It copies an editing prompt with your whole CV Bank attached.</li>
-        <li>Paste it into ChatGPT, Claude, or any AI chat.</li>
-        <li>Paste the AI's reply into the box and click <strong>Check &amp; Import</strong>. The tool compares it line by line with what you sent and warns you before anything important (headings, links, names, dates, figures) is changed.</li>
+        <li>When your profile is done, sign in with Google and click <strong>Polish my profile</strong> at the bottom of the Profile Builder.</li>
+        <li>The AI fixes spelling, grammar and punctuation only. It keeps your own words and never changes names of people, places or organisations, in any language, or your dates, links and figures. Any suggestion that touches a name, number or non-English word is ignored automatically.</li>
+        <li>Review the suggested corrections, untick any you don't want, and click <strong>Apply selected</strong>.</li>
+        <li>If it says the AI is busy, wait one minute and try again.</li>
       </ol>
+      <p class="help-fine">Your profile text is sent securely to Groq to be proofread. It is not stored by Gaia Symbiosis.</p>
     </section>
     <section class="panel help-card">
       <h2>&#x2461; Prompt Builder</h2>
@@ -3188,8 +3184,136 @@ async function copyJD(btn){
 const _gaiaUpdateStatus = updateStatus;
 updateStatus = function(){ _gaiaUpdateStatus(); refreshCopyButtons(); };
 
+// ═══════════════════════════════════════════════════════════════
+// POLISH WITH AI (Groq via the Gaia proxy): proofreading only, reviewed before applying
+// ═══════════════════════════════════════════════════════════════
+const POLISH_ERRORS = {
+  busy: 'The AI is busy right now. Please try again in one minute.',
+  network: 'Could not reach the AI. Check your connection and try again in one minute.',
+  limit: "You've used Polish with AI a lot this hour. Please try again later.",
+  too_long: 'Your profile is too long to polish in one go. Shorten a few sections and try again.',
+  signin: 'Sign in with Google (top right) to use Polish with AI.',
+  auth: 'Your sign-in has expired. Sign out, sign back in, then try again.',
+  not_configured: "Polish with AI isn't switched on yet. Please try again later.",
+  empty: 'Fill in your profile first.',
+};
+let _polishResult = null;
+
+// Split a line into words, spaces and punctuation
+function _tokens(s){ return s.match(/\s+|[\p{L}\p{M}\p{N}'’-]+|[^\s\p{L}\p{M}\p{N}]/gu) || []; }
+// A word the AI must never "correct": names, places, acronyms, numbers, non-English words
+const _isProtected = t => /^\p{Lu}/u.test(t) || /\d/.test(t) || /[^\x00-\x7F’]/.test(t);
+// Word-level diff as hunks of [original tokens, new tokens]
+function _diffTokens(a, b){
+  const n = a.length, m = b.length, L = Array.from({ length: n + 1 }, () => new Uint16Array(m + 1));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) L[i][j] = a[i] === b[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const out = []; let i = 0, j = 0, del = [], ins = [];
+  const flush = () => { if (del.length || ins.length) out.push({ del, ins }); del = []; ins = []; };
+  while (i < n || j < m) {
+    if (i < n && j < m && a[i] === b[j]) { flush(); out.push({ same: a[i] }); i++; j++; }
+    else if (j < m && (i === n || L[i][j + 1] >= L[i + 1][j])) ins.push(b[j++]);
+    else del.push(a[i++]);
+  }
+  flush();
+  return out;
+}
+// Put back any edit that touched a protected word (keeps names like Wijesinghe, Kurunegala, AWS)
+function _guardLine(orig, pol){
+  if (orig === pol) return { text: orig, reverted: 0 };
+  const a = _tokens(orig), b = _tokens(pol);
+  if (a.length > 400 || b.length > 400) return { text: orig, reverted: 1 };
+  let text = '', reverted = 0;
+  for (const h of _diffTokens(a, b)) {
+    if (h.same != null) { text += h.same; continue; }
+    if (h.del.some(t => t.trim() && _isProtected(t))) { text += h.del.join(''); reverted++; }
+    else text += h.ins.join('');
+  }
+  return { text, reverted };
+}
+function _diffHTML(orig, pol){
+  return _diffTokens(_tokens(orig), _tokens(pol)).map(h => h.same != null ? esc(h.same)
+    : (h.del.length ? '<del>' + esc(h.del.join('')) + '</del>' : '') + (h.ins.length ? '<ins>' + esc(h.ins.join('')) + '</ins>' : '')).join('');
+}
+
+async function polishProfile(){
+  const btn = document.getElementById('polish-btn');
+  const rep = document.getElementById('polish-report');
+  const orig = generateCVBankText().replace(/\s+$/, '');
+  if (orig.length < 20) { toast(POLISH_ERRORS.empty, 'error'); return; }
+  if (typeof window.gethiredPolish !== 'function') { toast(POLISH_ERRORS.not_configured, 'error'); return; }
+  btn.disabled = true; btn.classList.add('is-working');
+  btn.querySelector('.cp-label').textContent = 'Polishing…';
+  rep.innerHTML = '<div class="polish-wait"><span class="polish-spin"></span>Checking spelling and grammar. This takes up to a minute for a long profile.</div>';
+  let res;
+  try { res = await window.gethiredPolish(orig); } catch (e) { res = { ok: false, error: 'network' }; }
+  btn.disabled = false; btn.classList.remove('is-working');
+  btn.querySelector('.cp-label').textContent = 'Polish my profile';
+  if (!res || !res.ok) {
+    const msg = POLISH_ERRORS[res && res.error] || POLISH_ERRORS.busy;
+    rep.innerHTML = '<div class="polish-msg bad">&#x26A0; ' + esc(msg) + '</div>';
+    toast(msg, 'error');
+    return;
+  }
+  const A = orig.split('\n'), B = String(res.text || '').replace(/\r\n?/g, '\n').split('\n');
+  if (A.length !== B.length) { rep.innerHTML = '<div class="polish-msg bad">&#x26A0; ' + esc(POLISH_ERRORS.busy) + '</div>'; return; }
+  let reverted = 0;
+  const changes = [];
+  const lines = A.map((a, i) => {
+    const g = _guardLine(a, B[i]);
+    reverted += g.reverted;
+    if (g.text !== a) changes.push({ i, was: a, now: g.text });
+    return g.text;
+  });
+  const problems = _polishCheck(orig, lines.join('\n'));
+  _polishResult = { orig, A, changes, problems };
+  renderPolishReview(reverted, res.skipped || 0);
+}
+
+function renderPolishReview(reverted, skipped){
+  const rep = document.getElementById('polish-report');
+  const r = _polishResult;
+  if (!r) { rep.innerHTML = ''; return; }
+  if (!r.changes.length) {
+    rep.innerHTML = '<div class="polish-msg ok">&#x2714; No corrections needed. Your profile reads well as it is.</div>';
+    _polishResult = null;
+    return;
+  }
+  const notes = [];
+  if (reverted) notes.push(reverted + ' suggested change' + (reverted > 1 ? 's' : '') + ' to names, numbers or other protected words ' + (reverted > 1 ? 'were' : 'was') + ' ignored.');
+  if (skipped) notes.push(skipped + ' part' + (skipped > 1 ? 's' : '') + ' of your profile could not be checked and ' + (skipped > 1 ? 'were' : 'was') + ' left as written.');
+  rep.innerHTML =
+    '<div class="polish-head"><strong>' + r.changes.length + ' suggested correction' + (r.changes.length > 1 ? 's' : '') + '</strong>' +
+    '<span>Untick any you don\'t want, then apply.</span></div>' +
+    (notes.length ? '<div class="polish-note">' + notes.map(esc).join(' ') + '</div>' : '') +
+    (r.problems.length ? '<div class="polish-msg bad">&#x26A0; ' + r.problems.length + ' change' + (r.problems.length > 1 ? 's' : '') + ' would alter your profile\'s structure, so ' + (r.problems.length > 1 ? 'they have' : 'it has') + ' been left unticked.</div>' : '') +
+    '<ul class="polish-list">' + r.changes.map((c, k) => {
+      const risky = r.problems.some(p => p.line === c.i + 1);
+      return '<li><label><input type="checkbox" data-k="' + k + '"' + (risky ? '' : ' checked') + '><span class="polish-line">Line ' + (c.i + 1) + '</span><span class="polish-diff">' + _diffHTML(c.was, c.now) + '</span></label></li>';
+    }).join('') + '</ul>' +
+    '<div class="polish-actions"><button class="btn btn-green" onclick="applyPolish()">&#x2714; Apply selected</button><button class="btn btn-ghost" onclick="discardPolish()">Discard</button></div>';
+}
+
+function applyPolish(){
+  const r = _polishResult; if (!r) return;
+  const lines = r.A.slice();
+  document.querySelectorAll('#polish-report input[data-k]').forEach(cb => { if (cb.checked) { const c = r.changes[+cb.dataset.k]; lines[c.i] = c.now; } });
+  const text = lines.join('\n');
+  if (text === r.orig) { discardPolish(); return; }
+  try {
+    _applyBankText(text);
+    _polishSnapshot(text);
+    _polishResult = null;
+    document.getElementById('polish-report').innerHTML = '<div class="polish-msg ok">&#x2714; Corrections applied to your profile.</div>';
+    toast('Corrections applied ✔', 'success');
+  } catch (err) {
+    console.error(err);
+    document.getElementById('polish-report').innerHTML = '<div class="polish-msg bad">&#x26A0; Could not apply the corrections: ' + esc(err.message) + '</div>';
+  }
+}
+function discardPolish(){ _polishResult = null; document.getElementById('polish-report').innerHTML = ''; toast('Suggestions discarded', 'info'); }
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261018j"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261018k"></script>
 </body>
 </html>

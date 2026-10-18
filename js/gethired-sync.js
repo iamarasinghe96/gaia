@@ -1,7 +1,7 @@
 // Google sign-in and cloud autosave for the GetHired CV Prompt Builder.
 // The app keeps working exactly as before on localStorage; this module mirrors
 // its keys to Firestore (users/{uid}/data/{key}) while the visitor is signed in.
-import { firebaseConfig } from './firebase-config.js?v=20261018j';
+import { firebaseConfig, polishUrl } from './firebase-config.js?v=20261018k';
 
 const SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
 const KEYS = [
@@ -186,6 +186,21 @@ async function start() {
     reloadApp();
     status('saved');
   }
+
+  // Polish with AI: send the CV bank to the proxy with this user's sign-in token
+  window.gethiredPolish = async text => {
+    if (!polishUrl) return { ok: false, error: 'not_configured' };
+    if (!a.currentUser) return { ok: false, error: 'signin' };
+    let idToken;
+    try { idToken = await a.currentUser.getIdToken(); } catch { return { ok: false, error: 'auth' }; }
+    try {
+      const res = await fetch(polishUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ idToken, text }) });
+      return await res.json();
+    } catch (err) {
+      console.error('Polish request failed', err);
+      return { ok: false, error: 'network' };
+    }
+  };
 
   $('gh-sign-in').addEventListener('click', async () => {
     try {
