@@ -133,6 +133,30 @@ textarea { font-size: 12.5px; }
 .profile-next { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin: 6px 0 18px; }
 .polish-body { padding: 16px 18px; }
 
+/* Check spelling & continue */
+.continue-btn .cp-arrow { font-size: 16px; margin-left: 2px; transition: transform .25s; }
+.continue-btn.is-ready:hover .cp-arrow { transform: translateX(3px); }
+.continue-btn.is-working { opacity: .85; cursor: progress; }
+.continue-btn.is-working .cp-icon { animation: polishSpin 1s linear infinite; display: inline-block; }
+.polish-banner { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px 10px 16px; border-radius: 16px; background: linear-gradient(135deg, #fff7ed, #eef4ff); border: 1px solid #fed7aa; font-size: 13.5px; color: var(--ink); font-family: 'Inter', system-ui, sans-serif; }
+.polish-banner[hidden] { display: none; }
+.polish-banner-icon { font-size: 16px; }
+.polish-banner #polish-banner-text { flex: 1; min-width: 200px; font-weight: 500; }
+.polish-changes { flex-basis: 100%; }
+.polish-changes ul { list-style: none; margin: 4px 0 2px; padding: 0; max-height: 260px; overflow: auto; background: #fff; border: 1px solid var(--border); border-radius: 12px; }
+.polish-changes li { padding: 8px 12px; border-top: 1px solid var(--border); font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+.polish-changes li:first-child { border-top: 0; }
+.polish-changes del { background: #fee2e2; color: #b91c1c; text-decoration: line-through; border-radius: 3px; padding: 0 1px; }
+.polish-changes ins { background: #dcfce7; color: #166534; text-decoration: none; border-radius: 3px; padding: 0 1px; }
+.style-note { font-size: 12.5px; color: var(--slate); margin-top: 10px; }
+.style-note a { color: var(--navy); font-weight: 600; text-decoration: none; }
+.style-note a:hover { color: var(--orange); }
+.help-num { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(160deg, var(--orange-light), var(--orange)); color: #fff; font-size: 12.5px; font-weight: 800; margin-right: 6px; vertical-align: 1px; }
+.help-lead { color: var(--slate); font-size: 13.5px; margin-bottom: 12px; }
+.help-usage { padding: 0 !important; margin-bottom: 18px; }
+.help-sig { border-top: 1px solid var(--border); padding-top: 16px; }
+.help-sig .sig-box { max-width: 460px; margin-top: 8px; }
+
 /* Polish with AI */
 .polish-btn { margin-bottom: 4px; }
 .polish-btn.is-working { opacity: .8; cursor: progress; }

@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018l">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018m">
 </head>
 <body>
 
@@ -241,7 +241,6 @@
   </div>
   <div class="header-actions">
     <span class="gh-sync" id="gh-sync" role="status" aria-live="polite"></span>
-    <button class="btn" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)" onclick="exportCVBank()">&#x2193; Export CV Bank</button>
     <button class="btn" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)" onclick="saveAll()">&#x2191; Save All</button>
     <button class="btn gh-google" id="gh-sign-in" type="button" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Sign in with Google</button>
     <div class="gh-user" id="gh-user" hidden><span id="gh-avatar"></span><span class="gh-user-name" id="gh-name"></span><button class="btn" id="gh-sign-out" type="button" style="color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)">Sign out</button></div>
@@ -263,24 +262,7 @@
 
     <div class="profile-next">
       <button class="btn btn-outline" onclick="exportCVBank()">&#x2193; Export CV Bank (.txt)</button>
-      <button class="btn btn-green" onclick="sendToPromptBuilder()">&#x2192; Use in Prompt Builder</button>
-    </div>
-
-    <!-- Polish with AI: grammar/wording only, structure verified on the way back in -->
-    <div class="panel" id="polish-panel">
-      <div class="panel-header">
-        <div class="panel-label">
-          <div class="panel-number">&#x2728;</div>
-          <div class="panel-meta">
-            <div class="panel-title">Polish with AI: fix grammar and wording, keep the structure</div>
-            <div class="panel-desc">Fixes spelling, grammar and punctuation only. Names, dates, links and figures are never changed.</div>
-          </div>
-        </div>
-      </div>
-      <div class="polish-body">
-        <button class="btn btn-lg copy-prompt is-ready polish-btn" id="polish-btn" onclick="polishProfile()"><span class="cp-icon">&#x2728;</span><span class="cp-label">Polish my profile</span></button>
-        <div id="polish-report" class="polish-report"></div>
-      </div>
+      <button class="btn btn-lg copy-prompt is-ready continue-btn" id="continue-btn" onclick="polishAndContinue()"><span class="cp-icon">&#x2728;</span><span class="cp-label">Check spelling &amp; use in Prompt Builder</span><span class="cp-arrow">&#x2192;</span></button>
     </div>
 
   </div>
@@ -290,6 +272,13 @@
 <div id="view-prompt" class="view">
   <div class="container">
     <div class="jd-stage">
+      <div class="polish-banner" id="polish-banner" hidden>
+        <span class="polish-banner-icon">&#x2728;</span>
+        <span id="polish-banner-text"></span>
+        <button class="btn btn-ghost" type="button" onclick="togglePolishChanges()" id="polish-see">See changes</button>
+        <button class="btn btn-outline" type="button" onclick="undoPolish()">Undo</button>
+        <div class="polish-changes" id="polish-changes" hidden></div>
+      </div>
       <div class="jd-topbar">
         <button class="btn btn-ghost" onclick="switchView('profile')">&#x2190; Master CV Content Bank</button>
         <div class="panel-badges">
@@ -453,16 +442,7 @@
             <div class="swatches" id="exp-swatches"></div>
             <label class="style-label" for="exp-font">Font</label>
             <select id="exp-font" class="field-input" onchange="setExportStyle({font:this.value})"></select>
-            <div id="exp-sig-row">
-              <div class="style-label">Signature <em>(cover letter only)</em></div>
-              <div class="sig-box">
-                <div class="sig-preview" id="exp-sig-wrap"><img id="exp-sig-preview" alt="Your signature" style="display:none"><span id="exp-sig-empty">No signature yet</span></div>
-                <div class="sig-actions">
-                  <label class="btn btn-outline" style="cursor:pointer"><span id="exp-sig-label">Upload signature photo</span><input type="file" accept="image/*" style="display:none" onchange="handleSignatureUpload(this)"></label>
-                  <button class="btn btn-danger" id="exp-sig-remove" style="display:none" onclick="removeSignature()">&#x2715; Remove</button>
-                </div>
-              </div>
-            </div>
+            <p class="style-note">&#x270D; Cover letter signature: <a href="#" onclick="switchView('help');return false">add or change it in How it works &#x203A; 11</a></p>
           </div>
         </div>
       </div>
@@ -503,12 +483,12 @@
       </ol>
     </section>
     <section class="panel help-card">
-      <h2>&#x2728; Polish with AI</h2>
+      <h2>&#x2728; Spelling &amp; grammar check</h2>
       <ol>
-        <li>When your profile is done, sign in with Google and click <strong>Polish my profile</strong> at the bottom of the Profile Builder.</li>
-        <li>The AI fixes spelling, grammar and punctuation only. It keeps your own words and never changes names of people, places or organisations, in any language, or your dates, links and figures. Any suggestion that touches a name, number or non-English word is ignored automatically.</li>
-        <li>Review the suggested corrections, untick any you don't want, and click <strong>Apply selected</strong>.</li>
-        <li>If it says the AI is busy, wait one minute and try again.</li>
+        <li>When your profile is done, click <strong>Check spelling &amp; use in Prompt Builder</strong> at the bottom of the Profile Builder.</li>
+        <li>If you're signed in, the AI fixes spelling, grammar and punctuation, saves your profile and takes you to the Prompt Builder. It keeps your own words and never changes names of people, places or organisations, in any language, or your dates, links and figures.</li>
+        <li>A note at the top of the Prompt Builder says how many fixes were made. Click <strong>See changes</strong> to check them or <strong>Undo</strong> to put your original text back.</li>
+        <li>If the AI is busy, your profile is left as it is and you still go straight to the Prompt Builder. Try again in a minute.</li>
       </ol>
       <p class="help-fine">Your profile text is sent securely to Groq to be proofread. Gaia Symbiosis does not store it.</p>
     </section>
@@ -536,9 +516,25 @@
       </ol>
       <h3>Signature</h3>
       <ul>
-        <li>Upload a photo or scan of your signature for cover letters. Any background works: white, grey or textured paper.</li>
+        <li>Upload a photo or scan of your signature in <strong>11 · Usage Notes &amp; signature</strong> below. Any background works: white, grey or textured paper.</li>
         <li>The tool removes the background, cleans up specks and crops it tightly, so only your ink appears on the letter.</li>
       </ul>
+    </section>
+    <section class="panel help-card" id="help-11">
+      <h2><span class="help-num">11</span> Usage Notes &amp; signature</h2>
+      <p class="help-lead">Optional extras. Usage Notes tell Claude which stories to use for each type of role. Your signature is added to exported cover letters.</p>
+      <div class="help-usage builder-section-body" id="help-usage"></div>
+      <div id="exp-sig-row" class="help-sig">
+        <div class="style-label">Signature <em>(cover letters)</em></div>
+        <div class="sig-box">
+          <div class="sig-preview" id="exp-sig-wrap"><img id="exp-sig-preview" alt="Your signature" style="display:none"><span id="exp-sig-empty">No signature yet</span></div>
+          <div class="sig-actions">
+            <label class="btn btn-outline" style="cursor:pointer"><span id="exp-sig-label">Upload signature photo</span><input type="file" accept="image/*" style="display:none" onchange="handleSignatureUpload(this)"></label>
+            <button class="btn btn-danger" id="exp-sig-remove" style="display:none" onclick="removeSignature()">&#x2715; Remove</button>
+          </div>
+          <p class="help-fine">Any background works: white, grey or textured paper. The background is removed and only your ink is kept.</p>
+        </div>
+      </div>
     </section>
     <section class="panel help-card">
       <h2>Your data</h2>
@@ -774,11 +770,11 @@ function renderProfileForm() {
     { id:'projects',       num:8,  title:'Personal Projects & Side Ventures' },
     { id:'achievements',   num:9,  title:'Achievements & Extracurricular' },
     { id:'referees',       num:10, title:'Referees' },
-    { id:'usageNotes',     num:11, title:'Usage Notes' },
   ];
   document.getElementById('profile-form').innerHTML =
     sections.map(s => buildSectionShell(s.id, s.num, s.title)).join('');
   sections.forEach(s => renderSectionBody(s.id));
+  renderUsageNotes();
 }
 
 function buildSectionShell(id, num, title) {
@@ -2127,6 +2123,7 @@ function switchView(view) {
   if (view === 'prompt') loadPromptBuilder();
   if (view === 'export') initExport();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (view === 'help') { renderUsageNotes(); renderSignatureState(); }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2185,8 +2182,6 @@ function setExportType(t){
   document.getElementById('exp-type-cv').className = 'btn btn-lg ' + (t==='cv'?'btn-primary':'btn-outline');
   exportData = _loadDrafts()[t] || null;
   document.getElementById('exp-parse-status').textContent = '';
-  const sigRow = document.getElementById('exp-sig-row');
-  if(sigRow) sigRow.style.display = (t==='cl') ? 'block' : 'none';
   renderExportPreview();
 }
 
@@ -3197,7 +3192,6 @@ const POLISH_ERRORS = {
   not_configured: "Polish with AI isn't switched on yet. Please try again later.",
   empty: 'Fill in your profile first.',
 };
-let _polishResult = null;
 
 // Split a line into words, spaces and punctuation
 function _tokens(s){ return s.match(/\s+|[\p{L}\p{M}\p{N}'’-]+|[^\s\p{L}\p{M}\p{N}]/gu) || []; }
@@ -3235,85 +3229,102 @@ function _diffHTML(orig, pol){
     : (h.del.length ? '<del>' + esc(h.del.join('')) + '</del>' : '') + (h.ins.length ? '<ins>' + esc(h.ins.join('')) + '</ins>' : '')).join('');
 }
 
-async function polishProfile(){
-  const btn = document.getElementById('polish-btn');
-  const rep = document.getElementById('polish-report');
+// One click: check spelling and grammar, save, then open the Prompt Builder.
+let _polishUndo = null;
+function _setContinueBusy(on){
+  const btn = document.getElementById('continue-btn');
+  if (!btn) return;
+  btn.disabled = on; btn.classList.toggle('is-working', on);
+  btn.querySelector('.cp-label').textContent = on ? 'Checking spelling…' : 'Check spelling & use in Prompt Builder';
+}
+function _hidePolishBanner(){ const b = document.getElementById('polish-banner'); if (b) b.hidden = true; }
+async function polishAndContinue(){
   const orig = generateCVBankText().replace(/\s+$/, '');
-  if (orig.length < 20) { toast(POLISH_ERRORS.empty, 'error'); return; }
-  if (typeof window.gethiredPolish !== 'function') { toast(POLISH_ERRORS.not_configured, 'error'); return; }
-  btn.disabled = true; btn.classList.add('is-working');
-  btn.querySelector('.cp-label').textContent = 'Polishing…';
-  rep.innerHTML = '<div class="polish-wait"><span class="polish-spin"></span>Checking spelling and grammar. This takes up to a minute for a long profile.</div>';
+  if (orig.length < 20) { toast('Fill in some profile details first.', 'error'); return; }
+  _hidePolishBanner();
+  const signedIn = !document.getElementById('gh-user').hidden;
+  if (!signedIn || typeof window.gethiredPolish !== 'function') {
+    sendToPromptBuilder();
+    if (!signedIn) setTimeout(() => toast('Sign in with Google to also check spelling and grammar.', 'info'), 1200);
+    return;
+  }
+  _setContinueBusy(true);
   let res;
   try { res = await window.gethiredPolish(orig); } catch (e) { res = { ok: false, error: 'network' }; }
-  btn.disabled = false; btn.classList.remove('is-working');
-  btn.querySelector('.cp-label').textContent = 'Polish my profile';
+  _setContinueBusy(false);
   if (!res || !res.ok) {
+    sendToPromptBuilder();
     const msg = POLISH_ERRORS[res && res.error] || POLISH_ERRORS.busy;
-    rep.innerHTML = '<div class="polish-msg bad">&#x26A0; ' + esc(msg) + '</div>';
-    toast(msg, 'error');
+    setTimeout(() => toast(msg + ' Your profile is unchanged.', 'error'), 300);
     return;
   }
   const A = orig.split('\n'), B = String(res.text || '').replace(/\r\n?/g, '\n').split('\n');
-  if (A.length !== B.length) { rep.innerHTML = '<div class="polish-msg bad">&#x26A0; ' + esc(POLISH_ERRORS.busy) + '</div>'; return; }
-  let reverted = 0;
   const changes = [];
-  const lines = A.map((a, i) => {
-    const g = _guardLine(a, B[i]);
-    reverted += g.reverted;
-    if (g.text !== a) changes.push({ i, was: a, now: g.text });
-    return g.text;
-  });
-  const problems = _polishCheck(orig, lines.join('\n'));
-  _polishResult = { orig, A, changes, problems };
-  renderPolishReview(reverted, res.skipped || 0);
-}
-
-function renderPolishReview(reverted, skipped){
-  const rep = document.getElementById('polish-report');
-  const r = _polishResult;
-  if (!r) { rep.innerHTML = ''; return; }
-  if (!r.changes.length) {
-    rep.innerHTML = '<div class="polish-msg ok">&#x2714; No corrections needed. Your profile reads well as it is.</div>';
-    _polishResult = null;
+  if (A.length === B.length) {
+    const guarded = A.map((a, i) => _guardLine(a, B[i]).text);
+    const risky = new Set(_polishCheck(orig, guarded.join('\n')).map(p => p.line).filter(Boolean));
+    guarded.forEach((g, i) => { if (g !== A[i] && !risky.has(i + 1)) changes.push({ i, was: A[i], now: g }); });
+  }
+  if (!changes.length) {
+    sendToPromptBuilder();
+    setTimeout(() => toast('No spelling or grammar issues found ✔', 'success'), 300);
     return;
   }
-  const notes = [];
-  if (reverted) notes.push(reverted + ' suggested change' + (reverted > 1 ? 's' : '') + ' to names, numbers or other protected words ' + (reverted > 1 ? 'were' : 'was') + ' ignored.');
-  if (skipped) notes.push(skipped + ' part' + (skipped > 1 ? 's' : '') + ' of your profile could not be checked and ' + (skipped > 1 ? 'were' : 'was') + ' left as written.');
-  rep.innerHTML =
-    '<div class="polish-head"><strong>' + r.changes.length + ' suggested correction' + (r.changes.length > 1 ? 's' : '') + '</strong>' +
-    '<span>Untick any you don\'t want, then apply.</span></div>' +
-    (notes.length ? '<div class="polish-note">' + notes.map(esc).join(' ') + '</div>' : '') +
-    (r.problems.length ? '<div class="polish-msg bad">&#x26A0; ' + r.problems.length + ' change' + (r.problems.length > 1 ? 's' : '') + ' would alter your profile\'s structure, so ' + (r.problems.length > 1 ? 'they have' : 'it has') + ' been left unticked.</div>' : '') +
-    '<ul class="polish-list">' + r.changes.map((c, k) => {
-      const risky = r.problems.some(p => p.line === c.i + 1);
-      return '<li><label><input type="checkbox" data-k="' + k + '"' + (risky ? '' : ' checked') + '><span class="polish-line">Line ' + (c.i + 1) + '</span><span class="polish-diff">' + _diffHTML(c.was, c.now) + '</span></label></li>';
-    }).join('') + '</ul>' +
-    '<div class="polish-actions"><button class="btn btn-green" onclick="applyPolish()">&#x2714; Apply selected</button><button class="btn btn-ghost" onclick="discardPolish()">Discard</button></div>';
-}
-
-function applyPolish(){
-  const r = _polishResult; if (!r) return;
-  const lines = r.A.slice();
-  document.querySelectorAll('#polish-report input[data-k]').forEach(cb => { if (cb.checked) { const c = r.changes[+cb.dataset.k]; lines[c.i] = c.now; } });
-  const text = lines.join('\n');
-  if (text === r.orig) { discardPolish(); return; }
+  const lines = A.slice();
+  changes.forEach(c => { lines[c.i] = c.now; });
   try {
-    _applyBankText(text);
-    _polishSnapshot(text);
-    _polishResult = null;
-    document.getElementById('polish-report').innerHTML = '<div class="polish-msg ok">&#x2714; Corrections applied to your profile.</div>';
-    toast('Corrections applied ✔', 'success');
+    _applyBankText(lines.join('\n'));
+    _polishSnapshot(lines.join('\n'));
   } catch (err) {
     console.error(err);
-    document.getElementById('polish-report').innerHTML = '<div class="polish-msg bad">&#x26A0; Could not apply the corrections: ' + esc(err.message) + '</div>';
+    sendToPromptBuilder();
+    setTimeout(() => toast('Could not apply the corrections. Your profile is unchanged.', 'error'), 300);
+    return;
+  }
+  _polishUndo = { orig, changes };
+  sendToPromptBuilder();
+  const n = changes.length;
+  document.getElementById('polish-banner-text').textContent = 'Fixed ' + n + ' spelling or grammar issue' + (n > 1 ? 's' : '') + ' in your profile and saved it.';
+  const list = document.getElementById('polish-changes');
+  list.hidden = true;
+  list.innerHTML = '<ul>' + changes.map(c => '<li>' + _diffHTML(c.was, c.now) + '</li>').join('') + '</ul>';
+  document.getElementById('polish-see').textContent = 'See changes';
+  document.getElementById('polish-banner').hidden = false;
+  setTimeout(() => toast('Spelling and grammar checked ✔', 'success'), 300);
+}
+function togglePolishChanges(){
+  const list = document.getElementById('polish-changes');
+  list.hidden = !list.hidden;
+  document.getElementById('polish-see').textContent = list.hidden ? 'See changes' : 'Hide changes';
+}
+function undoPolish(){
+  if (!_polishUndo) return;
+  try { _applyBankText(_polishUndo.orig); _polishSnapshot(_polishUndo.orig); } catch (e) { console.error(e); toast('Could not undo', 'error'); return; }
+  _polishUndo = null;
+  loadPromptBuilder();
+  _hidePolishBanner();
+  toast('Original wording restored', 'info');
+}
+
+// Usage Notes are edited in How it works › 11 (same profile field, same autosave)
+function renderUsageNotes(){
+  const el = document.getElementById('help-usage');
+  if (!el) return;
+  if (el.contains(document.activeElement)) return;
+  el.innerHTML = usageNotesBodyHTML();
+  if (!el._wired) {
+    el._wired = true;
+    el.addEventListener('input', e => {
+      const path = e.target.dataset.path;
+      if (!path) return;
+      setPath(P, path, e.target.value);
+      debouncedSave();
+    });
   }
 }
-function discardPolish(){ _polishResult = null; document.getElementById('polish-report').innerHTML = ''; toast('Suggestions discarded', 'info'); }
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261018l"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261018m"></script>
 </body>
 </html>
