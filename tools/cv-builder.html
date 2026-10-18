@@ -1,318 +1,3176 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-AU">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com; frame-src https://*.firebaseapp.com https://accounts.google.com https://apis.google.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests" />
-  <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>CV Prompt Builder: Tailored CV &amp; Cover Letter Prompts | Gaia Symbiosis</title>
-  <meta name="description" content="Free ATS-optimised CV and cover letter prompt builder. Save your CV content bank, paste a job description and get tailored prompts ready for Claude. Sign in with Google to save every application." />
-  <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#05070d" />
-  <link rel="canonical" href="https://gaiasymbiosis.com/tools/cv-builder.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Gaia Symbiosis" />
-  <meta property="og:url" content="https://gaiasymbiosis.com/tools/cv-builder.html" />
-  <meta property="og:title" content="CV Prompt Builder | Gaia Symbiosis" />
-  <meta property="og:description" content="Tailored, ATS-optimised CV and cover letter prompts for every job you apply for." />
-  <meta property="og:image" content="https://gaiasymbiosis.com/assets/logo-512.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" type="image/png" sizes="96x96" href="../assets/logo-96.png" />
-  <link rel="apple-touch-icon" href="../assets/logo-512.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" />
-  <link rel="stylesheet" href="../css/styles.css?v=20261018f" />
-  <link rel="stylesheet" href="../css/cv-builder.css?v=20261018f" />
-  <script>document.documentElement.classList.add('js')</script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "SoftwareApplication",
-        "name": "Gaia Symbiosis CV Prompt Builder",
-        "description": "Build ATS-optimised CV and cover letter prompts from your saved content bank and a job description.",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "AUD" },
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "url": "https://gaiasymbiosis.com/tools/cv-builder.html",
-        "publisher": { "@type": "Organization", "name": "Gaia Symbiosis", "url": "https://gaiasymbiosis.com/" }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gaiasymbiosis.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://gaiasymbiosis.com/services.html" },
-          { "@type": "ListItem", "position": 3, "name": "CV Prompt Builder", "item": "https://gaiasymbiosis.com/tools/cv-builder.html" }
-        ]
-      }
-    ]
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://lh3.googleusercontent.com; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com; frame-src https://gaia-symbiosis.firebaseapp.com https://accounts.google.com https://apis.google.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>GetHired CV Prompt Builder: ATS-Optimised CV &amp; Cover Letter Prompts | Gaia Symbiosis</title>
+<meta name="description" content="Free ATS-optimised CV and cover letter builder. Build your profile once, paste a job description, get tailored prompts for Claude, then export a formatted Word document. Sign in with Google to save everything.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#05070d">
+<link rel="canonical" href="https://gaiasymbiosis.com/tools/cv-builder.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gaia Symbiosis">
+<meta property="og:url" content="https://gaiasymbiosis.com/tools/cv-builder.html">
+<meta property="og:title" content="GetHired CV Prompt Builder | Gaia Symbiosis">
+<meta property="og:description" content="Build your profile once, paste a job ad, and get tailored CV and cover letter prompts plus a formatted Word export.">
+<meta property="og:image" content="https://gaiasymbiosis.com/assets/logo-512.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="96x96" href="../assets/logo-96.png">
+<link rel="apple-touch-icon" href="../assets/logo-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="../js/vendor/jszip-3.10.1.min.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GetHired CV Prompt Builder",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://gaiasymbiosis.com/tools/cv-builder.html",
+  "description": "Build your profile once, paste a job description, get ATS-optimised CV and cover letter prompts, and export a formatted Word document.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "AUD" },
+  "publisher": { "@type": "Organization", "name": "Gaia Symbiosis", "url": "https://gaiasymbiosis.com/" }
+}
+</script>
+<style>
+  :root {
+    --navy:#1F4E79; --navy-light:#2563a8; --navy-pale:#e8f0f9;
+    --ink:#1a1f2e; --slate:#4a5568; --muted:#8896a8;
+    --border:#d1dce8; --surface:#f7f9fc; --white:#ffffff;
+    --green:#0d7a5f; --green-pale:#e6f4f0;
+    --amber:#b45309; --amber-pale:#fef3e2;
+    --red:#c0392b; --red-pale:#fdecea;
+    --radius:8px;
+    --shadow:0 1px 3px rgba(31,78,121,0.08),0 4px 16px rgba(31,78,121,0.06);
+    --shadow-lg:0 8px 32px rgba(31,78,121,0.12);
   }
-  </script>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.6;}
+
+  /* HEADER */
+  header{background:var(--navy);color:white;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+  .header-brand{display:flex;align-items:center;gap:12px;}
+  .header-logo{width:32px;height:32px;background:rgba(255,255,255,0.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-weight:500;font-size:13px;}
+  .header-title{font-size:15px;font-weight:600;}
+  .header-sub{font-size:11px;color:rgba(255,255,255,0.55);font-family:'DM Mono',monospace;}
+  .header-actions{display:flex;gap:8px;align-items:center;}
+
+  /* MAIN NAV */
+  .main-nav{background:var(--white);border-bottom:1px solid var(--border);display:flex;gap:0;padding:0 28px;}
+  .main-nav-tab{padding:12px 20px;font-size:13px;font-weight:600;border:none;border-bottom:3px solid transparent;background:transparent;cursor:pointer;color:var(--slate);transition:all 0.15s;font-family:'DM Sans',sans-serif;}
+  .main-nav-tab:hover{color:var(--navy);background:var(--navy-pale);}
+  .main-nav-tab.active{color:var(--navy);border-bottom-color:var(--navy);}
+
+  /* VIEWS */
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* CONTAINER */
+  .container{max-width:1400px;margin:0 auto;padding:24px 28px 60px;}
+  .page-intro{margin-bottom:20px;padding:14px 18px;background:var(--navy-pale);border-left:3px solid var(--navy);border-radius:0 var(--radius) var(--radius) 0;font-size:13px;color:var(--navy);line-height:1.7;}
+  .page-intro strong{font-weight:600;}
+
+  /* PANELS */
+  .panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+  .panel-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+  .panel-label{display:flex;align-items:center;gap:10px;}
+  .panel-number{width:22px;height:22px;background:var(--navy);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;flex-shrink:0;}
+  .panel-number.green{background:var(--green);}
+  .panel-number.amber{background:var(--amber);}
+  .panel-meta{display:flex;flex-direction:column;gap:2px;}
+  .panel-title{font-size:13px;font-weight:600;color:var(--ink);}
+  .panel-desc{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+  .panel-badges{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+
+  /* BADGES */
+  .badge{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:3px;font-weight:500;white-space:nowrap;}
+  .badge-saved{background:var(--green-pale);color:var(--green);border:1px solid rgba(13,122,95,0.2);}
+  .badge-nosave{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(180,83,9,0.2);}
+  .badge-count{background:var(--navy-pale);color:var(--navy);border:1px solid rgba(31,78,121,0.2);}
+  .badge-muted{background:var(--surface);color:var(--muted);border:1px solid var(--border);}
+  .badge-custom{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(180,83,9,0.2);}
+  .prompt-edit-note{padding:8px 16px;background:var(--amber-pale);border-bottom:1px solid rgba(180,83,9,0.15);font-size:11px;color:var(--amber);font-family:'DM Mono',monospace;}
+
+  /* BUTTONS */
+  .btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:6px 12px;border-radius:5px;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap;}
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--navy);color:white;border-color:var(--navy);}
+  .btn-primary:hover{background:var(--navy-light);}
+  .btn-outline{background:white;color:var(--navy);border-color:var(--border);}
+  .btn-outline:hover{border-color:var(--navy);background:var(--navy-pale);}
+  .btn-ghost{background:transparent;color:var(--slate);border-color:transparent;}
+  .btn-ghost:hover{background:var(--surface);color:var(--ink);}
+  .btn-danger{background:white;color:var(--red);border-color:var(--border);}
+  .btn-danger:hover{background:var(--red-pale);border-color:var(--red);}
+  .btn-green{background:var(--green);color:white;border-color:var(--green);}
+  .btn-green:hover{background:#0a6850;}
+  .btn-amber{background:var(--amber);color:white;border-color:var(--amber);}
+  .btn-amber:hover{background:#9a4608;}
+  .btn-lg{padding:10px 20px;font-size:13px;font-weight:600;border-radius:6px;}
+
+  /* TOOLBAR */
+  .toolbar{padding:8px 14px;border-top:1px solid var(--border);display:flex;gap:6px;align-items:center;background:var(--surface);flex-wrap:wrap;}
+  .toolbar-right{margin-left:auto;display:flex;gap:6px;align-items:center;}
+
+  /* TEXTAREA */
+  .textarea-wrap{flex:1;display:flex;flex-direction:column;}
+  textarea{flex:1;border:none;resize:none;padding:14px 16px;font-family:'DM Mono',monospace;font-size:12px;line-height:1.7;color:var(--ink);background:transparent;outline:none;min-height:200px;width:100%;}
+  textarea::placeholder{color:var(--muted);font-style:italic;}
+  textarea.prompt-area{min-height:280px;font-size:11.5px;color:var(--slate);background:var(--surface);}
+
+  /* ── PROFILE BUILDER STYLES ── */
+  .profile-action-bar{display:flex;gap:10px;align-items:center;padding:16px 0;flex-wrap:wrap;}
+  .profile-action-bar .label{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+  /* BUILDER SECTIONS (accordion) */
+  .builder-section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;}
+  .builder-section-hdr{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:10px;}
+  .builder-section-hdr:hover{background:var(--navy-pale);}
+  .builder-section-body{padding:18px;}
+  .builder-section-body.collapsed{display:none;}
+  .section-toggle{font-size:14px;color:var(--muted);flex-shrink:0;transition:transform 0.15s;}
+
+  /* FORM FIELDS */
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  .field-grid.one{grid-template-columns:1fr;}
+  .field-grid.three{grid-template-columns:1fr 1fr 1fr;}
+  .field-full{grid-column:1/-1;}
+  .field-item{display:flex;flex-direction:column;gap:4px;}
+  .field-label{font-size:11px;font-weight:600;color:var(--slate);font-family:'DM Mono',monospace;letter-spacing:0.3px;}
+  .req{color:var(--red);}
+  .opt{color:var(--muted);font-weight:400;}
+  input.field-input,textarea.field-input{width:100%;border:1px solid var(--border);border-radius:5px;padding:7px 10px;font-family:'DM Mono',monospace;font-size:12px;color:var(--ink);background:var(--surface);outline:none;transition:border 0.15s;resize:vertical;line-height:1.6;}
+  input.field-input:focus,textarea.field-input:focus{border-color:var(--navy);background:var(--white);}
+  textarea.field-input{min-height:72px;}
+
+  /* DYNAMIC ENTRY CARDS */
+  .entry-card{border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:10px;background:var(--surface);}
+  .entry-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .entry-card-title{font-size:11px;font-weight:600;color:var(--navy);font-family:'DM Mono',monospace;letter-spacing:0.3px;}
+  .add-entry-row{padding-top:4px;}
+  /* Example split: sample on the left, the user's own fields on the right */
+  .sample-btn{font-size:11px;padding:4px 10px;}
+  .sample-btn.on{background:var(--amber-pale);color:var(--amber);border-color:rgba(180,83,9,0.35);}
+  .builder-section-body.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+  .sample-col{border:1px dashed rgba(180,83,9,0.45);border-radius:6px;padding:12px;background:#fffdf8;min-width:0;}
+  .form-col{min-width:0;}
+  .col-banner{font-size:11px;font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.6;padding:6px 10px;border-radius:4px;}
+  .sample-col .col-banner{color:var(--amber);background:var(--amber-pale);}
+  .form-col .col-banner{color:var(--navy);background:var(--navy-pale);}
+  .sample-col .field-input{background:transparent;color:var(--slate);border-style:dashed;resize:none;cursor:default;min-width:0;text-overflow:ellipsis;}
+  .sample-col textarea.field-input{field-sizing:content;}  /* grow to fit the example text; inputs keep their column width */
+  .sample-col .entry-card{background:transparent;}
+  .polish-body{padding:16px;font-size:13px;line-height:1.7;color:var(--slate);}
+  .polish-body ol{margin:0 0 12px 18px;}
+  .polish-report{margin-top:12px;font-size:12px;font-family:'DM Mono',monospace;line-height:1.6;}
+  .polish-report .ok{color:var(--green);}
+  .polish-report .bad{color:var(--amber);}
+  .polish-report ul{margin:8px 0 10px 18px;max-height:320px;overflow:auto;}
+  .polish-report code{background:var(--surface);padding:1px 4px;border-radius:3px;}
+  @media(max-width:900px){ .builder-section-body.split{grid-template-columns:1fr;} }
+  .section-tip{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.6;padding:8px 12px;background:var(--navy-pale);border-radius:4px;}
+
+  /* IMPORT PANEL */
+  .import-panel{margin-bottom:20px;}
+  .import-panel textarea{min-height:100px;}
+
+  /* PROMPT BUILDER GRID */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .panel.flex-col{display:flex;flex-direction:column;}
+  .full-width{grid-column:1/-1;}
+
+  /* OUTPUT */
+  .output-section{display:flex;flex-direction:column;gap:16px;}
+  .output-header{display:flex;align-items:center;justify-content:space-between;padding:0 2px;}
+  .output-title{font-size:15px;font-weight:600;color:var(--ink);}
+  .output-tabs{display:flex;background:var(--white);border:1px solid var(--border);border-radius:6px;padding:3px;box-shadow:var(--shadow);}
+  .output-tab{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:6px 14px;border-radius:4px;border:none;cursor:pointer;background:transparent;color:var(--slate);transition:all 0.15s;}
+  .output-tab.active{background:var(--navy);color:white;box-shadow:0 1px 4px rgba(31,78,121,0.25);}
+  .output-tab:not(.active):hover{background:var(--navy-pale);color:var(--navy);}
+  .output-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:none;}
+  .output-panel.visible{display:flex;flex-direction:column;}
+  .output-panel-header{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--navy-pale);display:flex;align-items:center;justify-content:space-between;}
+  .output-panel-title{font-size:12px;font-weight:600;color:var(--navy);font-family:'DM Mono',monospace;}
+  .output-content{padding:16px;font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.75;color:var(--slate);white-space:pre-wrap;word-break:break-word;max-height:520px;overflow-y:auto;background:var(--surface);}
+  .output-empty{padding:40px 16px;text-align:center;color:var(--muted);font-size:13px;}
+  .output-empty .empty-icon{font-size:28px;margin-bottom:10px;opacity:0.5;}
+  .highlight-jd{background:rgba(13,122,95,0.12);color:var(--green);padding:0 2px;border-radius:2px;}
+  .highlight-cv{background:rgba(31,78,121,0.1);color:var(--navy);padding:0 2px;border-radius:2px;}
+
+  /* STATUS ROW */
+  .status-row{grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);font-size:11.5px;color:var(--slate);font-family:'DM Mono',monospace;box-shadow:var(--shadow);}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+  .status-dot.ready{background:var(--green);}
+  .status-dot.warn{background:var(--amber);}
+  .status-sep{color:var(--border);}
+
+  /* TOAST */
+  #toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:white;padding:10px 16px;border-radius:6px;font-size:13px;font-weight:500;opacity:0;transform:translateY(8px);transition:all 0.2s;z-index:9999;pointer-events:none;box-shadow:var(--shadow-lg);max-width:320px;}
+  #toast.show{opacity:1;transform:translateY(0);}
+  #toast.success{background:var(--green);}
+  #toast.error{background:var(--red);}
+  #toast.info{background:var(--navy);}
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+  @media(max-width:900px){
+    .grid,.field-grid,.field-grid.three{grid-template-columns:1fr;}
+    header{padding:0 16px;}
+    .container{padding:16px 16px 48px;}
+    .main-nav{padding:0 16px;}
+  }
+</style>
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018g">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="nav" role="banner">
-    <div class="container nav-inner">
-      <a href="../index.html" class="brand" aria-label="Gaia Symbiosis home">
-        <img src="../assets/logo-96.png" alt="" width="38" height="38" />
-        <span>Gaia Symbiosis<small>AI × Human</small></span>
-      </a>
-      <nav aria-label="Primary">
-        <ul class="nav-links">
-          <li><a href="../services.html">Services</a></li>
-          <li class="has-menu">
-            <button class="menu-trigger is-current" type="button" aria-expanded="false" aria-controls="tools-menu">Tools <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
-            <ul class="dropdown" id="tools-menu">
-              <li><a href="../tools/cv-builder.html"><strong>CV Prompt Builder</strong><span class="live">Tailored CV prompts · Live</span></a></li>
-              <li><a href="../tools/job-search.html"><strong>Job Search Assistant</strong><span>Find and track roles · Coming soon</span></a></li>
-              <li><a href="https://lushnote.com.au" target="_blank" rel="noopener"><strong>LushNote</strong><span class="live">AI clinical notes · Live</span></a></li>
-            </ul>
-          </li>
-          <li><a href="../index.html#work">Work</a></li>
-          <li><a href="../index.html#about">About</a></li>
-          <li><a href="../index.html#contact" class="btn btn-primary btn-sm">Book a call</a></li>
-        </ul>
-      </nav>
-      <button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+<header>
+  <div class="header-brand">
+    <a class="header-logo" href="../index.html" aria-label="Gaia Symbiosis home"><img src="../assets/logo-96.png" alt="" width="32" height="32"></a>
+    <div>
+      <div class="header-title">GetHired · CV Prompt Builder</div>
+      <div class="header-sub">by <a href="../index.html">Gaia Symbiosis</a> · ATS-optimised prompt assembly tool</div>
     </div>
-  </header>
-  <div class="mobile-menu" id="mobile-menu">
-    <a href="../services.html">Services</a>
-    <p class="mobile-label">Tools</p>
-    <a class="mobile-sub" href="../tools/cv-builder.html">CV Prompt Builder</a>
-    <a class="mobile-sub" href="../tools/job-search.html">Job Search Assistant</a>
-    <a class="mobile-sub" href="https://lushnote.com.au" target="_blank" rel="noopener">LushNote</a>
-    <a href="../index.html#work">Work</a>
-    <a href="../index.html#about">About</a>
-    <a href="../index.html#contact" class="btn btn-primary">Book a call</a>
   </div>
+  <div class="header-actions">
+    <span class="gh-sync" id="gh-sync" role="status" aria-live="polite"></span>
+    <button class="btn" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)" onclick="exportCVBank()">&#x2193; Export CV Bank</button>
+    <button class="btn" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)" onclick="saveAll()">&#x2191; Save All</button>
+    <button class="btn gh-google" id="gh-sign-in" type="button" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Sign in with Google</button>
+    <div class="gh-user" id="gh-user" hidden><span id="gh-avatar"></span><span class="gh-user-name" id="gh-name"></span><button class="btn" id="gh-sign-out" type="button" style="color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)">Sign out</button></div>
+  </div>
+</header>
 
-  <main id="main">
-    <section class="page-hero cvb-hero" aria-labelledby="page-title">
-      <div class="hero-bg" aria-hidden="true"><div class="hero-grid"></div><div class="orb orb-1"></div></div>
-      <div class="container">
-        <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="../index.html">Home</a></li><li><a href="../services.html#tools">Tools</a></li><li aria-current="page">CV Prompt Builder</li></ol></nav>
-        <div class="cvb-hero-row">
-          <div>
-            <h1 id="page-title" class="reveal">CV Prompt Builder</h1>
-            <p class="cvb-sub reveal" style="--d:.08s">ATS-optimised prompt assembly tool</p>
-          </div>
-          <div class="cvb-account reveal" style="--d:.12s" id="account">
-            <div id="account-out" hidden>
-              <button class="btn cvb-google" type="button" id="sign-in"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Sign in with Google</button>
-            </div>
-            <div id="account-in" class="cvb-user" hidden>
-              <span id="account-avatar"></span>
-              <span class="cvb-user-text"><strong id="account-name"></strong><span id="account-email"></span></span>
-              <button class="btn btn-ghost-light btn-xs" type="button" id="sign-out">Sign out</button>
-            </div>
-            <p class="cvb-account-note" id="account-note" hidden></p>
+<nav class="main-nav">
+  <button class="main-nav-tab active" id="nav-profile" onclick="switchView('profile')">&#x2460; Profile Builder</button>
+  <button class="main-nav-tab" id="nav-prompt" onclick="switchView('prompt')">&#x2461; Prompt Builder</button>
+  <button class="main-nav-tab" id="nav-export" onclick="switchView('export')">&#x2462; Export to Word</button>
+  <button class="main-nav-tab nav-help" id="nav-help" onclick="switchView('help')">&#x2463; How it works</button>
+</nav>
+
+<!-- ═══════════════════════════════ PROFILE BUILDER VIEW ═══════════════════════════════ -->
+<div id="view-profile" class="view active">
+  <div class="container">
+    <!-- Profile form (rendered by JS) -->
+    <div id="profile-form"></div>
+
+    <div class="profile-next">
+      <button class="btn btn-outline" onclick="exportCVBank()">&#x2193; Export CV Bank (.txt)</button>
+      <button class="btn btn-green" onclick="sendToPromptBuilder()">&#x2192; Use in Prompt Builder</button>
+    </div>
+
+    <!-- Polish with AI: grammar/wording only, structure verified on the way back in -->
+    <div class="panel" id="polish-panel">
+      <div class="panel-header">
+        <div class="panel-label">
+          <div class="panel-number">&#x2728;</div>
+          <div class="panel-meta">
+            <div class="panel-title">Polish with AI: fix grammar and wording, keep the structure</div>
+            <div class="panel-desc">For when you've finished filling in your profile</div>
           </div>
         </div>
       </div>
+      <div class="polish-body">
+        <div class="toolbar" style="padding:0 0 12px;border:0;background:transparent">
+          <button class="btn btn-amber" onclick="copyPolishPrompt()">&#x2398; Copy polish prompt</button>
+        </div>
+        <textarea id="polish-text" class="field-input" rows="6" placeholder="Paste the AI's corrected CV Bank here (the code block, or the whole reply)..."></textarea>
+        <div class="toolbar" style="padding:12px 0 0;border:0;background:transparent">
+          <button class="btn btn-green" onclick="checkPolished(false)">&#x2714; Check &amp; Import</button>
+        </div>
+        <div id="polish-report" class="polish-report"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PROMPT BUILDER VIEW ═══════════════════════════════ -->
+<div id="view-prompt" class="view">
+  <div class="container">
+    <div class="jd-stage">
+      <div class="jd-topbar">
+        <button class="btn btn-ghost" onclick="switchView('profile')">&#x2190; Master CV Content Bank</button>
+        <div class="panel-badges">
+          <span class="badge badge-saved">&#x2601; auto-saved</span>
+          <span class="badge badge-count" id="jd-count">0 chars</span>
+        </div>
+      </div>
+      <label class="jd-label" for="jd-input">Job Description</label>
+      <textarea id="jd-input" class="jd-big" placeholder="Paste the full job description here." oninput="updateCount('jd-input','jd-count');updateStatus();saveJD()"></textarea>
+      <div class="jd-actions">
+        <button class="btn btn-danger" onclick="clearJD()">&#x2715; Clear JD</button>
+        <button class="btn btn-ghost" onclick="copyField('jd-input')">&#x2398; Copy</button>
+      </div>
+
+      <!-- Status row -->
+      <div class="status-row" id="status-row">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-text">Loading…</span>
+        <span class="status-sep">·</span>
+        <span id="status-detail" style="color:var(--muted)">Initialising</span>
+      </div>
+
+      <!-- Build buttons -->
+      <div class="jd-build">
+        <button class="btn btn-green btn-lg" onclick="buildPrompts()">&#x25B6; Build Prompts</button>
+        <button class="btn btn-outline btn-lg" onclick="clearOutputs()">&#x21BA; Reset Output</button>
+      </div>
+
+      <!-- Output section -->
+      <div class="output-section">
+        <div class="output-header">
+          <div class="output-title">Built Prompts: Ready to Copy into Claude</div>
+          <div class="output-tabs">
+            <button class="output-tab active" onclick="switchOutputTab('cl')">Cover Letter Prompt</button>
+            <button class="output-tab" onclick="switchOutputTab('cv')">CV / LaTeX Prompt</button>
+          </div>
+        </div>
+        <div class="output-panel visible" id="out-cover-letter">
+          <div class="output-panel-header">
+            <span class="output-panel-title">COVER LETTER PROMPT · CV Bank + JD injected</span>
+            <button class="btn btn-outline" onclick="copyOutput('out-cover-letter')">&#x2398; Copy</button>
+          </div>
+          <div class="output-content" id="out-cl-content" style="display:none">
+            <div class="output-empty"><div class="empty-icon">&#x1F4C4;</div>Hit <strong>Build Prompts</strong> to generate your cover letter prompt.</div>
+          </div>
+        </div>
+        <div class="output-panel" id="out-cv-latex">
+          <div class="output-panel-header">
+            <span class="output-panel-title">CV / LATEX PROMPT · CV Bank + JD injected</span>
+            <button class="btn btn-outline" onclick="copyOutput('out-cv-latex')">&#x2398; Copy</button>
+          </div>
+          <div class="output-content" id="out-cv-content" style="display:none">
+            <div class="output-empty"><div class="empty-icon">&#x1F4DD;</div>Hit <strong>Build Prompts</strong> to generate your CV / LaTeX prompt.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Your prompt templates -->
+      <div class="prompt-templates">
+        <div class="prompt-templates-title">Your prompt templates</div>
+
+        <div class="panel flex-col">
+          <div class="panel-header" style="cursor:pointer;user-select:none" onclick="togglePromptPanel('cl')">
+            <div class="panel-label">
+              <div class="panel-number">2</div>
+              <div class="panel-meta">
+                <div class="panel-title">Cover Letter Prompt</div>
+                <div class="panel-desc">Template · JD + CV auto-injected on build · click to edit</div>
+              </div>
+            </div>
+            <div class="panel-badges">
+              <span class="badge badge-muted" id="cl-prompt-badge">default</span>
+              <span class="badge badge-count" id="cl-count">0 chars</span>
+              <span id="cl-panel-toggle" class="panel-toggle">&#x25B8; edit</span>
+            </div>
+          </div>
+          <div id="cl-prompt-body" style="display:none">
+            <div class="textarea-wrap">
+              <textarea id="cl-prompt" class="prompt-area" placeholder="Cover Letter prompt template loads here from AI_Cover_Letter_Prompt.txt." oninput="autosave('cl-prompt','cl_prompt');updateCount('cl-prompt','cl-count');updatePromptBadge('cl')"></textarea>
+            </div>
+            <div class="toolbar">
+              <button class="btn btn-outline" onclick="resetPromptToDefault('cl');event.stopPropagation()">&#x21BA; Reset to default</button>
+              <button class="btn btn-ghost" onclick="downloadPrompt('cl');event.stopPropagation()">&#x2B07; Download .txt</button>
+              <label class="btn btn-ghost" style="cursor:pointer" onclick="event.stopPropagation()">&#x1F4E4; Import .txt<input type="file" accept=".txt" style="display:none" onchange="importPrompt('cl',this)"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel flex-col">
+          <div class="panel-header" style="cursor:pointer;user-select:none" onclick="togglePromptPanel('cv')">
+            <div class="panel-label">
+              <div class="panel-number">3</div>
+              <div class="panel-meta">
+                <div class="panel-title">CV / LaTeX Prompt</div>
+                <div class="panel-desc">Template · JD + CV auto-injected on build · click to edit</div>
+              </div>
+            </div>
+            <div class="panel-badges">
+              <span class="badge badge-muted" id="cv-prompt-badge">default</span>
+              <span class="badge badge-count" id="cv-count2">0 chars</span>
+              <span id="cv-panel-toggle" class="panel-toggle">&#x25B8; edit</span>
+            </div>
+          </div>
+          <div id="cv-prompt-body" style="display:none">
+            <div class="textarea-wrap">
+              <textarea id="cv-prompt" class="prompt-area" placeholder="CV / LaTeX prompt template loads here from AI_CV_Prompt.txt." oninput="autosave('cv-prompt','cv_prompt');updateCount('cv-prompt','cv-count2');updatePromptBadge('cv')"></textarea>
+            </div>
+            <div class="toolbar">
+              <button class="btn btn-outline" onclick="resetPromptToDefault('cv');event.stopPropagation()">&#x21BA; Reset to default</button>
+              <button class="btn btn-ghost" onclick="downloadPrompt('cv');event.stopPropagation()">&#x2B07; Download .txt</button>
+              <label class="btn btn-ghost" style="cursor:pointer" onclick="event.stopPropagation()">&#x1F4E4; Import .txt<input type="file" accept=".txt" style="display:none" onchange="importPrompt('cv',this)"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CV Content Bank: generated from the Profile Builder, kept for the build step -->
+      <div hidden>
+        <textarea id="cv-bank" oninput="autosave('cv-bank','cv_content_bank');updateCount('cv-bank','cv-count')"></textarea>
+        <span id="cv-count"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ VIEW: EXPORT TO WORD ══════════════════ -->
+<div id="view-export" class="view">
+  <div class="container">
+    <div class="export-grid">
+      <div class="export-side">
+        <div class="panel" style="padding:0">
+          <div class="panel-header">
+            <div class="panel-label">
+              <div class="panel-number">1</div>
+              <div class="panel-meta">
+                <div class="panel-title">Choose document type</div>
+                <div class="panel-desc">Match this to whichever prompt you ran</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:14px 16px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-outline" id="exp-type-cl" onclick="setExportType('cl')" style="flex:1;min-width:140px">&#x2709; Cover Letter</button>
+            <button class="btn btn-outline" id="exp-type-cv" onclick="setExportType('cv')" style="flex:1;min-width:140px">&#x1F4C4; CV / Resume</button>
+          </div>
+        </div>
+
+        <div class="panel" style="padding:0">
+          <div class="panel-header">
+            <div class="panel-label">
+              <div class="panel-number">2</div>
+              <div class="panel-meta">
+                <div class="panel-title">Bring in the AI content</div>
+                <div class="panel-desc">Copy Claude's full reply, then read it from your clipboard</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:14px 16px">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <button class="btn btn-green btn-lg" onclick="readClipboardForExport()">&#x1F4CB; Read from clipboard</button>
+              <button class="btn btn-ghost" onclick="toggleExportPaste()">or paste manually</button>
+              <span id="exp-parse-status" class="panel-desc" style="margin-left:auto"></span>
+            </div>
+            <div id="exp-paste-wrap" style="display:none;margin-top:12px">
+              <textarea id="exp-paste" class="prompt-area" placeholder="Paste the AI's full reply here (including the [SALUTATION]/[SUMMARY] tags), then click Parse pasted text." style="min-height:160px;border:1px solid var(--border);border-radius:10px"></textarea>
+              <div style="margin-top:8px"><button class="btn btn-primary" onclick="parseExportFromPaste()">Parse pasted text</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="padding:0">
+          <div class="panel-header">
+            <div class="panel-label">
+              <div class="panel-number">3</div>
+              <div class="panel-meta">
+                <div class="panel-title">Style</div>
+                <div class="panel-desc">Colour and font for the whole document</div>
+              </div>
+            </div>
+          </div>
+          <div class="style-body">
+            <div class="style-label">Colour</div>
+            <div class="swatches" id="exp-swatches"></div>
+            <label class="style-label" for="exp-font">Font</label>
+            <select id="exp-font" class="field-input" onchange="setExportStyle({font:this.value})"></select>
+            <div id="exp-sig-row">
+              <div class="style-label">Signature <em>(cover letter only)</em></div>
+              <div class="sig-box">
+                <div class="sig-preview" id="exp-sig-wrap"><img id="exp-sig-preview" alt="Your signature" style="display:none"><span id="exp-sig-empty">No signature yet</span></div>
+                <div class="sig-actions">
+                  <label class="btn btn-outline" style="cursor:pointer"><span id="exp-sig-label">Upload signature photo</span><input type="file" accept="image/*" style="display:none" onchange="handleSignatureUpload(this)"></label>
+                  <button class="btn btn-danger" id="exp-sig-remove" style="display:none" onclick="removeSignature()">&#x2715; Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="export-main">
+        <div class="panel" style="padding:0">
+          <div class="panel-header">
+            <div class="panel-label">
+              <div class="panel-number">4</div>
+              <div class="panel-meta">
+                <div class="panel-title">Preview &amp; edit</div>
+                <div class="panel-desc">Click any text to change it before you download</div>
+              </div>
+            </div>
+            <div class="panel-badges">
+              <button class="btn btn-primary btn-lg" id="exp-download-btn" onclick="downloadExportDocx()" disabled>&#x2B07; Download .docx</button>
+            </div>
+          </div>
+          <div class="doc-stage">
+            <div id="exp-empty" class="output-empty"><div class="empty-icon">&#x1F4C4;</div>Read Claude's reply from your clipboard to see the document here.</div>
+            <div id="exp-preview" class="doc-page" style="display:none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ VIEW: HOW IT WORKS ══════════════════ -->
+<div id="view-help" class="view">
+  <div class="container help">
+    <section class="panel help-card">
+      <h2>&#x2460; Profile Builder</h2>
+      <ol>
+        <li>Fill in your details section by section. Fields marked <span class="req">*</span> are required.</li>
+        <li>Click <strong>&#x1F4A1; Show example</strong> on any section to see a filled-in example (Steve Smith, fictional) beside your own fields.</li>
+        <li>Everything saves automatically. Click <strong>Export CV Bank (.txt)</strong> to download a copy of your profile, or <strong>Use in Prompt Builder</strong> to go straight to Step 2.</li>
+      </ol>
     </section>
+    <section class="panel help-card">
+      <h2>&#x2728; Polish with AI</h2>
+      <ol>
+        <li>When your profile is done, click <strong>Copy polish prompt</strong> at the bottom of the Profile Builder. It copies an editing prompt with your whole CV Bank attached.</li>
+        <li>Paste it into ChatGPT, Claude, or any AI chat.</li>
+        <li>Paste the AI's reply into the box and click <strong>Check &amp; Import</strong>. The tool compares it line by line with what you sent and warns you before anything important (headings, links, names, dates, figures) is changed.</li>
+      </ol>
+    </section>
+    <section class="panel help-card">
+      <h2>&#x2461; Prompt Builder</h2>
+      <ol>
+        <li>Paste the job description into the big box. It saves automatically.</li>
+        <li>Click <strong>&#x25B6; Build Prompts</strong>. Your CV Bank and the job description are injected into both prompt templates.</li>
+        <li>Click <strong>&#x2398; Copy</strong> on the built prompt, then paste it into <a href="https://claude.ai" target="_blank" rel="noopener">Claude</a>.</li>
+      </ol>
+      <h3>Customising the prompt templates</h3>
+      <ul>
+        <li>Open <strong>Cover Letter Prompt</strong> or <strong>CV / LaTeX Prompt</strong> under <em>Your prompt templates</em> to edit it. The badge switches to <em>customised</em>.</li>
+        <li>Your edits save automatically: to your account when you're signed in, or in this browser when you're not.</li>
+        <li><strong>&#x21BA; Reset to default</strong> brings back the original template. <strong>&#x2B07; Download .txt</strong> and <strong>&#x1F4E4; Import .txt</strong> let you keep a copy as a file.</li>
+      </ul>
+    </section>
+    <section class="panel help-card">
+      <h2>&#x2462; Export to Word</h2>
+      <ol>
+        <li>Copy Claude's <strong>entire reply</strong> (it contains tagged sections like <code>[SALUTATION]</code> or <code>[SUMMARY]</code>).</li>
+        <li>Pick the matching document type, then click <strong>Read from clipboard</strong>. If your browser blocks clipboard access, use <strong>paste manually</strong>.</li>
+        <li>Check the <strong>preview</strong>. Click any text to edit it, add or remove bullet points and rows, and pick a colour and font. Your edits are saved.</li>
+        <li>Click <strong>Download .docx</strong>. Your name, contact details and links come from the Profile Builder.</li>
+      </ol>
+      <h3>Signature</h3>
+      <ul>
+        <li>Upload a photo or scan of your signature for cover letters. Any background works: white, grey or textured paper.</li>
+        <li>The tool removes the background, cleans up specks and crops it tightly, so only your ink appears on the letter.</li>
+      </ul>
+    </section>
+    <section class="panel help-card">
+      <h2>Your data</h2>
+      <ul>
+        <li><strong>Signed in with Google:</strong> your profile, job description, prompts, document edits, style and signature save to your account automatically and follow you to any device. Only you can access them.</li>
+        <li><strong>Not signed in:</strong> everything saves in this browser only. Sign in later and it moves into your account.</li>
+        <li>Signing out removes your data from this browser. It stays safe in your account.</li>
+      </ul>
+    </section>
+  </div>
+</div>
 
-    <div class="cvb is-loading" id="cvb">
-      <div class="cvb-container">
-        <div class="cvb-appbar">
-          <p class="cvb-sync" id="sync" data-state="loading" role="status" aria-live="polite">Loading saved data…</p>
-          <div class="cvb-actions">
-            <button class="btn btn-outline btn-xs" type="button" id="clear-all">Clear All</button>
-            <button class="btn btn-dark btn-xs" type="button" id="save-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Save All</button>
+<footer class="gh-footer">© <span id="gh-year">2026</span> <a href="../index.html">Gaia Symbiosis</a> · <a href="../services.html#tools">More tools</a></footer>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════════════
+const PH_JD  = '[PASTE JOB DESCRIPTION HERE]';
+const PH_CV  = '[PASTE YOUR FULL MASTER CV CONTENT BANK HERE]';
+const PH_NAME  = '[YOUR_FULL_NAME]';
+const PH_PHONE = '[YOUR_PHONE]';
+const PH_EMAIL = '[YOUR_EMAIL]';
+const PH_LOC   = '[YOUR_LOCATION]';
+const PH_LI    = '[YOUR_LINKEDIN_URL]';
+const PH_PORT  = '[YOUR_PORTFOLIO_URL]';
+const PH_RTW   = '[YOUR_RIGHT_TO_WORK_URL]';
+const PH_FILE  = '[YOUR_NAME_FILE]';
+
+// ═══════════════════════════════════════════════════════════════
+// DEFAULTS — loaded from txt files via fetch
+// ═══════════════════════════════════════════════════════════════
+let DEFAULTS = { cl: '', cvp: '' };
+
+async function loadDefaults() {
+  try {
+    const [cl, cvp] = await Promise.all([
+      fetch('AI_Cover_Letter_Prompt.txt').then(r => r.ok ? r.text() : ''),
+      fetch('AI_CV_Prompt.txt').then(r => r.ok ? r.text() : '')
+    ]);
+    DEFAULTS = { cl, cvp };
+  } catch (e) {
+    console.warn('Could not fetch prompt templates — using localStorage if available.');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROFILE DATA
+// ═══════════════════════════════════════════════════════════════
+function defaultP() {
+  return {
+    personal: {
+      fullName:'', dob:'', address:'', location:'', phone:'', phone2:'',
+      email:'', linkedin:'', portfolio:'', rtwUrl:'', seekUrl:'',
+      rightToWork:'', locationNote:'', languages:'',
+      nic:'', sex:'', civilStatus:'', ethnicGroup:''
+    },
+    summary: { headline:'', tagline:'', paragraphs:'' },
+    skills:       [{ category:'', items:'' }],
+    workHistory:  [{ title:'', employer:'', startDate:'', endDate:'', nature:'', bullets:'', respUrl:'', milestonesUrl:'' }],
+    education:    [{ degree:'', institution:'', startYear:'', endYear:'', gpa:'', thesis:'', notes:'', credentialsUrl:'' }],
+    certifications: [{ category:'', items:'' }],
+    publications: { academic:'', awards:'' },
+    storyBank:    [{ title:'', usedFor:'', text:'' }],
+    projects:     [{ name:'', description:'', url:'' }],
+    achievements: [{ category:'', items:'' }],
+    referees:     [{ name:'', title:'', email:'', phone:'', linkedin:'' }],
+    usageNotes:   ''
+  };
+}
+
+let P = defaultP();
+const openSections = new Set(['personal', 'summary']);
+
+// ─── helpers ───
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function getPath(obj, path) {
+  try {
+    return path.split('.').reduce((cur,k) => cur?.[isNaN(k)?k:+k] ?? '', obj);
+  } catch { return ''; }
+}
+
+function setPath(obj, path, val) {
+  const parts = path.split('.');
+  let cur = obj;
+  for (let i = 0; i < parts.length - 1; i++) {
+    const k = isNaN(parts[i]) ? parts[i] : +parts[i];
+    cur = cur[k];
+  }
+  const last = parts[parts.length - 1];
+  cur[isNaN(last) ? last : +last] = val;
+}
+
+function saveProfileData() {
+  try {
+    localStorage.setItem('gethired_profile_v1', JSON.stringify(P));
+  } catch(e) {
+    toast('Storage quota exceeded — export your CV Bank to save changes.', 'error');
+  }
+}
+
+function loadProfileData() {
+  const saved = localStorage.getItem('gethired_profile_v1');
+  return saved ? JSON.parse(saved) : defaultP();
+}
+
+let saveTimer;
+function debouncedSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveProfileData, 700);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EXAMPLE PROFILE — shown beside each section when "Show example" is on.
+// A fictional person (Steve Smith). Read-only; never saved or exported.
+// ═══════════════════════════════════════════════════════════════
+const SAMPLE_P = {
+  personal: { fullName:'Steve Smith' },
+  summary: {
+    headline: 'Operations Coordinator | Logistics & Supply Chain | Process Improvement',
+    paragraphs:
+      'Operations coordinator with seven years in freight, warehousing and local government, focused on making day-to-day operations run with fewer delays and less rework.\n' +
+      'Known for building simple tools that teams actually use: rosters, trackers and reporting templates that replace manual spreadsheets. Comfortable working between frontline staff, managers and external contractors.\n' +
+      'Worked across logistics, council operations and community programmes in Queensland and New South Wales.',
+    tagline: 'I grew up helping in my family\'s hardware store, so I learned early that good service is mostly about doing the small things reliably.'
+  },
+  skills: [
+    { category:'Operations & Logistics', items:'Fleet and delivery scheduling\nInventory control and stocktakes\nContractor coordination\nWHS inspections and incident reporting' },
+    { category:'Data & Reporting', items:'Advanced Excel (pivot tables, Power Query, macros)\nPower BI dashboards\nWeekly KPI and exception reporting' },
+    { category:'Communication', items:'Stakeholder updates to managers and executives\nTraining new staff on procedures\nWriting SOPs and user guides' }
+  ],
+  workHistory: [
+    { title:'Operations Coordinator', employer:'Brightwater Logistics Pty Ltd — Brisbane, QLD', startDate:'March 2022', endDate:'Present', nature:'Full-time, permanent',
+      respUrl:'https://example.com/steve/responsibilities', milestonesUrl:'https://example.com/steve/milestones',
+      bullets:'Coordinated daily dispatch for a fleet of 45 vehicles across three depots, keeping on-time delivery above 96%.\nBuilt an Excel rostering tool that cut weekly scheduling time from six hours to one.\nLed monthly WHS inspections and closed 38 corrective actions with zero lost-time injuries in 2023.\nReported weekly KPIs to the operations manager and two regional directors.' },
+    { title:'Administration Officer — Works Depot', employer:'Greenfield Shire Council — Toowoomba, QLD', startDate:'January 2019', endDate:'February 2022', nature:'Full-time',
+      respUrl:'', milestonesUrl:'',
+      bullets:'Processed 200+ purchase orders a month and reconciled contractor invoices against delivery records.\nRedesigned the depot job request form, reducing incomplete requests by 40%.\nTrained six new starters on council procurement and records procedures.' }
+  ],
+  education: [
+    { degree:'Bachelor of Business — Supply Chain Management', institution:'Example University, Brisbane', startYear:'2015', endYear:'2018', gpa:'Distinction average', thesis:'Reducing Last-Mile Delivery Costs in Regional Queensland', notes:'Dean\'s List 2017', credentialsUrl:'https://example.com/steve/degree' },
+    { degree:'Certificate IV in Work Health and Safety', institution:'Example TAFE, Toowoomba', startYear:'2020', endYear:'2020', gpa:'', thesis:'', notes:'Completed part-time while working', credentialsUrl:'' }
+  ],
+  certifications: [
+    { category:'Safety & Compliance', items:'Certificate IV in Work Health and Safety | https://example.com/steve/whs\nFirst Aid (HLTAID011) | https://example.com/steve/first-aid\nForklift Licence (LF)' },
+    { category:'Data & Technology', items:'Microsoft Power BI Data Analyst (PL-300) | https://example.com/steve/pl300\nExcel Expert (MO-201)' }
+  ],
+  publications: {
+    academic: 'Reducing Last-Mile Delivery Costs in Regional Queensland — Example University (Honours thesis)',
+    awards: 'Operations Excellence Award — Brightwater Logistics (2023)\nDean\'s List — Example University (2017)'
+  },
+  storyBank: [
+    { title:'The Rostering Rebuild — Automation & Process Improvement',
+      usedFor:'Operations, administration, scheduling, project support, data roles',
+      text:'Every Friday, the depot supervisor spent most of the afternoon building next week\'s driver roster by hand. Leave requests arrived by text message, and mistakes meant trucks leaving late on Monday.\n' +
+           'I built an Excel rostering tool with a leave-request tab, automatic clash checks and a one-click printable roster. I tested it alongside the manual roster for three weeks before switching over, so nobody had to trust it blindly.\n' +
+           'Scheduling time dropped from six hours to about one, Monday late departures fell from four or five a week to under one, and two other depots adopted the tool within the year.' },
+    { title:'The Storm Response — Working Under Pressure',
+      usedFor:'Operations, emergency management, local government, coordinator roles',
+      text:'In February 2022, flooding closed two of the council\'s main access roads with less than a day\'s notice. The works depot had to reroute contractors and keep residents informed while half the office was working from home.\n' +
+           'I set up a shared job board so crews could see which roads were open, called each contractor directly, and drafted the daily update the customer service team read out to residents.\n' +
+           'All 60 scheduled urgent jobs were completed within the week, and the job board became the depot\'s standard process for later weather events.' }
+  ],
+  projects: [
+    { name:'Community Tool Library', description:'Volunteer-run lending library for household tools in Toowoomba. Built the booking spreadsheet and coordinated 12 volunteers.', url:'https://example.com/steve/tool-library' },
+    { name:'Depot Dashboard', description:'Power BI dashboard showing daily deliveries, delays and fleet availability, now used in morning huddles.', url:'https://example.com/steve/dashboard' }
+  ],
+  achievements: [
+    { category:'Awards', items:'Operations Excellence Award — Brightwater Logistics (2023)\nDean\'s List — Example University (2017)' },
+    { category:'Volunteering', items:'Volunteer coordinator, Community Tool Library (2021–present)\nSES volunteer, Toowoomba unit (2019–2022)' }
+  ],
+  referees: [
+    { name:'Ms. Laura Bennett', title:'Operations Manager, Brightwater Logistics', email:'laura.bennett@example.com', phone:'+61 400 000 001', linkedin:'https://www.linkedin.com/in/example-laura' },
+    { name:'Mr. David Chen', title:'Depot Manager, Greenfield Shire Council', email:'david.chen@example.com', phone:'+61 400 000 002', linkedin:'' }
+  ],
+  usageNotes:
+    'Operations / Logistics roles: Stories 1, 2 + fleet of 45, 96% on-time delivery, rostering tool\n' +
+    'Administration / Local government: Story 2 + purchase orders, procurement procedures, records\n' +
+    'Data / Reporting roles: Story 1 + Power BI dashboard, weekly KPI reporting, PL-300\n' +
+    'WHS / Safety roles: Certificate IV WHS + 38 corrective actions closed, zero lost-time injuries\n' +
+    'Australian market — always include: full working rights, Brisbane QLD location'
+};
+
+// Sections whose example panel is open. Remembered per browser as a convenience.
+const sampleSections = (() => {
+  try { return new Set(JSON.parse(localStorage.getItem('gethired_sample_sections') || '[]')); }
+  catch (e) { return new Set(); }
+})();
+function _saveSampleSections(){
+  try { localStorage.setItem('gethired_sample_sections', JSON.stringify([...sampleSections])); } catch (e) {}
+}
+
+// Render a section's body against SAMPLE_P, read-only, with the add/remove buttons removed.
+let SAMPLE_MODE = false;
+function sampleBodyHTML(id, renderer){
+  const real = P;
+  P = SAMPLE_P; SAMPLE_MODE = true;
+  let html;
+  try { html = renderer(); } finally { P = real; SAMPLE_MODE = false; }
+  const box = document.createElement('div');
+  box.innerHTML = html;
+  box.querySelectorAll('button, .add-entry-row, .section-tip').forEach(n => n.remove());
+  return box.innerHTML;
+}
+
+function toggleSample(id){
+  if (sampleSections.has(id)) sampleSections.delete(id); else sampleSections.add(id);
+  _saveSampleSections();
+  // Showing the example should also open the section
+  if (sampleSections.has(id) && !openSections.has(id)) toggleBuilderSection(id);
+  const btn = document.getElementById('sb-' + id);
+  if (btn) { const on = sampleSections.has(id); btn.classList.toggle('on', on); btn.innerHTML = on ? '&#x2715; Hide example' : '&#x1F4A1; Show example'; }
+  renderSectionBody(id);
+}
+
+// Grow read-only example textareas to fit their text (browsers without field-sizing)
+function fitSampleFields(el){
+  if (!el || (window.CSS && CSS.supports && CSS.supports('field-sizing', 'content'))) return;
+  el.querySelectorAll('.sample-col textarea').forEach(t => { t.style.height = 'auto'; t.style.height = (t.scrollHeight + 2) + 'px'; });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROFILE FORM — RENDERING
+// ═══════════════════════════════════════════════════════════════
+function renderProfileForm() {
+  const sections = [
+    { id:'personal',       num:1,  title:'Personal Information' },
+    { id:'summary',        num:2,  title:'Professional Summary' },
+    { id:'skills',         num:3,  title:'Skills & Proficiencies' },
+    { id:'workHistory',    num:4,  title:'Work History' },
+    { id:'education',      num:5,  title:'Education' },
+    { id:'certifications', num:6,  title:'Certifications & Publications' },
+    { id:'storyBank',      num:7,  title:'Story Bank' },
+    { id:'projects',       num:8,  title:'Personal Projects & Side Ventures' },
+    { id:'achievements',   num:9,  title:'Achievements & Extracurricular' },
+    { id:'referees',       num:10, title:'Referees' },
+    { id:'usageNotes',     num:11, title:'Usage Notes' },
+  ];
+  document.getElementById('profile-form').innerHTML =
+    sections.map(s => buildSectionShell(s.id, s.num, s.title)).join('');
+  sections.forEach(s => renderSectionBody(s.id));
+}
+
+function buildSectionShell(id, num, title) {
+  const open = openSections.has(id);
+  return `
+    <div class="builder-section" id="bs-${id}">
+      <div class="builder-section-hdr" onclick="toggleBuilderSection('${id}')">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="panel-number" style="width:22px;height:22px;font-size:11px">${num}</div>
+          <div>
+            <div class="panel-title">${title}</div>
           </div>
         </div>
-
-        <div class="cvb-intro">
-          <strong>How this works:</strong> Fill in your CV Content Bank (saved automatically), then paste your Cover Letter and LaTeX CV prompts (also saved). Paste any job description, hit <strong>Build Prompts</strong>: the tool injects your content bank and JD into both prompts, ready to copy into Claude. <strong>Sign in with Google</strong> to keep everything, including each application, in your account on any device.
-        </div>
-
-        <section class="cvb-panel cvb-apps" aria-labelledby="apps-title">
-          <div class="cvb-apps-head">
-            <div class="cvb-panel-label">
-              <span class="cvb-num dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
-              <div>
-                <h2 class="cvb-panel-title" id="apps-title">Your applications</h2>
-                <p class="cvb-panel-desc" id="apps-desc">Each job description is saved as an application</p>
-              </div>
-            </div>
-            <button class="btn btn-primary btn-xs" type="button" id="new-app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New application</button>
-          </div>
-          <div class="cvb-apps-list" id="app-list"><p class="cvb-apps-empty">No saved applications yet. Paste a job description below and it saves automatically.</p></div>
-        </section>
-
-        <div class="cvb-grid">
-          <section class="cvb-panel" aria-labelledby="cv-bank-title">
-            <div class="cvb-panel-header">
-              <div class="cvb-panel-label">
-                <span class="cvb-num">1</span>
-                <div>
-                  <h2 class="cvb-panel-title" id="cv-bank-title">Master CV Content Bank</h2>
-                  <p class="cvb-panel-desc">Your profile, experience, story bank</p>
-                </div>
-              </div>
-              <div class="cvb-badges">
-                <span class="cvb-badge cvb-badge-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>auto-saved</span>
-                <span class="cvb-badge cvb-badge-count" id="cv-count">0 chars</span>
-              </div>
-            </div>
-            <textarea id="cv-bank" aria-labelledby="cv-bank-title" spellcheck="false" readonly placeholder="Paste your full Master CV Content Bank here: your profile summary, all work experience, story bank, skills, education, certifications, and any other relevant content.&#10;&#10;This is saved automatically so you only need to paste it once. Update it whenever your profile changes."></textarea>
-            <div class="cvb-toolbar">
-              <button class="btn btn-outline btn-xs" type="button" data-clear="cv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Clear</button>
-              <button class="btn btn-soft btn-xs" type="button" data-copy="cv-bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
-              <div class="cvb-toolbar-right"><button class="btn btn-primary btn-xs" type="button" data-save="cv">Save</button></div>
-            </div>
-          </section>
-          <section class="cvb-panel" aria-labelledby="jd-input-title">
-            <div class="cvb-panel-header">
-              <div class="cvb-panel-label">
-                <span class="cvb-num dark">4</span>
-                <div>
-                  <h2 class="cvb-panel-title" id="jd-input-title">Job Description</h2>
-                  <p class="cvb-panel-desc">Paste the target role · saved to this application</p>
-                </div>
-              </div>
-              <div class="cvb-badges">
-                <span class="cvb-badge cvb-badge-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>auto-saved</span>
-                <span class="cvb-badge cvb-badge-count" id="jd-count">0 chars</span>
-              </div>
-            </div>
-            <label class="sr-only" for="app-title">Application name</label>
-            <input class="cvb-title-input" id="app-title" type="text" maxlength="120" readonly placeholder="Role and organisation, e.g. Project Officer, Federation Council (optional)" />
-            <textarea id="jd-input" class="jd-area" aria-labelledby="jd-input-title" spellcheck="false" readonly placeholder="Paste the full job description here for each new application.&#10;&#10;Each job description is saved as its own application, so you can come back to it later. Start a new application for each new role."></textarea>
-            <div class="cvb-toolbar">
-              <button class="btn btn-danger btn-xs" type="button" id="clear-jd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Clear JD</button>
-              <button class="btn btn-soft btn-xs" type="button" data-copy="jd-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
-              <div class="cvb-toolbar-right"><span class="cvb-panel-desc" id="jd-char-live"></span></div>
-            </div>
-          </section>
-          <section class="cvb-panel" aria-labelledby="cl-prompt-title">
-            <div class="cvb-panel-header">
-              <div class="cvb-panel-label">
-                <span class="cvb-num">2</span>
-                <div>
-                  <h2 class="cvb-panel-title" id="cl-prompt-title">Cover Letter Prompt</h2>
-                  <p class="cvb-panel-desc">Template saved · JD + CV auto-injected on build</p>
-                </div>
-              </div>
-              <div class="cvb-badges">
-                <span class="cvb-badge cvb-badge-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>auto-saved</span>
-                <span class="cvb-badge cvb-badge-count" id="cl-count">0 chars</span>
-              </div>
-            </div>
-            <textarea id="cl-prompt" class="prompt-area" aria-labelledby="cl-prompt-title" spellcheck="false" readonly placeholder="Paste your Cover Letter prompt template here.&#10;&#10;The tool will automatically replace:&#10;  [PASTE JOB DESCRIPTION HERE]  →  your pasted JD&#10;  [PASTE YOUR FULL MASTER CV CONTENT BANK HERE]  →  your CV content bank&#10;&#10;Keep those exact placeholder strings in your template."></textarea>
-            <div class="cvb-toolbar">
-              <button class="btn btn-outline btn-xs" type="button" data-clear="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Clear</button>
-              <button class="btn btn-soft btn-xs" type="button" data-copy="cl-prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy template</button>
-              <div class="cvb-toolbar-right"><button class="btn btn-primary btn-xs" type="button" data-save="cl">Save</button></div>
-            </div>
-          </section>
-          <section class="cvb-panel" aria-labelledby="cv-prompt-title">
-            <div class="cvb-panel-header">
-              <div class="cvb-panel-label">
-                <span class="cvb-num">3</span>
-                <div>
-                  <h2 class="cvb-panel-title" id="cv-prompt-title">CV / LaTeX Prompt</h2>
-                  <p class="cvb-panel-desc">Template saved · JD + CV auto-injected on build</p>
-                </div>
-              </div>
-              <div class="cvb-badges">
-                <span class="cvb-badge cvb-badge-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>auto-saved</span>
-                <span class="cvb-badge cvb-badge-count" id="cv-count2">0 chars</span>
-              </div>
-            </div>
-            <textarea id="cv-prompt" class="prompt-area" aria-labelledby="cv-prompt-title" spellcheck="false" readonly placeholder="Paste your CV / LaTeX prompt template here.&#10;&#10;Same placeholder injection applies:&#10;  [PASTE JOB DESCRIPTION HERE]  →  your pasted JD&#10;  [PASTE YOUR FULL MASTER CV CONTENT BANK HERE]  →  your CV content bank"></textarea>
-            <div class="cvb-toolbar">
-              <button class="btn btn-outline btn-xs" type="button" data-clear="cvp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Clear</button>
-              <button class="btn btn-soft btn-xs" type="button" data-copy="cv-prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy template</button>
-              <div class="cvb-toolbar-right"><button class="btn btn-primary btn-xs" type="button" data-save="cvp">Save</button></div>
-            </div>
-          </section>
-
-          <div class="cvb-status" id="status-row">
-            <span class="cvb-dot" id="status-dot"></span>
-            <span class="cvb-status-text" id="status-text">Loading saved data…</span>
-            <span class="cvb-sep">·</span>
-            <span id="status-detail">Checking saved data</span>
-          </div>
-
-          <div class="cvb-build">
-            <button class="btn btn-primary btn-lg" type="button" id="build"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 4 14 8-14 8z"/></svg>Build Prompts</button>
-            <button class="btn btn-outline btn-lg" type="button" id="reset-output"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Reset Output</button>
-          </div>
-
-          <section class="cvb-output" id="output" aria-labelledby="output-title">
-            <div class="cvb-output-head">
-              <h2 class="cvb-output-title" id="output-title">Built Prompts: Ready to Copy into Claude</h2>
-              <div class="cvb-tabs" role="tablist" aria-label="Built prompts">
-                <button class="cvb-tab" type="button" role="tab" id="tab-cl" aria-controls="out-cover-letter" aria-selected="true" data-tab="cover-letter">Cover Letter Prompt</button>
-                <button class="cvb-tab" type="button" role="tab" id="tab-cv" aria-controls="out-cv-latex" aria-selected="false" data-tab="cv-latex">CV / LaTeX Prompt</button>
-              </div>
-            </div>
-            <div class="cvb-out-panel visible" id="out-cover-letter" role="tabpanel" aria-labelledby="tab-cl">
-              <div class="cvb-out-head">
-                <span class="cvb-out-label">COVER LETTER PROMPT · with CV Bank + JD injected</span>
-                <button class="btn btn-outline btn-xs" type="button" data-copy-out="out-cl-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
-              </div>
-              <div class="cvb-out-content" id="out-cl-content"></div>
-            </div>
-            <div class="cvb-out-panel" id="out-cv-latex" role="tabpanel" aria-labelledby="tab-cv">
-              <div class="cvb-out-head">
-                <span class="cvb-out-label">CV / LATEX PROMPT · with CV Bank + JD injected</span>
-                <button class="btn btn-outline btn-xs" type="button" data-copy-out="out-cv-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
-              </div>
-              <div class="cvb-out-content" id="out-cv-content"></div>
-            </div>
-          </section>
+        <div style="display:flex;align-items:center;gap:10px">
+          ${id === 'personal' ? '' : `<button class="btn btn-outline sample-btn${sampleSections.has(id) ? ' on' : ''}" id="sb-${id}" onclick="event.stopPropagation();toggleSample('${id}')" title="Show a filled-in example beside your fields">${sampleSections.has(id) ? '&#x2715; Hide example' : '&#x1F4A1; Show example'}</button>`}
+          <span class="section-toggle" id="st-${id}">${open ? '&#x25BE;' : '&#x25B8;'}</span>
         </div>
       </div>
+      <div class="builder-section-body${open ? '' : ' collapsed'}" id="bsb-${id}"></div>
+    </div>`;
+}
+
+function toggleBuilderSection(id) {
+  const body = document.getElementById('bsb-' + id);
+  const icon = document.getElementById('st-' + id);
+  const collapsed = body.classList.toggle('collapsed');
+  if (collapsed) { openSections.delete(id); icon.innerHTML = '&#x25B8;'; }
+  else           { openSections.add(id);    icon.innerHTML = '&#x25BE;'; fitSampleFields(body); }
+}
+
+function renderSectionBody(id) {
+  const el = document.getElementById('bsb-' + id);
+  if (!el) return;
+  const map = {
+    personal: personalBodyHTML, summary: summaryBodyHTML,
+    skills: skillsBodyHTML, workHistory: workHistoryBodyHTML,
+    education: educationBodyHTML, certifications: certificationsBodyHTML,
+    storyBank: storyBankBodyHTML, projects: projectsBodyHTML,
+    achievements: achievementsBodyHTML, referees: refereesBodyHTML,
+    usageNotes: usageNotesBodyHTML
+  };
+  if (!map[id]) return;
+  const split = id !== 'personal' && sampleSections.has(id);
+  el.classList.toggle('split', split);
+  if (!split) { el.innerHTML = map[id](); return; }
+  el.innerHTML =
+    `<div class="sample-col"><div class="col-banner">EXAMPLE — Steve Smith (fictional). A guide to what to write; it is never saved.</div>${sampleBodyHTML(id, map[id])}</div>` +
+    `<div class="form-col"><div class="col-banner">YOUR ENTRY — write your own version here</div>${map[id]()}</div>`;
+  fitSampleFields(el);
+}
+
+// ─── field helpers ───
+function inp(path, placeholder='') {
+  if (SAMPLE_MODE) return `<input class="field-input" type="text" readonly tabindex="-1" value="${esc(getPath(P,path))}">`;
+  return `<input class="field-input" type="text" data-path="${path}" value="${esc(getPath(P,path))}" placeholder="${esc(placeholder)}">`;
+}
+function ta(path, placeholder='', rows=3) {
+  if (SAMPLE_MODE) return `<textarea class="field-input" readonly tabindex="-1" rows="${rows}">${esc(getPath(P,path))}</textarea>`;
+  return `<textarea class="field-input" data-path="${path}" rows="${rows}" placeholder="${esc(placeholder)}">${esc(getPath(P,path))}</textarea>`;
+}
+function fi(label, inner, opts='') {
+  return `<div class="field-item${opts ? ' '+opts : ''}">\n<label class="field-label">${label}</label>\n${inner}\n</div>`;
+}
+function fg(cols, ...items) {
+  return `<div class="field-grid${cols===1?' one':cols===3?' three':''}">${items.join('\n')}</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SECTION BODY RENDERERS
+// ═══════════════════════════════════════════════════════════════
+
+function personalBodyHTML() {
+  const p = 'personal';
+  return `
+    <div class="section-tip">Fields marked <span class="req">*</span> are used to personalise the Cover Letter LaTeX output. Others appear in the CV Bank for Claude to reference.</div>
+    ${fg(2,
+      fi('Full Name <span class="req">*</span>', inp(`${p}.fullName`, 'e.g. Jane Smith')),
+      fi('Date of Birth <span class="opt">optional</span>', inp(`${p}.dob`, 'e.g. 15th March 1990'))
+    )}
+    ${fg(1, fi('Full Address', inp(`${p}.address`, 'e.g. 12 Oak Street, Melbourne, VIC 3000, Australia')))}
+    ${fg(2,
+      fi('Location for Letterhead <span class="req">*</span>', inp(`${p}.location`, 'e.g. Melbourne, VIC 3000')),
+      fi('Primary Phone <span class="req">*</span>', inp(`${p}.phone`, 'e.g. +61 400 000 000'))
+    )}
+    ${fg(2,
+      fi('Secondary Phone <span class="opt">optional</span>', inp(`${p}.phone2`, 'e.g. +94 11 000 0000')),
+      fi('Email <span class="req">*</span>', inp(`${p}.email`, 'e.g. jane@email.com'))
+    )}
+    ${fg(2,
+      fi('LinkedIn URL <span class="req">*</span>', inp(`${p}.linkedin`, 'e.g. https://linkedin.com/in/yourname')),
+      fi('Portfolio / GitHub URL <span class="opt">optional</span>', inp(`${p}.portfolio`, 'e.g. https://yourname.github.io'))
+    )}
+    ${fg(1, fi('SEEK Profile URL <span class="opt">optional</span>', inp(`${p}.seekUrl`, 'e.g. https://www.seek.com.au/profiles/... — leave blank and the SEEK icon is left out of your letterhead')))}
+    ${fg(2,
+      fi('Right to Work URL <span class="opt">optional</span>', inp(`${p}.rtwUrl`, 'e.g. https://yourname.github.io/rtw — leave blank if none')),
+      fi('Right to Work Statement', inp(`${p}.rightToWork`, 'e.g. Unrestricted — Subclass 485 visa, valid until 2029'))
+    )}
+    ${fg(1, fi('Location Note', inp(`${p}.locationNote`, 'e.g. Based in Melbourne — 5 min from CBD')))}
+    ${fg(2,
+      fi('Languages', inp(`${p}.languages`, 'e.g. English (fluent), Mandarin (competent)')),
+      fi('National ID / NIC <span class="opt">optional</span>', inp(`${p}.nic`, ''))
+    )}
+    ${fg(3,
+      fi('Sex <span class="opt">optional</span>', inp(`${p}.sex`, '')),
+      fi('Civil Status <span class="opt">optional</span>', inp(`${p}.civilStatus`, '')),
+      fi('Ethnic Group <span class="opt">optional</span>', inp(`${p}.ethnicGroup`, ''))
+    )}`;
+}
+
+function summaryBodyHTML() {
+  return `
+    ${fg(1, fi('LinkedIn Headline', inp('summary.headline', 'e.g. Operations Coordinator | Logistics | Process Improvement')))}
+    ${fg(1, fi('Professional Summary (multiple paragraphs OK)', ta('summary.paragraphs', 'Write your professional summary here — 2 to 4 paragraphs. Be specific. Mention industries, years of experience, mission, strengths.', 6)))}
+    ${fg(1, fi('Personal Tagline <span class="opt">optional</span>', ta('summary.tagline', 'e.g. One sentence about your values that you want your cover letters to close on', 2)))}`;
+}
+
+function skillsBodyHTML() {
+  const cards = P.skills.map((s, i) => `
+    <div class="entry-card">
+      <div class="entry-card-hdr">
+        <span class="entry-card-title">SKILL CATEGORY ${i+1}</span>
+        <button class="btn btn-danger" onclick="removeItem('skills',${i})">&#x2715; Remove</button>
+      </div>
+      ${fg(1, fi('Category Name', inp(`skills.${i}.category`, 'e.g. Project & Programme Management')))}
+      ${fg(1, fi('Skills (one per line)', ta(`skills.${i}.items`, 'End-to-end project management\nStakeholder management\nRisk mitigation\n...', 5)))}
+    </div>`).join('');
+  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('skills',{category:'',items:''})">+ Add Skill Category</button></div>`;
+}
+
+function workHistoryBodyHTML() {
+  const cards = P.workHistory.map((j, i) => `
+    <div class="entry-card">
+      <div class="entry-card-hdr">
+        <span class="entry-card-title">ROLE ${i+1}</span>
+        <button class="btn btn-danger" onclick="removeItem('workHistory',${i})">&#x2715; Remove</button>
+      </div>
+      ${fg(2,
+        fi('Job Title', inp(`workHistory.${i}.title`, 'e.g. Operations Coordinator')),
+        fi('Employer', inp(`workHistory.${i}.employer`, 'e.g. Company name — City, State'))
+      )}
+      ${fg(3,
+        fi('Start Date', inp(`workHistory.${i}.startDate`, 'e.g. April 2025')),
+        fi('End Date', inp(`workHistory.${i}.endDate`, 'e.g. Present')),
+        fi('Nature of Employment <span class="opt">optional</span>', inp(`workHistory.${i}.nature`, 'e.g. Full-time, Permanent'))
+      )}
+      ${fg(2,
+        fi('Responsibilities Link <span class="opt">optional</span>', inp(`workHistory.${i}.respUrl`, 'https://... — becomes a [Responsibilities] link')),
+        fi('Milestones / Website Link <span class="opt">optional</span>', inp(`workHistory.${i}.milestonesUrl`, 'https://... — becomes a [Milestones] link'))
+      )}
+      ${fg(1, fi('Bullet Points (one per line)', ta(`workHistory.${i}.bullets`, 'Led...\nCoordinated...\nBuilt...\n...', 6)))}
+    </div>`).join('');
+  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('workHistory',{title:'',employer:'',startDate:'',endDate:'',nature:'',bullets:''})">+ Add Role</button></div>`;
+}
+
+function educationBodyHTML() {
+  const cards = P.education.map((e, i) => `
+    <div class="entry-card">
+      <div class="entry-card-hdr">
+        <span class="entry-card-title">EDUCATION ${i+1}</span>
+        <button class="btn btn-danger" onclick="removeItem('education',${i})">&#x2715; Remove</button>
+      </div>
+      ${fg(1, fi('Degree / Qualification', inp(`education.${i}.degree`, 'e.g. Master of Business Administration (MBA) — Marketing')))}
+      ${fg(3,
+        fi('Institution', inp(`education.${i}.institution`, 'e.g. University name, City')),
+        fi('Start Year', inp(`education.${i}.startYear`, 'e.g. 2020')),
+        fi('End Year', inp(`education.${i}.endYear`, 'e.g. 2022'))
+      )}
+      ${fg(2,
+        fi('Grade / GPA <span class="opt">optional</span>', inp(`education.${i}.gpa`, 'e.g. Merit / 3.2 GPA')),
+        fi('Thesis / Dissertation <span class="opt">optional</span>', inp(`education.${i}.thesis`, 'e.g. Thesis title'))
+      )}
+      ${fg(1, fi('Additional Notes <span class="opt">optional</span>', inp(`education.${i}.notes`, 'e.g. Full Tuition Scholarship Holder')))}
+      ${fg(1, fi('Credentials Link <span class="opt">optional</span>', inp(`education.${i}.credentialsUrl`, 'https://... — becomes a [Credentials] link next to the institution')))}
+    </div>`).join('');
+  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('education',{degree:'',institution:'',startYear:'',endYear:'',gpa:'',thesis:'',notes:''})">+ Add Education</button></div>`;
+}
+
+function certificationsBodyHTML() {
+  const cards = P.certifications.map((c, i) => `
+    <div class="entry-card">
+      <div class="entry-card-hdr">
+        <span class="entry-card-title">CERT CATEGORY ${i+1}</span>
+        <button class="btn btn-danger" onclick="removeItem('certifications',${i})">&#x2715; Remove</button>
+      </div>
+      ${fg(1, fi('Category Heading', inp(`certifications.${i}.category`, 'e.g. Sustainable Finance / Climate')))}
+      ${fg(1, fi('Certifications (one per line — add " | https://link" to make it clickable)', ta(`certifications.${i}.items`, 'Climate-Related Financial Disclosures | https://link-to-credential\nIntroduction to ESG\n...', 4)))}
+    </div>`).join('');
+  return cards +
+    `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('certifications',{category:'',items:''})">+ Add Category</button></div>` +
+    `<div style="margin-top:16px">` +
+    fg(1, fi('Academic Publications (one per line)', ta('publications.academic', 'Title — Institution (Degree)\n...', 4))) +
+    fg(1, fi('Awards (one per line)', ta('publications.awards', 'Award name — Organisation (Year)\n...', 4))) +
+    `</div>`;
+}
+
+function storyBankBodyHTML() {
+  const tip = `<div class="section-tip">Each story is a detailed narrative Claude can use in cover letters. Include context, challenge, action, and outcome. Give each a title and list the roles it's best for.</div>`;
+  const cards = P.storyBank.map((s, i) => `
+    <div class="entry-card">
+      <div class="entry-card-hdr">
+        <span class="entry-card-title">STORY ${i+1}</span>
+        <button class="btn btn-danger" onclick="removeItem('storyBank',${i})">&#x2715; Remove</button>
+      </div>
+      ${fg(1, fi('Story Title', inp(`storyBank.${i}.title`, 'e.g. The Rostering Rebuild — Process Improvement')))}
+      ${fg(1, fi('Best Used For', inp(`storyBank.${i}.usedFor`, 'e.g. Project management, data/analytics, automation, admin, operations roles')))}
+      ${fg(1, fi('Story Text', ta(`storyBank.${i}.text`, 'Write the full story here. Include the challenge, what you did, and the measurable outcome. Multiple paragraphs are fine.', 7)))}
+    </div>`).join('');
+  return tip + cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('storyBank',{title:'',usedFor:'',text:''})">+ Add Story</button></div>`;
+}
+
+function projectsBodyHTML() {
+  const cards = P.projects.map((p, i) => `
+    <div class="entry-card">
+      <div class="entry-card-hdr">
+        <span class="entry-card-title">PROJECT ${i+1}</span>
+        <button class="btn btn-danger" onclick="removeItem('projects',${i})">&#x2715; Remove</button>
+      </div>
+      ${fg(1, fi('Project Name', inp(`projects.${i}.name`, 'e.g. Community Tool Library')))}
+      ${fg(1, fi('Project Link <span class="opt">optional</span>', inp(`projects.${i}.url`, 'https://... — the project name becomes a link wherever it is mentioned')))}
+      ${fg(1, fi('Description', ta(`projects.${i}.description`, 'e.g. What it is, who it serves, and what you did', 3)))}
+    </div>`).join('');
+  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('projects',{name:'',description:''})">+ Add Project</button></div>`;
+}
+
+function achievementsBodyHTML() {
+  const cards = P.achievements.map((a, i) => `
+    <div class="entry-card">
+      <div class="entry-card-hdr">
+        <span class="entry-card-title">ACHIEVEMENT CATEGORY ${i+1}</span>
+        <button class="btn btn-danger" onclick="removeItem('achievements',${i})">&#x2715; Remove</button>
+      </div>
+      ${fg(1, fi('Category', inp(`achievements.${i}.category`, 'e.g. Music Competitions')))}
+      ${fg(1, fi('Items (one per line)', ta(`achievements.${i}.items`, 'Year: placing — competition\n...', 4)))}
+    </div>`).join('');
+  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('achievements',{category:'',items:''})">+ Add Category</button></div>`;
+}
+
+function refereesBodyHTML() {
+  const cards = P.referees.map((r, i) => `
+    <div class="entry-card">
+      <div class="entry-card-hdr">
+        <span class="entry-card-title">REFEREE ${i+1}</span>
+        <button class="btn btn-danger" onclick="removeItem('referees',${i})">&#x2715; Remove</button>
+      </div>
+      ${fg(2,
+        fi('Full Name', inp(`referees.${i}.name`, 'e.g. Mrs. Jane Doe')),
+        fi('Title', inp(`referees.${i}.title`, 'e.g. Operations Manager, Company name'))
+      )}
+      ${fg(2,
+        fi('Email', inp(`referees.${i}.email`, 'e.g. jane.doe@email.com')),
+        fi('Phone', inp(`referees.${i}.phone`, 'e.g. +61 400 000 000'))
+      )}
+      ${fg(1,
+        fi('LinkedIn Profile <span class="opt">optional</span>', inp(`referees.${i}.linkedin`, 'https://linkedin.com/in/... — shown as a LinkedIn link beside the name'))
+      )}
+    </div>`).join('');
+  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('referees',{name:'',title:'',email:'',phone:''})">+ Add Referee</button></div>`;
+}
+
+function usageNotesBodyHTML() {
+  const example = [
+    'FORMAT: One line per role type. Each line = role category : Stories to use + key proof points to lead with.',
+    '',
+    'EXAMPLE STRUCTURE:',
+    'AI / Tech roles: Stories 3, 6 + AI integration skills, tool development',
+    'ESG / Sustainability / Environmental: Stories 1, 2, 4 + PCAF/TNFD/CSRD certifications',
+    'Project Management / Senior Project Officer: Stories 1, 3, 5 + 40-member delivery, 100% KPI compliance',
+    'Finance / Billing / Administration: Stories 2, 7 + billing recovery, ATD test, revenue management',
+    'Governance / Compliance / Admin: Stories 3, 4, 5 + CAPA ownership, SOP, version control',
+    'Sales / Business Development: Stories 7 + $X target achieved, CXO engagement, KAM',
+    'Healthcare / Resourcing: Stories 8 + your health-tech projects, interpersonal skills',
+    'Education / Student Services: Stories 6 + tutoring, pastoral care, student programme',
+    'Creative / Social Media / Marketing: Stories 9 + Adobe Suite, content creation, drone video',
+    'Community / Environmental Innovation: Stories 4, 8 + your innovation projects',
+    '',
+    'LOCATION NOTE (Australian market): Always include your right to work status and location proximity when relevant.',
+    'CAREER CHANGE NOTE: If pivoting industries, flag which skills transfer directly and name the closest story.',
+  ].join('\n');
+  return `
+    <div class="section-tip" style="line-height:1.8">
+      <strong>How to structure Usage Notes:</strong> Write one line per role type, formatted as:<br>
+      <code style="background:rgba(31,78,121,0.1);padding:2px 6px;border-radius:3px;font-size:11px">Role Type: Stories X, Y + key proof points or skills to lead with</code><br><br>
+      Claude reads this section to decide which stories and achievements to prioritise for your specific role. The more specific you are, the better tailored the output.
+      <br><br>Number your stories in the Story Bank first (Story 1, Story 2…) — then reference them here by number.
     </div>
-    <div class="cvb-toast" id="toast" role="status" aria-live="polite"></div>
-  </main>
+    ${fg(1, fi('Usage Notes', ta('usageNotes', example, 14)))}`;
+}
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <a href="../index.html" class="brand"><img src="../assets/logo-96.png" alt="" width="38" height="38" loading="lazy" /><span>Gaia Symbiosis<small>AI × Human</small></span></a>
-          <p class="footer-about">AI automation, healthcare IT and custom software, built end to end from Albury, NSW.</p>
-        </div>
-        <div>
-          <h4>Services</h4>
-          <ul>
-            <li><a href="../services.html#ai">AI &amp; automation</a></li>
-            <li><a href="../services.html#healthcare">Healthcare IT</a></li>
-            <li><a href="../services.html#government">Government</a></li>
-            <li><a href="../services.html#web">Web apps</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Tools</h4>
-          <ul>
-            <li><a href="cv-builder.html" aria-current="page">CV Builder</a></li>
-            <li><a href="job-search.html">Job Search</a></li>
-            <li><a href="https://lushnote.com.au" target="_blank" rel="noopener">LushNote</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <ul>
-            <li><a href="../index.html#about">About</a></li>
-            <li><a href="../index.html#work">Work</a></li>
-            <li><a href="../index.html#contact">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© <span data-year>2026</span> Gaia Symbiosis. All rights reserved.</p>
-        <p>Albury, NSW, Australia</p>
-      </div>
-    </div>
-  </footer>
+// ═══════════════════════════════════════════════════════════════
+// ADD / REMOVE DYNAMIC ITEMS
+// ═══════════════════════════════════════════════════════════════
+function addItem(section, template) {
+  P[section].push(JSON.parse(JSON.stringify(template)));
+  renderSectionBody(section);
+  debouncedSave();
+}
 
-  <script src="../js/main.js?v=20261018f" defer></script>
-  <script type="module" src="../js/cv-builder.js?v=20261018f"></script>
+function removeItem(section, idx) {
+  if (P[section].length <= 1) {
+    // reset to one blank rather than empty
+    P[section] = [JSON.parse(JSON.stringify(Object.fromEntries(Object.keys(P[section][0]).map(k=>([k,''])))))];
+  } else {
+    P[section].splice(idx, 1);
+  }
+  renderSectionBody(section);
+  debouncedSave();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CV BANK GENERATOR
+// ═══════════════════════════════════════════════════════════════
+function generateCVBankText() {
+  const name = P.personal.fullName || 'YOUR NAME';
+  const monthYear = new Date().toLocaleString('en-AU', { month:'long', year:'numeric' });
+  const lines = [];
+
+  const push = (...args) => args.forEach(l => lines.push(l));
+  const nl = () => lines.push('');
+  const section = title => { nl(); push(title); nl(); };
+
+  push(`${name} \u2014 MASTER CV CONTENT BANK`);
+  push(`(Merged: PDF CV + LinkedIn + All Cover Letters \u2014 ${monthYear})`);
+  nl();
+
+  // PERSONAL INFORMATION
+  section('PERSONAL INFORMATION');
+  const p = P.personal;
+  if (p.fullName)      push(`Full Name: ${p.fullName}`);
+  if (p.dob)           push(`Date of Birth: ${p.dob}`);
+  if (p.address)       push(`Address: ${p.address}`);
+  if (p.phone)         push(`Mobile: ${p.phone}`);
+  if (p.phone2)        push(`Secondary Phone: ${p.phone2}`);
+  if (p.email)         push(`Email: ${p.email}`);
+  if (p.linkedin)      push(`LinkedIn: ${p.linkedin}`);
+  if (p.portfolio)     push(`GitHub / Portfolio: ${p.portfolio}`);
+  if (p.rtwUrl)        push(`Right to Work URL: ${p.rtwUrl}`);
+  if (p.seekUrl)       push(`SEEK Profile: ${p.seekUrl}`);
+  if (p.sex)           push(`Sex: ${p.sex}`);
+  if (p.civilStatus)   push(`Civil Status: ${p.civilStatus}`);
+  if (p.ethnicGroup)   push(`Ethnic Group: ${p.ethnicGroup}`);
+  if (p.nic)           push(`NIC: ${p.nic}`);
+  if (p.rightToWork)   push(`Right to Work (Australia): ${p.rightToWork}`);
+  if (p.locationNote)  push(`Location note: ${p.locationNote}`);
+  if (p.languages)     push(`Languages: ${p.languages}`);
+  nl();
+
+  // PROFESSIONAL SUMMARY
+  section('PROFESSIONAL SUMMARY / ABOUT ME');
+  if (P.summary.paragraphs) push(P.summary.paragraphs);
+  if (P.summary.headline)   push(`LinkedIn Headline: ${P.summary.headline}`);
+  if (P.summary.tagline)    push(`Personal tagline used across applications: "${P.summary.tagline}"`);
+  nl();
+
+  // SKILLS
+  const hasSkills = P.skills.some(s => s.category || s.items);
+  if (hasSkills) {
+    section('SKILLS & PROFICIENCIES');
+    P.skills.forEach(s => {
+      if (!s.category && !s.items) return;
+      push(s.category || 'Skills');
+      (s.items || '').split('\n').filter(Boolean).forEach(i => push(i));
+      nl();
+    });
+    nl();
+  }
+
+  // WORK HISTORY
+  const hasJobs = P.workHistory.some(j => j.title || j.employer);
+  if (hasJobs) {
+    section('WORK HISTORY');
+    P.workHistory.forEach(j => {
+      if (!j.title && !j.employer) return;
+      push(j.title || 'Role');
+      if (j.employer) push(`Employer: ${j.employer}`);
+      const jPeriod = [j.startDate, j.endDate].filter(Boolean).join(' \u2013 ');
+      if (jPeriod)    push(`Period: ${jPeriod}`);
+      if (j.nature)   push(`Nature: ${j.nature}`);
+      if (j.respUrl)       push(`Responsibilities URL: ${j.respUrl}`);
+      if (j.milestonesUrl) push(`Milestones URL: ${j.milestonesUrl}`);
+      nl();
+      (j.bullets || '').split('\n').filter(Boolean).forEach(b => push(b));
+      nl(); nl();
+    });
+  }
+
+  // EDUCATION
+  const hasEdu = P.education.some(e => e.degree || e.institution);
+  if (hasEdu) {
+    section('EDUCATION');
+    P.education.forEach(e => {
+      if (!e.degree && !e.institution) return;
+      push(e.degree || 'Degree');
+      nl();
+      let instLine = e.institution || '';
+      const ePeriod = [e.startYear, e.endYear].filter(Boolean).join('\u2013');
+      if (ePeriod) instLine += ` (${ePeriod})`;
+      if (instLine) push(instLine);
+      if (e.gpa)    push(`Grade/GPA: ${e.gpa}`);
+      if (e.thesis) push(`Thesis: ${e.thesis}`);
+      if (e.notes)  push(e.notes);
+      if (e.credentialsUrl) push(`Credentials URL: ${e.credentialsUrl}`);
+      nl();
+    });
+    nl();
+  }
+
+  // CERTIFICATIONS & PUBLICATIONS
+  const hasCerts = P.certifications.some(c => c.category || c.items) ||
+                   P.publications.academic || P.publications.awards;
+  if (hasCerts) {
+    section('CERTIFICATIONS & PUBLICATIONS');
+    P.certifications.forEach(c => {
+      if (!c.category && !c.items) return;
+      push(c.category || 'Certifications');
+      (c.items || '').split('\n').filter(Boolean).forEach(i => push(i));
+      nl();
+    });
+    if (P.publications.academic) {
+      push('Academic Publications');
+      P.publications.academic.split('\n').filter(Boolean).forEach(p2 => push(p2));
+      nl();
+    }
+    if (P.publications.awards) {
+      push('Awards');
+      P.publications.awards.split('\n').filter(Boolean).forEach(a => push(a));
+      nl();
+    }
+    nl();
+  }
+
+  // STORY BANK
+  const hasStories = P.storyBank.some(s => s.title || s.text);
+  if (hasStories) {
+    section('STORY BANK \u2014 KEY NARRATIVES FOR COVER LETTERS');
+    push('These are proven storylines extracted from your cover letters. Use them as evidence when writing tailored applications.');
+    nl();
+    P.storyBank.forEach((s, i) => {
+      if (!s.title && !s.text) return;
+      push(`STORY ${i+1}: ${s.title || 'Story'}`);
+      if (s.usedFor) push(`Best used for: ${s.usedFor}`);
+      if (s.text)    push(s.text);
+      nl();
+    });
+    nl();
+  }
+
+  // PERSONAL PROJECTS
+  const hasProjects = P.projects.some(p2 => p2.name || p2.description);
+  if (hasProjects) {
+    section('PERSONAL PROJECTS & SIDE VENTURES');
+    P.projects.forEach(p2 => {
+      if (!p2.name && !p2.description) return;
+      push(p2.description ? `${p2.name}: ${p2.description}` : p2.name);
+      if (p2.url) push(`Project URL: ${p2.url}`);
+    });
+    nl(); nl();
+  }
+
+  // ACHIEVEMENTS
+  const hasAch = P.achievements.some(a => a.category || a.items);
+  if (hasAch) {
+    section('ACHIEVEMENTS & EXTRACURRICULAR');
+    P.achievements.forEach(a => {
+      if (!a.category && !a.items) return;
+      push(a.category || 'Achievements');
+      (a.items || '').split('\n').filter(Boolean).forEach(i => push(i));
+      nl();
+    });
+    nl();
+  }
+
+  // REFEREES
+  const hasRefs = P.referees.some(r => r.name);
+  if (hasRefs) {
+    section('REFEREES');
+    P.referees.forEach(r => {
+      if (!r.name) return;
+      push(r.name);
+      if (r.title) push(`Title: ${r.title}`);
+      if (r.email) push(`Email: ${r.email}`);
+      if (r.phone) push(`Phone: ${r.phone}`);
+      if (r.linkedin) push(`LinkedIn: ${r.linkedin}`);
+      nl();
+    });
+    nl();
+  }
+
+  // USAGE NOTES
+  if (P.usageNotes) {
+    section('USAGE NOTES \u2014 WHICH STORIES TO USE FOR WHICH ROLES');
+    push(P.usageNotes);
+    nl();
+  }
+
+  return lines.join('\n').replace(/\n{4,}/g, '\n\n\n').trim();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CV BANK PARSER (import)
+// ═══════════════════════════════════════════════════════════════
+function parseCVBankText(text) {
+  const result = defaultP();
+
+  // Split into named sections by known headers
+  const HEADERS = [
+    'PERSONAL INFORMATION',
+    'PROFESSIONAL SUMMARY',
+    'SKILLS & PROFICIENCIES',
+    'WORK HISTORY',
+    'EDUCATION',
+    'CERTIFICATIONS & PUBLICATIONS',
+    'STORY BANK',
+    'PERSONAL PROJECTS',
+    'ACHIEVEMENTS & EXTRACURRICULAR',
+    'REFEREES',
+    'USAGE NOTES'
+  ];
+
+  const sections = {};
+  const allLines = text.split('\n');
+  let curSection = null;
+  let curLines = [];
+
+  for (const line of allLines) {
+    const trimmed = line.trim();
+    const upper = trimmed.toUpperCase();
+    // Section headers are always written in ALL CAPS. Requiring that stops a
+    // mixed-case body line (e.g. "Education / Student Services: ...") from being
+    // mistaken for a header and silently overwriting the real section.
+    const matched = (trimmed && !/[a-z]/.test(trimmed))
+      ? HEADERS.find(h => upper.startsWith(h))
+      : null;
+    if (matched) {
+      if (curSection) sections[curSection] = curLines.join('\n');
+      curSection = matched;
+      curLines = [];
+    } else if (curSection) {
+      curLines.push(line);
+    }
+  }
+  if (curSection) sections[curSection] = curLines.join('\n');
+
+  // ── PERSONAL ──
+  const parseField = (body, label) => {
+    const m = body.match(new RegExp(`^${label}:\\s*(.+)$`, 'm'));
+    return m ? m[1].trim() : '';
+  };
+
+  if (sections['PERSONAL INFORMATION']) {
+    const b = sections['PERSONAL INFORMATION'];
+    result.personal.fullName    = parseField(b, 'Full Name');
+    result.personal.dob         = parseField(b, 'Date of Birth');
+    result.personal.address     = parseField(b, 'Address');
+    result.personal.phone       = parseField(b, 'Mobile') || parseField(b, 'Phone');
+    result.personal.phone2      = parseField(b, 'Secondary Phone') || parseField(b, 'Sri Lanka Phone');
+    result.personal.email       = parseField(b, 'Email');
+    result.personal.linkedin    = parseField(b, 'LinkedIn');
+    result.personal.portfolio   = parseField(b, 'GitHub / Portfolio') || parseField(b, 'Portfolio');
+    result.personal.rtwUrl      = parseField(b, 'Right to Work URL') || parseField(b, 'RTW URL');
+    result.personal.seekUrl     = parseField(b, 'SEEK Profile') || parseField(b, 'SEEK URL');
+    result.personal.rightToWork = parseField(b, 'Right to Work \\(Australia\\)') || parseField(b, 'Right to Work');
+    result.personal.locationNote= parseField(b, 'Location note');
+    result.personal.languages   = parseField(b, 'Languages');
+    result.personal.nic         = parseField(b, 'NIC');
+    result.personal.sex         = parseField(b, 'Sex');
+    result.personal.civilStatus = parseField(b, 'Civil Status');
+    result.personal.ethnicGroup = parseField(b, 'Ethnic Group');
+    // derive short location from address if not explicitly stored
+    if (!result.personal.location) {
+      const addr = result.personal.address;
+      const m2 = addr.match(/([A-Za-z][A-Za-z\s]+,\s*[A-Z]{2,3}\s*\d{3,4})/);
+      result.personal.location = m2 ? m2[1].trim() : '';
+    }
+  }
+
+  // ── SUMMARY ──
+  if (sections['PROFESSIONAL SUMMARY']) {
+    let b = sections['PROFESSIONAL SUMMARY'].trim();
+    const headlineM = b.match(/^LinkedIn Headline:\s*(.+)$/m);
+    const taglineM  = b.match(/^Personal tagline[^:]*:\s*"?(.+?)"?\s*$/m);
+    result.summary.headline = headlineM ? headlineM[1].trim() : '';
+    result.summary.tagline  = taglineM  ? taglineM[1].trim()  : '';
+    b = b.replace(/^LinkedIn Headline:.*$/m, '').replace(/^Personal tagline[^:]*:.*$/m, '').trim();
+    result.summary.paragraphs = b;
+  }
+
+  // ── SKILLS ──
+  if (sections['SKILLS & PROFICIENCIES']) {
+    const blocks = sections['SKILLS & PROFICIENCIES'].split(/\n\n+/);
+    const cats = [];
+    let curCat = null;
+    let curItems = [];
+    for (const block of blocks) {
+      const blines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      if (!blines.length) continue;
+      if (curCat !== null) cats.push({ category: curCat, items: curItems.join('\n') });
+      curCat = blines[0]; curItems = blines.slice(1);
+    }
+    if (curCat !== null) cats.push({ category: curCat, items: curItems.join('\n') });
+    if (cats.length) result.skills = cats;
+  }
+
+  // ── WORK HISTORY ──
+  if (sections['WORK HISTORY']) {
+    const jobs = [];
+    const blocks = sections['WORK HISTORY'].split(/\n{3,}/);
+    for (const block of blocks) {
+      const trimmed = block.trim();
+      if (!trimmed) continue;
+      const blines = trimmed.split('\n');
+      const job = { title:'', employer:'', startDate:'', endDate:'', nature:'', bullets:'', respUrl:'', milestonesUrl:'' };
+      const bullets = [];
+      let headerDone = false;
+      for (const line of blines) {
+        const t = line.trim();
+        if (!t) { headerDone = true; continue; }
+        const emp = t.match(/^Employer:\s*(.+)/);
+        const per = t.match(/^Period:\s*(.+)/);
+        const nat = t.match(/^Nature:\s*(.+)/);
+        const ru  = t.match(/^Responsibilities URL:\s*(.+)/);
+        const mu  = t.match(/^Milestones URL:\s*(.+)/);
+        if (ru) { job.respUrl = ru[1].trim(); continue; }
+        if (mu) { job.milestonesUrl = mu[1].trim(); continue; }
+        if (emp) { job.employer = emp[1]; continue; }
+        if (per) {
+          const parts = per[1].split(/\s*[\u2013\u2014-]\s*/);
+          job.startDate = parts[0]?.trim() || per[1].trim();
+          job.endDate   = parts[1]?.trim() || '';
+          continue;
+        }
+        if (nat) { job.nature = nat[1]; continue; }
+        if (!job.title) { job.title = t; continue; }
+        if (headerDone || (!emp && !per && !nat && !ru && !mu)) bullets.push(t);
+      }
+      job.bullets = bullets.join('\n');
+      if (job.title || job.employer) jobs.push(job);
+    }
+    if (jobs.length) result.workHistory = jobs;
+  }
+
+  // ── EDUCATION ──
+  if (sections['EDUCATION']) {
+    const edus = [];
+    const blocks = sections['EDUCATION'].split(/\n\n+/);
+    let curEdu = null;
+    for (const block of blocks) {
+      const blines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      if (!blines.length) continue;
+      const firstLine = blines[0];
+      const isLabel = /^(Employer|Period|Grade|Dissertation|Thesis|GPA):/i.test(firstLine);
+      // Single-line non-label block = a new degree name (even if a previous entry exists)
+      if (!isLabel && blines.length === 1 && (!curEdu || curEdu.institution)) {
+        curEdu = { degree: firstLine, institution:'', startYear:'', endYear:'', gpa:'', thesis:'', notes:'', credentialsUrl:'' };
+        edus.push(curEdu);
+        continue;
+      }
+      if (!curEdu) continue;
+      for (const line of blines) {
+        const gpa = line.match(/^Grade\/GPA:\s*(.+)/);
+        const the = line.match(/^(?:Dissertation|Thesis):\s*(.+)/i);
+        const cru = line.match(/^Credentials URL:\s*(.+)/i);
+        if (cru) { curEdu.credentialsUrl = cru[1].trim(); continue; }
+        if (gpa) { curEdu.gpa = gpa[1]; continue; }
+        if (the) { curEdu.thesis = the[1]; continue; }
+        if (!curEdu.institution) {
+          // institution line may include "(2020–2022)" — extract year range
+          const yearM = line.match(/\((\d{4})\s*[\u2013\u2014-]\s*(\d{4}|Present|present)\)/);
+          if (yearM) {
+            curEdu.institution = line.replace(yearM[0], '').trim().replace(/,?\s*$/, '');
+            curEdu.startYear = yearM[1];
+            curEdu.endYear   = yearM[2];
+          } else {
+            curEdu.institution = line;
+          }
+          continue;
+        }
+        curEdu.notes = (curEdu.notes ? curEdu.notes + '\n' : '') + line;
+      }
+    }
+    if (edus.length) result.education = edus;
+  }
+
+  // ── CERTIFICATIONS & PUBLICATIONS ──
+  if (sections['CERTIFICATIONS & PUBLICATIONS']) {
+    const blocks = sections['CERTIFICATIONS & PUBLICATIONS'].split(/\n\n+/);
+    const certs = [];
+    let mode = 'cert';
+    let curCert = null;
+    const acLines = [], awLines = [];
+    for (const block of blocks) {
+      const blines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      if (!blines.length) continue;
+      const lc0 = blines[0].toLowerCase();
+      if (lc0 === 'academic publications') {
+        mode = 'academic'; acLines.push(...blines.slice(1)); continue;
+      }
+      if (lc0 === 'awards') {
+        mode = 'awards'; awLines.push(...blines.slice(1)); continue;
+      }
+      if (mode === 'academic') { acLines.push(...blines); continue; }
+      if (mode === 'awards')   { awLines.push(...blines); continue; }
+      if (curCert) certs.push(curCert);
+      curCert = { category: blines[0], items: blines.slice(1).join('\n') };
+    }
+    if (curCert) certs.push(curCert);
+    if (certs.length) result.certifications = certs;
+    if (acLines.length) result.publications.academic = acLines.join('\n');
+    if (awLines.length) result.publications.awards   = awLines.join('\n');
+  }
+
+  // ── STORY BANK ──
+  if (sections['STORY BANK']) {
+    const stories = [];
+    const storyBlocks = sections['STORY BANK'].split(/(?=^STORY \d+:)/m);
+    for (const block of storyBlocks) {
+      const trimmed = block.trim();
+      if (!trimmed || trimmed.startsWith('These are proven')) continue;
+      const titleM = trimmed.match(/^STORY \d+:\s*(.+)$/m);
+      const usedM  = trimmed.match(/^Best used for:\s*(.+)$/m);
+      let text = trimmed;
+      if (titleM) text = text.replace(titleM[0], '').trim();
+      if (usedM)  text = text.replace(usedM[0], '').trim();
+      stories.push({
+        title:   titleM ? titleM[1].trim() : '',
+        usedFor: usedM  ? usedM[1].trim()  : '',
+        text:    text
+      });
+    }
+    if (stories.length) result.storyBank = stories;
+  }
+
+  // ── PERSONAL PROJECTS ──
+  if (sections['PERSONAL PROJECTS']) {
+    const projs = [];
+    sections['PERSONAL PROJECTS'].trim().split('\n')
+      .filter(line => line.trim())
+      .forEach(line => {
+        const t = line.trim();
+        // "Project URL: ..." belongs to the project on the line above it
+        const pu = t.match(/^Project URL:\s*(.+)$/i);
+        if (pu) { if (projs.length) projs[projs.length - 1].url = pu[1].trim(); return; }
+        const m = t.match(/^([^:]+):\s*(.+)$/);
+        projs.push(m ? { name: m[1].trim(), description: m[2].trim(), url:'' }
+                     : { name: t, description: '', url:'' });
+      });
+    if (projs.length) result.projects = projs;
+  }
+
+  // ── ACHIEVEMENTS ──
+  if (sections['ACHIEVEMENTS & EXTRACURRICULAR']) {
+    const blocks = sections['ACHIEVEMENTS & EXTRACURRICULAR'].split(/\n\n+/);
+    const achs = [];
+    let curAch = null;
+    let curItems = [];
+    for (const block of blocks) {
+      const blines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      if (!blines.length) continue;
+      if (curAch !== null) achs.push({ category: curAch, items: curItems.join('\n') });
+      curAch = blines[0]; curItems = blines.slice(1);
+    }
+    if (curAch !== null) achs.push({ category: curAch, items: curItems.join('\n') });
+    if (achs.length) result.achievements = achs;
+  }
+
+  // ── REFEREES ──
+  if (sections['REFEREES']) {
+    const refs = [];
+    const blocks = sections['REFEREES'].split(/\n\n+/);
+    let curRef = null;
+    for (const block of blocks) {
+      const blines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      if (!blines.length) continue;
+      let fields = blines;
+      if (!blines[0].match(/^(Title|Email|Phone|LinkedIn):/)) {
+        if (curRef) refs.push(curRef);
+        curRef = { name: blines[0], title:'', email:'', phone:'', linkedin:'' };
+        fields = blines.slice(1);
+      }
+      // A blank line between the name and its Title:/Email:/Phone: lines splits
+      // them into two blocks — attach a label-only block to the referee in progress
+      // instead of discarding it.
+      if (!curRef) continue;
+      fields.forEach(l => {
+        const tm = l.match(/^Title:\s*(.+)/);
+        const em = l.match(/^Email:\s*(.+)/);
+        const ph = l.match(/^Phone:\s*(.+)/);
+        const li = l.match(/^LinkedIn:\s*(.+)/);
+        if (li) curRef.linkedin = li[1].trim();
+        if (tm) curRef.title = tm[1];
+        if (em) curRef.email = em[1];
+        if (ph) curRef.phone = ph[1];
+      });
+    }
+    if (curRef) refs.push(curRef);
+    if (refs.length) result.referees = refs;
+  }
+
+  // ── USAGE NOTES ──
+  if (sections['USAGE NOTES']) {
+    result.usageNotes = sections['USAGE NOTES'].trim();
+  }
+
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IMPORT / EXPORT / SEND
+// ═══════════════════════════════════════════════════════════════
+// Load CV Bank text into the Profile Builder (used by Import and by Polish with AI)
+function _applyBankText(text) {
+  P = parseCVBankText(text);
+  saveProfileData();
+  renderProfileForm();
+  document.querySelectorAll('.builder-section-body').forEach(el => el.classList.remove('collapsed'));
+  document.querySelectorAll('.section-toggle').forEach(el => { el.innerHTML = '&#x25BE;'; });
+  document.querySelectorAll('.builder-section-body').forEach(fitSampleFields);
+}
+
+function importCVBank() {
+  const text = document.getElementById('import-text').value.trim();
+  if (!text) { toast('Paste a CV Bank text above first.', 'error'); return; }
+  try {
+    P = parseCVBankText(text);
+    saveProfileData();
+    renderProfileForm();
+    // open all sections so user can see what was imported
+    document.querySelectorAll('.builder-section-body').forEach(el => {
+      el.classList.remove('collapsed');
+    });
+    document.querySelectorAll('.section-toggle').forEach(el => {
+      el.innerHTML = '&#x25BE;';
+    });
+    document.getElementById('import-text').value = '';
+    toast('CV Bank imported successfully \u2714', 'success');
+  } catch(e) {
+    console.error(e);
+    toast('Parse error \u2014 check the console for details.', 'error');
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// POLISH WITH AI — grammar and wording only; the structure is verified on return
+// ═══════════════════════════════════════════════════════════════
+const POLISH_PROMPT = `You are a careful copy editor. Below is my CV content bank. Software reads it line by line, so its layout is fixed. Your only job is to correct spelling, grammar and punctuation, and to improve the wording of sentences so they read clearly and professionally.
+
+Follow every rule exactly:
+1. Return exactly the same number of lines, in the same order. Line 1 of your output is the corrected line 1 of mine, line 2 is line 2, and so on. Never merge, split, add, remove or reorder lines. Keep every blank line exactly where it is.
+2. Do not change section headings (lines written in CAPITALS) or any "STORY n:" number.
+3. Where a line starts with a label and a colon (for example "Employer:", "Period:", "Title:", "Best used for:", "Project URL:"), keep the label exactly as written.
+4. Copy these lines character for character, with no changes at all: lines starting with Full Name, Date of Birth, Address, Mobile, Phone, Secondary Phone, Email, LinkedIn, GitHub / Portfolio, Right to Work, Employer, Period, Title, Responsibilities URL, Milestones URL, Credentials URL, or Project URL.
+5. Keep every number, figure, percentage, dollar amount, date and URL exactly as written. Do not turn words into numerals or numerals into words.
+6. Keep every name of a person, organisation, product, project, qualification and certification exactly as written.
+7. Do not add facts, skills, achievements, results or claims that are not already there, and do not remove any.
+8. Use Australian English spelling (organisation, programme, licence).
+9. Plain text only: no markdown, no bold, no bullet symbols, and no numbering that was not already there.
+
+Reply with the corrected content bank inside one code block, and nothing before or after it.
+
+MY CV CONTENT BANK:
+`;
+
+// What was sent to the AI, kept so the reply can be compared with it (survives a reload)
+function _polishSnapshot(set){
+  try {
+    if (set !== undefined) localStorage.setItem('gethired_polish_snapshot', set);
+    return localStorage.getItem('gethired_polish_snapshot');
+  } catch (e) { return set !== undefined ? set : null; }
+}
+
+function copyPolishPrompt(){
+  const bank = generateCVBankText().replace(/\s+$/, '');
+  _polishSnapshot(bank);
+  const text = POLISH_PROMPT + '```\n' + bank + '\n```\n';
+  const done = () => toast('Polish prompt copied ✔ — paste it into your AI chat', 'success');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, () => { _polishFallbackCopy(text); done(); });
+  } else { _polishFallbackCopy(text); done(); }
+}
+function _polishFallbackCopy(text){
+  const t = document.createElement('textarea');
+  t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
+  document.body.appendChild(t); t.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(t);
+}
+
+// Pull the bank out of an AI reply: the fenced block if there is one, else the whole text
+function _unfence(t){
+  t = _sanitize(t || '');
+  const m = t.match(/```[^\n]*\n([\s\S]*?)\n?```/);
+  if (m) t = m[1];
+  return t.replace(/^\s*\n/, '').replace(/\s+$/, '');
+}
+
+// Lines whose whole content must survive untouched (contact details, links, dates, employers)
+const _POLISH_LOCKED = /^(Full Name|Date of Birth|Address|Mobile|Phone|Secondary Phone|Sri Lanka Phone|Email|LinkedIn|GitHub \/ Portfolio|Portfolio|Right to Work URL|Right to Work \(Australia\)|Right to Work|SEEK Profile|NIC|Sex|Civil Status|Ethnic Group|Employer|Period|Responsibilities URL|Milestones URL|Credentials URL|Project URL|Grade\/GPA|Title):/;
+
+// Compare the polished text with what was sent. Returns a list of {line, msg}.
+function _polishCheck(orig, pol){
+  const A = orig.split('\n').map(l => l.replace(/\s+$/, ''));
+  const B = pol.split('\n').map(l => l.replace(/\s+$/, ''));
+  const out = [];
+  const cut = x => { x = x || ''; return x.length > 90 ? x.slice(0, 87) + '…' : x; };
+  const add = (line, msg, was, now) => out.push({ line, msg, was, now });
+
+  if (A.length !== B.length) {
+    add(null, `The number of lines changed (${A.length} sent, ${B.length} returned), so lines were added, removed or merged.`);
+    for (let i = 0; i < Math.max(A.length, B.length); i++) {
+      if ((A[i] || '') === (B[i] || '')) continue;
+      if (!!(A[i] || '').trim() !== !!(B[i] || '').trim() || i >= A.length || i >= B.length) {
+        add(i + 1, 'The layout first differs here', A[i], B[i]); break;
+      }
+    }
+    return out;
+  }
+  const isHeader = l => l.trim().length > 3 && !/[a-z]/.test(l) && /[A-Z]{3}/.test(l);
+  const label    = l => { const m = l.match(/^([A-Za-z][^:]{0,40}):\s/); return m ? m[1] : null; };
+  const bag      = (l, re) => (l.match(re) || []).map(x => x.replace(/[.,;:)]+$/, '')).sort().join(' ');
+  const URL_RE = /https?:\/\/\S+/g, NUM_RE = /\d[\d,.]*/g, MAIL_RE = /[\w.+-]+@[\w-]+\.[\w.]+/g;
+
+  for (let i = 0; i < A.length; i++) {
+    const a = A[i], b = B[i], n = i + 1;
+    if (!a.trim() || !b.trim()) { if (!!a.trim() !== !!b.trim()) add(n, 'A blank line moved', a, b); continue; }
+    if (isHeader(a)) { if (a !== b) add(n, 'Section heading changed', a, b); continue; }
+    const st = a.match(/^STORY \d+:/);
+    if (st && !b.startsWith(st[0])) add(n, 'Story number changed', a, b);
+    if (_POLISH_LOCKED.test(a)) { if (a !== b) add(n, 'Protected line changed', a, b); continue; }
+    const la = label(a);
+    if (la && label(b) !== la) { add(n, `Label "${la}:" changed`, a, b); continue; }
+    if (bag(a, URL_RE)  !== bag(b, URL_RE))  { add(n, 'A link changed', a, b); continue; }
+    if (bag(a, MAIL_RE) !== bag(b, MAIL_RE)) { add(n, 'An email address changed', a, b); continue; }
+    if (bag(a, NUM_RE)  !== bag(b, NUM_RE))  { add(n, 'A number or date changed', a, b); continue; }
+  }
+
+  // Names the importer keys on: compare the parsed profiles field by field
+  try {
+    const pa = parseCVBankText(orig), pb = parseCVBankText(pol);
+    const same = (k, fields) => (pa[k] || []).forEach((x, i) => fields.forEach(fl => {
+      const y = (pb[k] || [])[i] || {};
+      if ((x[fl] || '') !== (y[fl] || '')) add(null, `${k} ${i + 1}: "${fl}" changed`, x[fl], y[fl]);
+    }));
+    ['workHistory','education','projects','referees','storyBank','certifications','skills','achievements'].forEach(k => {
+      if ((pa[k] || []).length !== (pb[k] || []).length) add(null, `Number of ${k} entries changed (${(pa[k]||[]).length} → ${(pb[k]||[]).length})`);
+    });
+    same('workHistory', ['title','employer','startDate','endDate']);
+    same('education',   ['degree','institution','startYear','endYear']);
+    same('projects',    ['name','url']);
+    same('referees',    ['name','title','email','phone','linkedin']);
+  } catch (e) { add(null, 'The reply could not be read as a CV Bank: ' + e.message); }
+  out.forEach(o => { o.was = cut(o.was); o.now = cut(o.now); });
+  return out;
+}
+
+function checkPolished(force){
+  const rep = document.getElementById('polish-report');
+  const raw = document.getElementById('polish-text').value;
+  if (!raw.trim()) { toast('Paste the AI\'s reply first.', 'error'); return; }
+  const pol = _unfence(raw);
+  const orig = _polishSnapshot() || generateCVBankText().replace(/\s+$/, '');
+  const problems = force ? [] : _polishCheck(orig, pol);
+  const e = x => esc(x == null ? '' : x);
+  if (problems.length) {
+    rep.innerHTML =
+      `<div class="bad">&#x26A0; ${problems.length} change${problems.length > 1 ? 's' : ''} to the structure or to protected details. Nothing has been imported.</div>` +
+      `<ul>${problems.slice(0, 40).map(p =>
+        `<li>${p.line ? 'Line ' + p.line + ' — ' : ''}${e(p.msg)}` +
+        (p.was != null || p.now != null ? `<br>was: <code>${e(p.was)}</code><br>now: <code>${e(p.now)}</code>` : '') +
+        `</li>`).join('')}${problems.length > 40 ? `<li>…and ${problems.length - 40} more</li>` : ''}</ul>` +
+      `<div>Ask the AI to fix these (or re-run the prompt), then check again. If you've read the changes and accept them:</div>` +
+      `<div style="margin-top:8px"><button class="btn btn-outline" onclick="checkPolished(true)">Import anyway</button></div>`;
+    return;
+  }
+  try {
+    _applyBankText(pol);
+    document.getElementById('polish-text').value = '';
+    rep.innerHTML = `<div class="ok">&#x2714; ${force ? 'Imported without checking.' : 'Structure intact — every heading, label, link, name, date and figure matches.'} Your profile now holds the polished text. Click <strong>Export CV Bank</strong> to save it as your standard bank.</div>`;
+    toast('Polished CV Bank imported ✔', 'success');
+  } catch (err) {
+    console.error(err);
+    rep.innerHTML = `<div class="bad">&#x26A0; The reply could not be imported: ${e(err.message)}</div>`;
+  }
+}
+
+function _downloadBlob(blob, filename){
+  // Anchor must be in the DOM, and the blob URL must stay alive until the browser
+  // has finished reading it — revoking immediately truncates the file.
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.rel = 'noopener'; a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{ try{ document.body.removeChild(a); }catch(e){} URL.revokeObjectURL(url); }, 60000);
+}
+
+function exportCVBank() {
+  const text = generateCVBankText();
+  if (!text || text.length < 20) { toast('Fill in some profile details first.', 'error'); return; }
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const name = (P.personal.fullName || 'My').trim().replace(/\s+/g,'_');
+  _downloadBlob(blob, `${name}_CV_Content_Bank.txt`);
+  toast('CV Bank downloaded \u2714', 'success');
+}
+
+function sendToPromptBuilder() {
+  const text = generateCVBankText();
+  if (!text || text.length < 20) { toast('Fill in some profile details first.', 'error'); return; }
+  document.getElementById('cv-bank').value = text;
+  localStorage.setItem('cv_content_bank', text);
+  updateCount('cv-bank','cv-count');
+  updateStatus();
+  switchView('prompt');
+  toast('CV Bank loaded into Prompt Builder \u2714', 'success');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PERSONAL INFO EXTRACTION (for prompt placeholder injection)
+// ═══════════════════════════════════════════════════════════════
+function extractPersonalFromCVBank(cvBankText) {
+  const get = label => {
+    const m = cvBankText.match(new RegExp(`^${label}:\\s*(.+)$`, 'm'));
+    return m ? m[1].trim() : '';
+  };
+
+  // Full name — handle "Long Name (Short Name)" format
+  let fullName = get('Full Name');
+  const parenM = fullName.match(/\(([^)]+)\)/);
+  if (parenM) fullName = parenM[1].trim();
+
+  const phone     = get('Mobile') || get('Phone');
+  const email     = get('Email');
+  const linkedin  = get('LinkedIn');
+  const portfolio = get('GitHub / Portfolio') || get('Portfolio');
+  const rtwUrl    = get('Right to Work URL') || get('RTW URL');
+
+  // Location: extract city/state/postcode from address
+  const address  = get('Address');
+  const locMatch = address.match(/([A-Za-z][A-Za-z\s]+,\s*[A-Z]{2,3}\s*\d{3,4})/);
+  const location = locMatch ? locMatch[1].trim() : get('Location note').split('.')[0].trim() || address;
+
+  // Safe filename prefix
+  const nameFile = fullName.trim().split(/\s+/).join('_').replace(/[^A-Za-z0-9_]/g,'') || 'YourName';
+
+  return { fullName, phone, email, linkedin, portfolio, rtwUrl, location, nameFile };
+}
+
+function injectPersonalInfo(template, info) {
+  let result = template
+    .replaceAll(PH_NAME,  info.fullName  || PH_NAME)
+    .replaceAll(PH_PHONE, info.phone     || PH_PHONE)
+    .replaceAll(PH_EMAIL, info.email     || PH_EMAIL)
+    .replaceAll(PH_LOC,   info.location  || PH_LOC)
+    .replaceAll(PH_LI,    info.linkedin  || PH_LI)
+    .replaceAll(PH_PORT,  info.portfolio || PH_PORT)
+    .replaceAll(PH_FILE,  info.nameFile  || PH_FILE);
+
+  // RTW link: remove the entire \textbar{} \href{...}{Right to Work} clause if no URL
+  if (!info.rtwUrl) {
+    result = result.replace(/\\textbar\{\}\s*\\href\{\[YOUR_RIGHT_TO_WORK_URL\]\}\{Right to Work\}/g, '');
+    result = result.replaceAll(PH_RTW, '');
+  } else {
+    result = result.replaceAll(PH_RTW, info.rtwUrl);
+  }
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROMPT BUILDER — CORE LOGIC
+// ═══════════════════════════════════════════════════════════════
+function loadPromptBuilder() {
+  // Always regenerate cv-bank from current profile so it's never stale
+  const cvBankText = generateCVBankText();
+  document.getElementById('cv-bank').value = cvBankText;
+  if (cvBankText.length > 20) localStorage.setItem('cv_content_bank', cvBankText);
+  document.getElementById('cl-prompt').value = localStorage.getItem('cl_prompt') || DEFAULTS.cl;
+  document.getElementById('cv-prompt').value = localStorage.getItem('cv_prompt') || DEFAULTS.cvp;
+  updateCount('cv-bank','cv-count');
+  updateCount('cl-prompt','cl-count');
+  updateCount('cv-prompt','cv-count2');
+  updateCount('jd-input','jd-count');
+  updatePromptBadges();
+  updateStatus();
+}
+
+function togglePromptPanel(which) {
+  const body   = document.getElementById(`${which}-prompt-body`);
+  const toggle = document.getElementById(`${which}-panel-toggle`);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  toggle.innerHTML   = isOpen ? '&#x25B8; edit' : '&#x25BE; edit';
+}
+
+function updatePromptBadge(which) {
+  const key   = which === 'cl' ? 'cl_prompt' : 'cv_prompt';
+  const badge = document.getElementById(`${which}-prompt-badge`);
+  if (!badge) return;
+  const isCustom = !!localStorage.getItem(key);
+  badge.textContent = isCustom ? '✏ customised' : 'default';
+  badge.className   = 'badge ' + (isCustom ? 'badge-custom' : 'badge-muted');
+}
+
+function updatePromptBadges() {
+  updatePromptBadge('cl');
+  updatePromptBadge('cv');
+}
+
+function resetPromptToDefault(which) {
+  const label = which === 'cl' ? 'Cover Letter' : 'CV / LaTeX';
+  if (!confirm(`Reset the ${label} prompt to the built-in default? Your custom edits will be lost.`)) return;
+  const key     = which === 'cl' ? 'cl_prompt'  : 'cv_prompt';
+  const taId    = which === 'cl' ? 'cl-prompt'  : 'cv-prompt';
+  const countId = which === 'cl' ? 'cl-count'   : 'cv-count2';
+  localStorage.removeItem(key);
+  document.getElementById(taId).value = which === 'cl' ? DEFAULTS.cl : DEFAULTS.cvp;
+  updateCount(taId, countId);
+  updatePromptBadge(which);
+  updateStatus();
+  toast('Prompt reset to default ✔', 'success');
+}
+
+function downloadPrompt(which) {
+  const taId     = which === 'cl' ? 'cl-prompt' : 'cv-prompt';
+  const filename = which === 'cl' ? 'Cover_Letter_Prompt.txt' : 'CV_LaTeX_Prompt.txt';
+  const text     = document.getElementById(taId).value;
+  if (!text.trim()) { toast('Prompt is empty', 'error'); return; }
+  const blob = new Blob([text], { type: 'text/plain' });
+  _downloadBlob(blob, filename);
+  toast(`Downloaded ${filename} ✔`, 'success');
+}
+
+function importPrompt(which, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text    = e.target.result;
+    const key     = which === 'cl' ? 'cl_prompt'  : 'cv_prompt';
+    const taId    = which === 'cl' ? 'cl-prompt'  : 'cv-prompt';
+    const countId = which === 'cl' ? 'cl-count'   : 'cv-count2';
+    document.getElementById(taId).value = text;
+    localStorage.setItem(key, text);
+    updateCount(taId, countId);
+    updatePromptBadge(which);
+    updateStatus();
+    toast('Prompt imported ✔', 'success');
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function buildPrompts() {
+  const cvBank  = document.getElementById('cv-bank').value.trim();
+  const jd      = document.getElementById('jd-input').value.trim();
+  const clTmpl  = document.getElementById('cl-prompt').value;
+  const cvTmpl  = document.getElementById('cv-prompt').value;
+
+  const errs = [];
+  if (!cvBank)              errs.push('CV Content Bank (field 1)');
+  if (!jd)                  errs.push('Job Description (field 4)');
+  if (!clTmpl && !cvTmpl)  errs.push('at least one prompt template (fields 2 or 3)');
+  if (errs.length) { toast(`Missing: ${errs.join(', ')}`, 'error'); return; }
+
+  // Extract personal info for placeholder injection
+  const personal = extractPersonalFromCVBank(cvBank);
+
+  // Build cover letter prompt
+  let clBuilt = clTmpl;
+  if (clTmpl) {
+    const hadJD  = clTmpl.includes(PH_JD);
+    const hadCV  = clTmpl.includes(PH_CV);
+    clBuilt = injectPersonalInfo(clTmpl, personal)
+                .replaceAll(PH_JD, jd)
+                .replaceAll(PH_CV, cvBank);
+    const warn = [];
+    if (!hadJD) warn.push('"[PASTE JOB DESCRIPTION HERE]"');
+    if (!hadCV) warn.push('"[PASTE YOUR FULL MASTER CV CONTENT BANK HERE]"');
+    if (warn.length) toast(`\u26A0 CL prompt missing placeholder: ${warn.join(' and ')}`, 'error');
+  }
+
+  // Build CV/LaTeX prompt
+  let cvBuilt = cvTmpl;
+  if (cvTmpl) {
+    const hadJD  = cvTmpl.includes(PH_JD);
+    const hadCV  = cvTmpl.includes(PH_CV);
+    cvBuilt = injectPersonalInfo(cvTmpl, personal)
+                .replaceAll(PH_JD, jd)
+                .replaceAll(PH_CV, cvBank);
+    const warn = [];
+    if (!hadJD) warn.push('"[PASTE JOB DESCRIPTION HERE]"');
+    if (!hadCV) warn.push('"[PASTE YOUR FULL MASTER CV CONTENT BANK HERE]"');
+    if (warn.length) toast(`\u26A0 CV prompt missing placeholder: ${warn.join(' and ')}`, 'error');
+  }
+
+  renderOutput('out-cl-content', clBuilt, cvBank, jd);
+  renderOutput('out-cv-content', cvBuilt, cvBank, jd);
+  toast('Prompts built \u2014 ready to copy \u2714', 'success');
+  updateStatus();
+  document.querySelector('.output-section').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function renderOutput(elId, text, cvBank, jd) {
+  const el = document.getElementById(elId);
+  if (!text || !text.trim()) {
+    el.innerHTML = '<div class="output-empty"><div class="empty-icon">\u2014</div>No template provided for this prompt.</div>';
+    return;
+  }
+  let safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Highlight first 80 chars of each injected section
+  const jdPrev = jd.substring(0,80).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const cvPrev = cvBank.substring(0,80).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  if (jdPrev) safe = safe.replace(jdPrev, `<span class="highlight-jd">${jdPrev}</span>`);
+  if (cvPrev) safe = safe.replace(cvPrev, `<span class="highlight-cv">${cvPrev}</span>`);
+  el.innerHTML = safe;
+}
+
+function clearOutputs() {
+  const msg = '<div class="output-empty"><div class="empty-icon">&#x1F4C4;</div>Hit <strong>Build Prompts</strong> to generate your prompt.</div>';
+  document.getElementById('out-cl-content').innerHTML = msg;
+  document.getElementById('out-cv-content').innerHTML = msg;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROMPT BUILDER — UTILITIES
+// ═══════════════════════════════════════════════════════════════
+const _debounceMap = {};
+function autosave(fieldId, storageKey) {
+  clearTimeout(_debounceMap[fieldId]);
+  _debounceMap[fieldId] = setTimeout(() => {
+    localStorage.setItem(storageKey, document.getElementById(fieldId).value);
+    updateStatus();
+  }, 800);
+}
+
+function saveField(fieldId, storageKey) {
+  localStorage.setItem(storageKey, document.getElementById(fieldId).value);
+  toast('Saved \u2714', 'success');
+  updateStatus();
+}
+
+function saveAll() {
+  localStorage.setItem('cv_content_bank', document.getElementById('cv-bank').value);
+  localStorage.setItem('cl_prompt',       document.getElementById('cl-prompt').value);
+  localStorage.setItem('cv_prompt',       document.getElementById('cv-prompt').value);
+  saveProfileData();
+  toast('All fields saved \u2714', 'success');
+  updateStatus();
+}
+
+function clearField(fieldId, storageKey, countId) {
+  if (!confirm('Clear this field and remove it from saved storage?')) return;
+  document.getElementById(fieldId).value = '';
+  localStorage.removeItem(storageKey);
+  updateCount(fieldId, countId);
+  updateStatus();
+  toast('Cleared', 'info');
+}
+
+function clearJD() {
+  document.getElementById('jd-input').value = '';
+  try { localStorage.removeItem('gethired_jd'); } catch(e) {}
+  updateCount('jd-input','jd-count');
+  updateStatus();
+}
+
+function clearAll() {
+  if (!confirm('Clear ALL fields and saved data? This cannot be undone.')) return;
+  ['cv-bank','cl-prompt','cv-prompt','jd-input'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  ['cv_content_bank','cl_prompt','cv_prompt','gethired_jd'].forEach(k => localStorage.removeItem(k));
+  updateCount('cv-bank','cv-count');
+  updateCount('cl-prompt','cl-count');
+  updateCount('cv-prompt','cv-count2');
+  updateCount('jd-input','jd-count');
+  clearOutputs();
+  updateStatus();
+  toast('All cleared', 'info');
+}
+
+function copyField(fieldId) {
+  const val = document.getElementById(fieldId).value;
+  if (!val.trim()) { toast('Nothing to copy', 'error'); return; }
+  navigator.clipboard.writeText(val).then(() => toast('Copied \u2714', 'success'));
+}
+
+function copyOutput(panelId) {
+  const content = document.querySelector(`#${panelId} .output-content`);
+  const text = content.innerText || content.textContent;
+  if (!text.trim() || text.includes('Hit \u25B6')) { toast('Build prompts first', 'error'); return; }
+  navigator.clipboard.writeText(text).then(() => toast('Prompt copied \u2714', 'success'));
+}
+
+function updateCount(fieldId, countId) {
+  const val = document.getElementById(fieldId).value;
+  const len = val.length;
+  const words = val.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById(countId).textContent = len > 0 ? `${len.toLocaleString()} chars \u00B7 ${words.toLocaleString()} words` : '0 chars';
+}
+
+function updateStatus() {
+  const dot    = document.getElementById('status-dot');
+  const text   = document.getElementById('status-text');
+  const detail = document.getElementById('status-detail');
+  const hasCv  = !!document.getElementById('cv-bank').value.trim();
+  const hasCl  = !!document.getElementById('cl-prompt').value.trim();
+  const hasCvp = !!document.getElementById('cv-prompt').value.trim();
+  const hasJD  = !!document.getElementById('jd-input').value.trim();
+  if (hasCv && hasCl && hasCvp && hasJD) {
+    dot.className = 'status-dot ready';
+    text.textContent = 'Ready to build \u2014 all fields populated';
+    detail.textContent = 'CV Bank + prompts saved \u00B7 JD pasted';
+  } else if (hasCv && (hasCl || hasCvp)) {
+    dot.className = 'status-dot warn';
+    text.textContent = hasJD ? 'Missing prompt template' : 'Paste a job description to build';
+    detail.textContent = hasCl && hasCvp ? 'Both templates loaded' : hasCl ? 'CL template only' : 'CV template only';
+  } else {
+    dot.className = 'status-dot';
+    text.textContent = 'Fill in your profile in the Profile Builder tab to get started';
+    detail.textContent = 'CV Bank empty';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// OUTPUT TABS
+// ═══════════════════════════════════════════════════════════════
+function switchOutputTab(tab) {
+  const clPanel = document.getElementById('out-cover-letter');
+  const cvPanel = document.getElementById('out-cv-latex');
+  const tabs = document.querySelectorAll('.output-tab');
+  if (tab === 'cl') {
+    clPanel.classList.add('visible');    cvPanel.classList.remove('visible');
+    tabs[0].classList.add('active');    tabs[1].classList.remove('active');
+  } else {
+    cvPanel.classList.add('visible');   clPanel.classList.remove('visible');
+    tabs[1].classList.add('active');    tabs[0].classList.remove('active');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN VIEW SWITCHER
+// ═══════════════════════════════════════════════════════════════
+function switchView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.main-nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`view-${view}`).classList.add('active');
+  document.getElementById(`nav-${view}`).classList.add('active');
+  if (view === 'prompt') loadPromptBuilder();
+  if (view === 'export') initExport();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════════
+let _toastTimer;
+function toast(msg, type='info') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => { el.className = ''; }, 3200);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async () => {
+  // Load prompt templates from files
+  await loadDefaults();
+
+  // Load saved profile
+  P = loadProfileData();
+  renderProfileForm();
+
+  // Load prompt builder fields
+  restoreJD();
+  loadPromptBuilder();
+
+  // Event delegation: profile form input changes
+  document.getElementById('profile-form').addEventListener('input', e => {
+    const path = e.target.dataset.path;
+    if (!path) return;
+    setPath(P, path, e.target.value);
+    debouncedSave();
+  });
+
+  // JD field status updates
+  document.getElementById('jd-input').addEventListener('input', updateStatus);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// EXPORT TO WORD (.docx)  — fills the repo templates via JSZip
+// ═══════════════════════════════════════════════════════════════
+let exportType = 'cl';
+let exportData = null;
+const _tplCache = {};
+
+function initExport(){ setExportType(exportType); renderStyleControls(); renderSignatureState(); }
+
+function removeSignature(){ localStorage.removeItem('gethired_signature'); renderSignatureState(); toast('Signature removed','info'); }
+
+function setExportType(t){
+  exportType = t;
+  document.getElementById('exp-type-cl').className = 'btn btn-lg ' + (t==='cl'?'btn-primary':'btn-outline');
+  document.getElementById('exp-type-cv').className = 'btn btn-lg ' + (t==='cv'?'btn-primary':'btn-outline');
+  exportData = _loadDrafts()[t] || null;
+  document.getElementById('exp-parse-status').textContent = '';
+  const sigRow = document.getElementById('exp-sig-row');
+  if(sigRow) sigRow.style.display = (t==='cl') ? 'block' : 'none';
+  renderExportPreview();
+}
+
+function toggleExportPaste(){
+  const w = document.getElementById('exp-paste-wrap');
+  w.style.display = w.style.display==='none' ? 'block' : 'none';
+}
+
+async function readClipboardForExport(){
+  try {
+    const text = await navigator.clipboard.readText();
+    if (!text || !text.trim()) { toast('Clipboard is empty', 'error'); return; }
+    handleExportText(text);
+  } catch(e){
+    toast('Clipboard blocked — use "paste manually"', 'error');
+    document.getElementById('exp-paste-wrap').style.display = 'block';
+  }
+}
+function parseExportFromPaste(){
+  const text = document.getElementById('exp-paste').value;
+  if (!text.trim()) { toast('Paste the AI reply first', 'error'); return; }
+  handleExportText(text);
+}
+function handleExportText(text){
+  try {
+    text = _sanitize(text);   // clean at the door: parse, preview and export all see safe text
+    exportData = exportType==='cl' ? parseCL(text) : parseCV(text);
+    const ok = exportType==='cl'
+      ? (exportData.table.length>0 || !!exportData.intro)
+      : (!!exportData.summary || exportData.experience.length>0);
+    if (!ok) toast('Could not find the tagged sections — did you copy the whole reply?', 'error');
+    else toast('Content parsed ✔', 'success');
+    if (ok) saveExportDraft();
+    renderExportPreview();
+    document.getElementById('exp-download-btn').disabled = !ok;
+  } catch(e){ console.error(e); toast('Parse error: '+e.message, 'error'); }
+}
+
+// ---- parsing helpers ----
+function _sectionMap(text, tags){
+  const idx = tags.map(t=>({t, i:text.indexOf('['+t+']')})).filter(o=>o.i>=0).sort((a,b)=>a.i-b.i);
+  const map = {};
+  for (let k=0;k<idx.length;k++){
+    const start = idx[k].i + ('['+idx[k].t+']').length;
+    const end = k+1<idx.length ? idx[k+1].i : text.length;
+    map[idx[k].t] = text.slice(start, end).trim();
+  }
+  return map;
+}
+const _flat = s => (s||'').replace(/\s*\n\s*/g,' ').trim();
+const _paras = block => (block||'').split(/\n\s*\n/).map(_flat).filter(Boolean);
+const _bullets = block => (block||'').split('\n').map(l=>l.trim()).filter(l=>/^[-•*]/.test(l)).map(l=>l.replace(/^[-•*]\s*/,'').trim()).filter(Boolean);
+function _blocks(block){
+  const out = [];
+  (block||'').split(/\n(?=###\s)/).forEach(p=>{
+    p = p.trim(); if (!p.startsWith('###')) return;
+    const lines = p.split('\n');
+    out.push({ head: lines[0].replace(/^###\s*/,'').trim(), lines: lines.slice(1).map(l=>l.trim()).filter(Boolean) });
+  });
+  return out;
+}
+// Drop unfilled angle-bracket placeholders the model copied from the template
+// (<YEAR RANGE>, <EMAIL>, <PHONE>, <Degree> ...) so they never reach the document.
+// Em dashes never reach the document: each one becomes a spaced hyphen
+// ("Delivery Lead \u2014 Sustainable Finance" -> "Delivery Lead - Sustainable Finance").
+function _noEmDash(s){
+  if(!s || String(s).indexOf('\u2014')<0) return s;
+  return String(s).replace(/[ \t]*\u2014[ \t]*/g, ' - ');
+}
+function _noPlaceholder(s){
+  if(!s) return '';
+  return _noEmDash(String(s))
+    .replace(/<[A-Za-z][A-Za-z0-9 _\/.,'()-]{0,48}>/g,'')  // the placeholder itself
+    .replace(/\s{2,}/g,' ')                                 // collapse the gap it left
+    .replace(/\s*\|\s*$/,'')                                // trailing separator
+    .replace(/^[\s,;:|-]+/,'')                              // leading punctuation
+    .trim();
+}
+// Letterhead contact line: each item is an icon run followed by its own text or link
+// and spaces. Remove whole items the user left blank (no dead "#" links or bare
+// icons), then trim the trailing space so the centred line stays centred.
+function _pruneLetterhead(xml, rels, has){
+  if (Object.values(has).every(Boolean)) return xml;            // all filled: leave the template untouched
+  if (!/\[YOUR_(PHONE|EMAIL|LOCATION)\]/.test(xml)) return xml;
+  const W  = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+  const R  = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+  const MC = 'http://schemas.openxmlformats.org/markup-compatibility/2006';
+  const doc = new DOMParser().parseFromString(xml, 'application/xml');
+  if (doc.getElementsByTagName('parsererror').length) return xml;
+  const KEY = { '[YOUR_PHONE]':'phone', '[YOUR_EMAIL]':'email', '[YOUR_LOCATION]':'location',
+                '[YOUR_LINKEDIN_URL]':'linkedin', '[YOUR_PORTFOLIO_URL]':'portfolio',
+                '[YOUR_SEEK_URL]':'seek', '[YOUR_RIGHT_TO_WORK_URL]':'rtw' };
+  const target = {};
+  (rels.match(/<Relationship\b[^>]*>/g) || []).forEach(t => {
+    const id = (t.match(/\bId="([^"]+)"/) || [])[1], tg = (t.match(/\bTarget="([^"]+)"/) || [])[1];
+    if (id) target[id] = tg || '';
+  });
+  const para = [...doc.getElementsByTagNameNS(W, 'p')].find(x => /\[YOUR_(PHONE|EMAIL|LOCATION)\]/.test(x.textContent));
+  if (!para) return xml;
+  const isIcon = n => n.localName === 'r' && (n.getElementsByTagNameNS(W, 'drawing').length ||
+                      n.getElementsByTagNameNS(W, 'pict').length || n.getElementsByTagNameNS(MC, 'AlternateContent').length);
+  const groups = []; let g = null;
+  for (const n of [...para.childNodes]) {
+    if (n.nodeType !== 1 || n.localName === 'pPr') continue;
+    if (isIcon(n) || !g) { g = { nodes: [], key: null }; groups.push(g); }
+    g.nodes.push(n);
+  }
+  const tag = (gr, s) => { for (const ph in KEY) if (s.indexOf(ph) >= 0) gr.key = KEY[ph]; };
+  for (const gr of groups) for (const n of gr.nodes) {
+    tag(gr, n.textContent || '');
+    if (n.localName === 'hyperlink') tag(gr, target[n.getAttributeNS(R, 'id')] || '');
+  }
+  groups.filter(gr => gr.key && !has[gr.key]).forEach(gr => gr.nodes.forEach(n => para.removeChild(n)));
+  const ts = [...para.getElementsByTagNameNS(W, 't')];
+  for (let i = ts.length - 1; i >= 0; i--) {                     // trailing space would shift the centred line
+    ts[i].textContent = ts[i].textContent.replace(/\s+$/, '');
+    if (ts[i].textContent) break;
+  }
+  const decl = (xml.match(/^<\?xml[^>]*\?>\s*/) || [''])[0];
+  return decl + new XMLSerializer().serializeToString(doc).replace(/^<\?xml[^>]*\?>\s*/, '');
+}
+// short display name: "L.I.D. Amarasinghe (Indika Amarasinghe)" -> "Indika Amarasinghe"
+function _shortName(full){ full = full||''; const m = full.match(/\(([^)]+)\)/); return (m ? m[1] : full).trim(); }
+// cut off trailing report sections (KEYWORD MATCH REPORT, A./B./C./D., etc.) that follow the last tag
+function _cutTail(s){
+  if(!s) return '';
+  // stop at the trailing report block: a markdown rule (---), or a heading like
+  // "**A. Keyword match report**", "A. Keyword", "KEYWORD CHECK", "What was left out", etc.
+  const stop = /^\s*(?:[-_*]{3,}\s*$|\*{0,2}\s*[A-D][\.\)]\s|\*{0,2}\s*(?:KEYWORD\b|ANTI[- ]?AI\b|WHAT WAS\b|WHAT WAS LEFT\b|COVER LETTER\b|INTERVIEW\b|THE ONE THING\b|SUGGESTED FILE\b|TAILORING\b))/i;
+  const out = [];
+  for (const line of s.split('\n')){ if (stop.test(line)) break; out.push(line); }
+  return out.join('\n').trim();
+}
+
+function parseCL(text){
+  const m = _sectionMap(text, ['SALUTATION','INTRO','ABOUT','TABLE','CLOSING','SIGNOFF']);
+  const table = (m.TABLE||'').split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
+    const p = l.split('::');
+    return { req:(p[0]||'').trim(), con:(p.slice(1).join('::')||'').trim() };
+  }).filter(r=>r.req||r.con);
+  const stop = /^(?:[A-D]\.\s|ANTI-?AI|KEYWORD|THE ONE THING|TAILORING|SUGGESTED|WHAT WAS|COVER LETTER|INTERVIEW)/i;
+  const sign = [];
+  for (const l of _cutTail(m.SIGNOFF||'').split('\n').map(x=>x.trim()).filter(Boolean)){ if (stop.test(l)) break; sign.push(l); }
+  const signName = sign.find(l=>!/^kind regards/i.test(l)) || _shortName(P.personal.fullName);
+  return {
+    salutation: _noPlaceholder((_flat(m.SALUTATION)||'Dear Hiring Manager,').split('\n')[0]),
+    intro: _noPlaceholder(_flat(m.INTRO)), about: _noPlaceholder(_flat(m.ABOUT)),
+    table: table.map(r=>({req:_noPlaceholder(r.req), con:_noPlaceholder(r.con)})),
+    closing: _paras(m.CLOSING).map(_noPlaceholder).filter(Boolean),
+    signName: _noPlaceholder(signName)
+  };
+}
+
+function parseCV(text){
+  const m = _sectionMap(text, ['SUMMARY','COMPETENCIES','EXPERIENCE','EDUCATION','CERTIFICATIONS','ACHIEVEMENTS','REFEREES']);
+  const comp = _bullets(m.COMPETENCIES).length ? _bullets(m.COMPETENCIES)
+             : (m.COMPETENCIES||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  const experience = _blocks(m.EXPERIENCE).map(b=>{
+    const h = b.head.split('|');
+    let linkLabel=null, linkUrl=null;
+    if (h.length>2){
+      const lm = h.slice(2).join('|').trim().match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/);
+      if (lm){ linkLabel=lm[1]; linkUrl=lm[2]; }
+    }
+    const plain = b.lines.filter(l=>!/^[-•*]/.test(l));
+    const org   = _splitLabel(plain.find(l=>!/^previously\s*:/i.test(l)) || '');
+    const prev  = plain.find(l=>/^previously\s*:/i.test(l)) || '';
+    const bl    = b.lines.filter(l=>/^[-•*]/.test(l)).map(l=>l.replace(/^[-•*]\s*/,'').trim());
+    return { title:_noPlaceholder(h[0]), dates:_noPlaceholder(h[1]), linkLabel, linkUrl,
+             org:_noPlaceholder(org.text), orgLabel:org.label, orgUrl:org.url,
+             previously:_noPlaceholder(prev), bullets:bl.map(_noPlaceholder).filter(Boolean) };
+  });
+  const education = _blocks(m.EDUCATION).map(b=>{
+    const h = b.head.split('|');
+    const inst = _splitLabel(b.lines[0]||'');
+    return { degree:_noPlaceholder(h[0]), years:_noPlaceholder(h[1]),
+             inst:_noPlaceholder(inst.text), instLabel:inst.label, instUrl:inst.url };
+  });
+  let referees;
+  const refText = _cutTail(m.REFEREES||'');
+  const rb = _blocks(refText);
+  if (rb.length) referees = rb.map(b=>{
+    const n = _splitLabel(b.head);
+    return { name:_noPlaceholder(n.text), linkLabel:n.label, linkUrl:n.url,
+             title:_noPlaceholder(b.lines[0]), contact:_noPlaceholder(b.lines[1]) };
+  });
+  else referees = [{ available: _noEmDash(_flat(refText)) || 'Available upon request.' }];
+  return {
+    summary: _noPlaceholder(_flat(m.SUMMARY)),
+    competencies: comp.map(_noPlaceholder).filter(Boolean), experience, education,
+    certifications: _bullets(m.CERTIFICATIONS).map(_noPlaceholder).filter(Boolean),
+    achievements: _bullets(m.ACHIEVEMENTS).map(_noPlaceholder).filter(Boolean), referees
+  };
+}
+
+// ---- OOXML builders — see docs/DOCX_EXPORT_SPEC.md ----
+// Strip characters XML 1.0 forbids. Clipboard/AI text often carries stray control
+// codes; even one makes document.xml malformed and Word refuses to open the file.
+function _sanitize(s){
+  return (s==null?'':String(s))
+    .replace(/^﻿/, '')                                              // BOM
+    .replace(/\r\n?/g, '\n')                                             // CRLF/CR -> LF
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F￾￿]/g,'') // illegal controls
+    .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])/g,'')                   // lone high surrogate
+    .replace(/(^|[^\uD800-\uDBFF])([\uDC00-\uDFFF])/g,'$1');             // lone low surrogate
+}
+const xesc = s => _sanitize(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const XF = '<w:rFonts w:asciiTheme="majorBidi" w:hAnsiTheme="majorBidi" w:cstheme="majorBidi"/>';
+let ACCENT = '156082';   // headings + rules (theme accent1)
+let CLHDR  = '215E99';   // cover-letter table header text
+const SZ_SM  = '21';       // 10.5pt — table cells
+
+function xrpr(o){ o=o||{}; let p=XF;
+  if(o.b)p+='<w:b/><w:bCs/>'; if(o.i)p+='<w:i/><w:iCs/>'; if(o.u)p+='<w:u w:val="single"/>';
+  if(o.c)p+='<w:color w:val="'+o.c+'"/>';
+  if(o.sz)p+='<w:sz w:val="'+o.sz+'"/><w:szCs w:val="'+o.sz+'"/>';
+  return '<w:rPr>'+p+'</w:rPr>'; }
+function xrun(t,o){ const parts=xesc(t).split('\n');
+  return '<w:r>'+xrpr(o)+parts.map(p=>'<w:t xml:space="preserve">'+p+'</w:t>').join('<w:br/>')+'</w:r>'; }
+
+// inline links: [label](url) -> Word hyperlink run (rIds resolved at export time)
+let _linkReg = [];
+// Structural label links render bracketed AND underlined: [Credentials] [View]
+// [Responsibilities] [Milestones] [Website]. Every other link (certifications,
+// project/tool mentions inside prose and bullets) is blue but NOT underlined.
+const LINK_LABELS = ['Responsibilities','Milestones','Website','Credentials','View'];
+function _linkRpr(o){ o=o||{}; let p='<w:rStyle w:val="Hyperlink"/>'+XF;
+  if(o.b)p+='<w:b/><w:bCs/>'; if(o.i)p+='<w:i/><w:iCs/>';
+  p += (o.u===true) ? '<w:u w:val="single"/>' : '<w:u w:val="none"/>';
+  if(o.sz)p+='<w:sz w:val="'+o.sz+'"/><w:szCs w:val="'+o.sz+'"/>'; return '<w:rPr>'+p+'</w:rPr>'; }
+function _linkRun(label,url,o){
+  o = Object.assign({}, o||{});
+  const bare = String(label||'').replace(/^\[|\]$/g,'').trim();
+  const isLabel = LINK_LABELS.indexOf(bare) !== -1;
+  const text = isLabel ? '['+bare+']' : label;      // structural labels keep their brackets
+  if(isLabel) o.u = true;                            // and stay underlined
+  else if(o.u !== true) o.u = false;                 // mid-content links: no underline
+  const i=_linkReg.push(url)-1;
+  const inner=xesc(text).split('\n').map(x=>'<w:t xml:space="preserve">'+x+'</w:t>').join('<w:br/>');
+  return '<w:hyperlink r:id="__LNK'+i+'__" w:history="1"><w:r>'+_linkRpr(o)+inner+'</w:r></w:hyperlink>'; }
+function _renderText(t,o){
+  o=o||{};
+  if((t||'').indexOf('](')<0) return t?xrun(t,o):'';
+  const re=/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g; let out='', last=0, m;
+  while((m=re.exec(t))){
+    if(m.index>last) out+=xrun(t.slice(last,m.index),o);
+    out+=_linkRun(m[1],m[2],o); last=m.index+m[0].length;
+  }
+  if(last<t.length) out+=xrun(t.slice(last),o);
+  return out;
+}
+// "Organisation, Location | [Milestones](url)" -> {text,label,url}
+function _splitLabel(s){
+  const m=(s||'').match(/^(.*?)\s*\|\s*\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)\s*$/);
+  return m ? {text:m[1].trim(), label:m[2], url:m[3]} : {text:(s||'').trim()};
+}
+
+function xpara(t,o){ o=o||{}; let ppr='<w:pPr>';
+  if(o.pStyle) ppr+='<w:pStyle w:val="'+o.pStyle+'"/>';
+  if(o.numId!=null) ppr+='<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+o.numId+'"/></w:numPr>';
+  if(o.before!=null||o.after!=null||o.line!=null){ ppr+='<w:spacing';
+    if(o.before!=null)ppr+=' w:before="'+o.before+'"';
+    if(o.after!=null)ppr+=' w:after="'+o.after+'"';
+    if(o.line!=null)ppr+=' w:line="'+o.line+'" w:lineRule="auto"'; ppr+='/>'; }
+  if(o.align)ppr+='<w:jc w:val="'+o.align+'"/>';
+  ppr+='<w:rPr>'+XF+'</w:rPr></w:pPr>';
+  return '<w:p>'+ppr+(o.runs!=null?o.runs:(t?_renderText(t,o):''))+'</w:p>'; }
+
+// Blue rule. The approved template draws these as anchored "Straight Connector"
+// shapes (a:ln w=12700 = 1pt, theme accent1). We render the identical 1pt accent
+// line as a paragraph bottom border instead: w:sz is in EIGHTHS of a point, so
+// sz="8" == 1.0pt — visually the same, but plain WordprocessingML with no
+// DrawingML/wps extension content, which is far more robust across Word builds.
+function xline(headline){
+  return '<w:p><w:pPr>'
+    + '<w:pBdr><w:bottom w:val="single" w:sz="8" w:space="'+(headline?1:2)+'" w:color="'+ACCENT+'"/></w:pBdr>'
+    + '<w:spacing w:after="'+(headline?40:120)+'" w:line="240" w:lineRule="auto"/>'
+    + '<w:rPr>'+XF+'<w:sz w:val="4"/><w:szCs w:val="4"/></w:rPr></w:pPr></w:p>';
+}
+// Empty paragraph at 1 pt font — the clearance the user adds by hand in Word.
+// It keeps the document default spacing (after=160, line=259), so it gives ~9 pt of
+// air: the original template's floating headline bar sat that far above the heading.
+function xspacer(){ return '<w:p><w:pPr><w:rPr>'+XF+'<w:sz w:val="2"/><w:szCs w:val="2"/></w:rPr></w:pPr></w:p>'; }
+// section = bold accent CAPS heading + its own rule paragraph
+function xheading(t,first){ return xpara(t.toUpperCase(),{before:first?null:240,b:true,c:ACCENT})+xline(false); }
+function xbullet(t,numId,o){ return xpara(t,Object.assign({pStyle:'ListParagraph',numId:numId||1,align:'both'},o||{})); }
+
+function xcell(w,content,span){ return '<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/>'+(span?'<w:gridSpan w:val="'+span+'"/>':'')+'</w:tcPr>'+(content||xpara(''))+'</w:tc>'; }
+const XNOBORD='<w:tblBorders>'+['top','left','bottom','right','insideH','insideV'].map(s=>'<w:'+s+' w:val="none" w:sz="0" w:space="0" w:color="auto"/>').join('')+'</w:tblBorders>';
+function xtbl(grid,rows,bordered){
+  return '<w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="0" w:type="auto"/>'+(bordered?'':XNOBORD)
+    +'<w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr>'
+    +'<w:tblGrid>'+grid.map(w=>'<w:gridCol w:w="'+w+'"/>').join('')+'</w:tblGrid>'+rows+'</w:tbl>'; }
+const xrow = cells => '<w:tr>'+cells+'</w:tr>';
+
+function buildCLBody(d, sigDrawing){
+  let b=xline(true);
+  b+=xpara(d.salutation||'Dear Hiring Manager,',{after:60,line:240});
+  if(d.intro) b+=xpara(d.intro,{align:'both',after:60,line:240});
+  if(d.about)  b+=xpara(d.about,{align:'both',after:60,line:240});
+  if(d.table.length){
+    let rows=xrow(xcell(3505,xpara('What the Role Requires',{align:'center',b:true,c:CLHDR,sz:SZ_SM}))
+                 +xcell(7285,xpara('How I Can Contribute',{align:'center',b:true,c:CLHDR,sz:SZ_SM})));
+    for(const r of d.table)
+      rows+=xrow(xcell(3505,xpara(r.req,{sz:SZ_SM}))+xcell(7285,xpara(r.con,{align:'both',sz:SZ_SM})));
+    b+=xtbl([3505,7285],rows,true);
+    b+=xpara('',{align:'both',after:60,line:240});
+  }
+  d.closing.forEach((c,i)=>{
+    if(i) b+=xpara('',{align:'both',after:60,line:240});
+    b+=xpara(c,{align:'both',after:60,line:240});
+  });
+  b+=xpara('Kind regards,',{after:20,line:240});
+  // Sign-off paragraph, matching the template: space, signature image, line break, name.
+  const signName = d.signName || _shortName(P.personal.fullName) || '';
+  // The name gets its own paragraph: a <w:br/> after the inline image is dropped by
+  // some PDF renderers, which left the signature with no name under it.
+  if(sigDrawing) b+=xpara('',{after:0,runs: xrun(' ',{}) + sigDrawing});
+  b+=xpara(signName,{});
+  return b;
+}
+
+// Title | dates columns for experience and education. The date column must hold
+// "September 2015 – June 2019" in bold italic on one line (the old 2335 wrapped).
+const CV_DATE_W = 3400, CV_TITLE_W = 10790 - CV_DATE_W;
+// Education dates are years only ("2015 \u2013 2019", at most "2020 \u2013 Present"), so that table
+// gets a narrow date column and gives the room to long degree titles.
+const EDU_DATE_W = 1800, EDU_TITLE_W = 10790 - EDU_DATE_W;
+function buildCVBody(d){
+  let b=xline(true);                       // headline bar under the letterhead
+  b+=xspacer();                            // clearance so the first heading doesn't touch the bar
+  let first=true;
+  const sec=t=>{ const h=xheading(t,first); first=false; return h; };
+
+  b+=sec('Professional Summary');
+  b+=xpara(d.summary,{align:'both',after:40,line:240});
+  b+=xpara('',{align:'both',after:40,line:240});
+
+  if(d.competencies.length){
+    b+=sec('Core Competencies');
+    const half=Math.ceil(d.competencies.length/2);
+    const col=items=>items.map(x=>xpara('',{line:276,runs:xrun('• ',{})+_renderText(x,{})})).join('')||xpara('');
+    b+=xtbl([5395,5395],xrow(xcell(5395,col(d.competencies.slice(0,half)))+xcell(5395,col(d.competencies.slice(half)))),false);
+    b+=xpara('');
+  }
+
+  if(d.experience.length){
+    b+=sec('Professional Experience');
+    let rows='', n=0;
+    for(const e of d.experience){
+      const numId=(n%5)+1; n++;
+      const titleRuns=xrun(e.title,{b:true})+(e.linkUrl?xrun(' ',{})+_linkRun(e.linkLabel,e.linkUrl,{u:true}):'');
+      rows+=xrow(xcell(CV_TITLE_W,xpara('',{runs:titleRuns}))+xcell(CV_DATE_W,xpara(e.dates,{align:'right',b:true,i:true})));
+      let inner='';
+      if(e.org) inner+=xpara('',{runs:xrun(e.org+' ',{i:true})+(e.orgUrl?_linkRun(e.orgLabel,e.orgUrl,{u:true}):'')});
+      if(e.previously) inner+=xpara(e.previously,{i:true});
+      for(const bl of e.bullets) inner+=xbullet(bl,numId);
+      rows+=xrow(xcell(10790,inner,2));
+      rows+=xrow(xcell(10790,xpara(''),2));
+    }
+    b+=xtbl([CV_TITLE_W,CV_DATE_W],rows,false);
+  }
+
+  if(d.education.length){
+    b+=sec('Education');
+    let rows='';
+    for(const e of d.education){
+      rows+=xrow(xcell(EDU_TITLE_W,xpara(e.degree,{b:true}))+xcell(EDU_DATE_W,xpara(e.years,{align:'right',b:true})));
+      rows+=xrow(xcell(10790,xpara('',{runs:xrun(e.inst+' ',{i:true})+(e.instUrl?_linkRun(e.instLabel,e.instUrl,{u:true}):'')}),2));
+    }
+    b+=xtbl([EDU_TITLE_W,EDU_DATE_W],rows,false);
+  }
+
+  if(d.certifications.length){
+    b+=sec('Certifications');
+    const half=Math.ceil(d.certifications.length/2);
+    const col=items=>items.map(x=>xbullet(x,4,{align:'left'})).join('')||xpara('');  // left, not justified: short items stretched badly
+    b+=xtbl([5395,5395],xrow(xcell(5395,col(d.certifications.slice(0,half)))+xcell(5395,col(d.certifications.slice(half)))),false);
+  }
+
+  if(d.achievements.length){
+    b+=sec('Key Achievements');
+    for(const a of d.achievements) b+=xbullet(a,5);
+  }
+
+  if(d.referees && d.referees.length){
+    b+=sec('Referees');
+    if(d.referees[0].available){ b+=xpara(d.referees[0].available); }
+    else {
+      const cellFor=r=>xpara('',{runs:xrun(r.name,{b:true})+(r.linkUrl?xrun(' | ',{})+_linkRun(r.linkLabel||'LinkedIn',r.linkUrl,{u:true}):'')})
+                      +xpara(r.title)+xpara(r.contact);
+      let rows='';
+      for(let i=0;i<d.referees.length;i+=2)
+        rows+=xrow(xcell(5395,cellFor(d.referees[i]))+xcell(5395,d.referees[i+1]?cellFor(d.referees[i+1]):xpara('')));
+      b+=xtbl([5395,5395],rows,false);
+    }
+  }
+  return b;
+}
+
+async function _fetchTemplate(type){
+  const file = type==='cl' ? 'templates/CL_template.docx' : 'templates/CV_template.docx';
+  if(_tplCache[type]) return _tplCache[type].slice(0);
+  const res = await fetch(file);
+  if(!res.ok) throw new Error('template not found: '+file);
+  const buf = await res.arrayBuffer();
+  _tplCache[type] = buf;
+  return buf.slice(0);
+}
+
+// ---- signature (cover letter) ----
+function _loadSignature(){ try{ const s=localStorage.getItem('gethired_signature'); return s?JSON.parse(s):null; }catch(e){ return null; } }
+// Returns a RUN (not a paragraph). It is composed into the sign-off paragraph by
+// buildCLBody. Returning a <w:p> here nested a paragraph inside a paragraph, which
+// is well-formed XML but invalid WordprocessingML — Word refused the whole file.
+function _sigDrawing(rid,w,h){
+  return '<w:r><w:rPr>'+XF+'<w:noProof/></w:rPr><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="'+w+'" cy="'+h+'"/><wp:effectExtent l="0" t="0" r="0" b="0"/><wp:docPr id="201" name="Signature"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="201" name="Signature"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="'+rid+'"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="'+w+'" cy="'+h+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>';
+}
+async function _embedSignature(zip){
+  const sig=_loadSignature(); if(!sig||!sig.dataUrl) return null;
+  let rels=await zip.file('word/_rels/document.xml.rels').async('string');
+  let max=0; (rels.match(/Id="rId(\d+)"/g)||[]).forEach(m=>{const n=+m.match(/\d+/)[0]; if(n>max)max=n;});
+  const rid='rId'+(max+1);
+  const ext=(sig.ext||'png').toLowerCase();
+  const media='gethired_sig.'+ext;
+  zip.file('word/media/'+media, sig.dataUrl.split(',')[1], {base64:true});
+  rels=rels.replace('</Relationships>','<Relationship Id="'+rid+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/'+media+'"/></Relationships>');
+  zip.file('word/_rels/document.xml.rels', rels);
+  let ct=await zip.file('[Content_Types].xml').async('string');
+  const type = (ext==='jpg'||ext==='jpeg')?'image/jpeg':(ext==='gif'?'image/gif':'image/png');
+  if(!new RegExp('Extension="'+ext+'"','i').test(ct)){ ct=ct.replace('</Types>','<Default Extension="'+ext+'" ContentType="'+type+'"/></Types>'); zip.file('[Content_Types].xml', ct); }
+  const wEmu=858129;                                   // template signature width (~2.38cm)
+  const hEmu=Math.max(120000, Math.round(wEmu*(sig.h||1)/(sig.w||3)));
+  return _sigDrawing(rid, wEmu, hEmu);
+}
+
+async function downloadExportDocx(){
+  if(!exportData){ toast('Read or paste content first','error'); return; }
+  try {
+    toast('Building .docx…','info');
+    _linkReg = [];
+    _applyExportColours();
+    // createFolders:false — JSZip otherwise injects zero-length directory entries
+    // (word/, word/_rels/) which have no content type. OPC requires every part to
+    // have one, and Word rejects the package outright.
+    const zip = await JSZip.loadAsync(await _fetchTemplate(exportType), {createFolders:false});
+    let docXml = await zip.file('word/document.xml').async('string');
+    const bs = docXml.indexOf('<w:body>');
+    const docOpen = docXml.slice(0, bs);
+    const sect = (docXml.match(/<w:sectPr[\s\S]*?<\/w:sectPr>/)||[''])[0];
+    let sigDrawing = null;
+    if(exportType==='cl') sigDrawing = await _embedSignature(zip);
+    let body = exportType==='cl' ? buildCLBody(exportData, sigDrawing) : buildCVBody(exportData);
+    // resolve inline hyperlinks: register external relationships, swap __LNK<i>__ tokens for rIds
+    if(_linkReg.length){
+      let rels = await zip.file('word/_rels/document.xml.rels').async('string');
+      let max=0; (rels.match(/Id="rId(\d+)"/g)||[]).forEach(x=>{const n=+x.match(/\d+/)[0]; if(n>max)max=n;});
+      let adds='';
+      _linkReg.forEach((url,i)=>{ const rid='rId'+(max+1+i);
+        adds+='<Relationship Id="'+rid+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="'+xesc(url)+'" TargetMode="External"/>';
+        body = body.split('__LNK'+i+'__').join(rid);
+      });
+      rels = rels.replace('</Relationships>', adds+'</Relationships>');
+      zip.file('word/_rels/document.xml.rels', rels);
+    }
+    const finalDoc = docOpen+'<w:body>'+body+sect+'</w:body></w:document>';
+
+    // pre-flight A: no paragraph may nest inside another paragraph. This is
+    // well-formed XML but invalid WordprocessingML, and Word rejects the file.
+    let _depth=0, _nested=0;
+    (body.match(/<w:p(?:\s[^>]*)?>|<\/w:p>/g)||[]).forEach(tag=>{
+      if(tag.charAt(1)==='/') _depth--; else { if(_depth>0) _nested++; _depth++; }
+    });
+    if(_nested>0 || _depth!==0){
+      console.error('Invalid paragraph nesting: nested='+_nested+' unbalanced='+_depth);
+      toast('Export aborted — invalid document structure (nested paragraphs).','error');
+      return;
+    }
+
+    // pre-flight B: never hand Word a malformed package
+    const probe = new DOMParser().parseFromString(finalDoc, 'application/xml');
+    if(probe.getElementsByTagName('parsererror').length){
+      const msg = (probe.getElementsByTagName('parsererror')[0].textContent||'').split('\n')[0];
+      console.error('Generated document.xml is not well-formed:', msg);
+      toast('Export aborted — generated document was invalid. Re-copy the AI reply and try again.','error');
+      return;
+    }
+    zip.file('word/document.xml', finalDoc);
+
+    // letterhead substitution — across every header part (CV uses header2, CL uses header1)
+    const p = P.personal||{};
+    const dispName = _shortName(p.fullName) || 'Your Name';
+    const htext = { '[YOUR_FULL_NAME]': dispName.toUpperCase(), '[YOUR_PHONE]': p.phone||'',
+                    '[YOUR_EMAIL]': p.email||'', '[YOUR_LOCATION]': p.location||'' };
+    const hurl  = { '[YOUR_LINKEDIN_URL]': p.linkedin||'#', '[YOUR_PORTFOLIO_URL]': p.portfolio||'#',
+                    '[YOUR_RIGHT_TO_WORK_URL]': p.rtwUrl||'#', '[YOUR_SEEK_URL]': p.seekUrl||'#' };
+    const filled = v => !!String(v||'').trim();
+    const has = { phone:filled(p.phone), email:filled(p.email), location:filled(p.location), linkedin:filled(p.linkedin),
+                  portfolio:filled(p.portfolio), seek:filled(p.seekUrl), rtw:filled(p.rtwUrl) };
+    for(const name of Object.keys(zip.files)){
+      if(/^word\/header\d*\.xml$/.test(name)){
+        let h = await zip.file(name).async('string');
+        const relName = name.replace(/^word\//, 'word/_rels/') + '.rels';
+        const rels = zip.file(relName) ? await zip.file(relName).async('string') : '';
+        h = _pruneLetterhead(h, rels, has);
+        for(const k in htext) h = h.split(k).join(xesc(htext[k]));
+        zip.file(name, h);
+      } else if(/^word\/_rels\/header\d*\.xml\.rels$/.test(name)){
+        let r = await zip.file(name).async('string');
+        for(const k in hurl) r = r.split(k).join(xesc(hurl[k]));
+        zip.file(name, r);
+      }
+    }
+
+    await _applyExportStyle(zip);
+
+    // Belt and braces: drop any directory entries JSZip created while we wrote files.
+    // A zero-length "word/" part has no content type and Word refuses the whole package.
+    for(const n of Object.keys(zip.files)){ if(zip.files[n].dir) delete zip.files[n]; }
+
+    const blob = await zip.generateAsync({
+      type:'blob',
+      mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      compression:'DEFLATE', compressionOptions:{level:6}
+    });
+
+    // self-check: re-open what we just built and confirm Word will accept it
+    try {
+      const verify = await JSZip.loadAsync(blob);
+      const vdoc = await verify.file('word/document.xml').async('string');
+      const vp = new DOMParser().parseFromString(vdoc, 'application/xml');
+      if(vp.getElementsByTagName('parsererror').length) throw new Error('document.xml is malformed');
+      for(const req of ['[Content_Types].xml','word/_rels/document.xml.rels','word/styles.xml']){
+        if(!verify.file(req)) throw new Error('missing '+req);
+      }
+    } catch(vErr){
+      console.error('Package verification failed:', vErr);
+      toast('Export aborted — package failed verification ('+vErr.message+')','error');
+      return;
+    }
+
+    const nameFile = dispName.trim().split(/\s+/).join('_').replace(/[^A-Za-z0-9_]/g,'') || 'Document';
+    const fn = nameFile+'_'+(exportType==='cl'?'CoverLetter':'CV')+'.docx';
+    // Attach the anchor and keep the blob URL alive until the browser has read it.
+    // Revoking immediately after click() truncates large downloads (~1MB) and
+    // produces a file Word cannot open.
+    _downloadBlob(blob, fn);
+    toast('Downloaded '+fn+' ('+Math.round(blob.size/1024)+' KB) ✔','success');
+  } catch(e){ console.error(e); toast('Export failed: '+e.message,'error'); }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// GAIA EDITION: job description autosave
+// ═══════════════════════════════════════════════════════════════
+let _jdTimer;
+function saveJD(){
+  clearTimeout(_jdTimer);
+  _jdTimer = setTimeout(() => {
+    const v = document.getElementById('jd-input').value;
+    try { v ? localStorage.setItem('gethired_jd', v) : localStorage.removeItem('gethired_jd'); } catch(e) {}
+  }, 500);
+}
+function restoreJD(){
+  const el = document.getElementById('jd-input');
+  el.value = localStorage.getItem('gethired_jd') || '';
+  updateCount('jd-input','jd-count');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SIGNATURE CLEANUP (same method as LushNote's SignatureUploader)
+// Adaptive local thresholding via integral image (Bradley–Roth method):
+// each pixel is compared with the mean brightness of its surrounding window
+// rather than one global threshold, so grey, textured or unevenly lit paper
+// all clean up. Specks are removed, the ink is cropped and traced to SVG.
+// ═══════════════════════════════════════════════════════════════
+function _signatureToSVG(img){
+  const MAX_DIM = 1400;
+  const scale = Math.min(1, MAX_DIM / Math.max(img.naturalWidth, img.naturalHeight));
+  const width  = Math.round(img.naturalWidth  * scale);
+  const height = Math.round(img.naturalHeight * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = width; canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, width, height);
+  const data = ctx.getImageData(0, 0, width, height).data;
+
+  const gray = new Float32Array(width * height);
+  for (let i = 0; i < data.length; i += 4) {
+    // transparent pixels (PNG cut-outs) count as white paper
+    const a = data[i + 3] / 255;
+    gray[i >> 2] = (0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) * a + 255 * (1 - a);
+  }
+  const W1 = width + 1;
+  const integral = new Float64Array(W1 * (height + 1));
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      integral[(y + 1) * W1 + (x + 1)] = gray[y * width + x] + integral[y * W1 + (x + 1)] + integral[(y + 1) * W1 + x] - integral[y * W1 + x];
+    }
+  }
+  const radius = Math.max(12, Math.min(Math.round(Math.min(width, height) * 0.04), 40));
+  const sensitivity = 0.12;
+  const binary = new Uint8Array(width * height);
+  let inkCount = 0;
+  for (let y = 0; y < height; y++) {
+    const y1 = Math.max(0, y - radius), y2 = Math.min(height - 1, y + radius);
+    for (let x = 0; x < width; x++) {
+      const x1 = Math.max(0, x - radius), x2 = Math.min(width - 1, x + radius);
+      const count = (x2 - x1 + 1) * (y2 - y1 + 1);
+      const sum = integral[(y2 + 1) * W1 + (x2 + 1)] - integral[y1 * W1 + (x2 + 1)] - integral[(y2 + 1) * W1 + x1] + integral[y1 * W1 + x1];
+      if (gray[y * width + x] < (sum / count) * (1 - sensitivity)) { binary[y * width + x] = 1; inkCount++; }
+    }
+  }
+  if (inkCount > (width * height) / 2) { for (let i = 0; i < binary.length; i++) binary[i] = binary[i] ? 0 : 1; }
+  const denoised = new Uint8Array(width * height);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = y * width + x;
+      if (!binary[idx]) continue;
+      if ((x > 0 && binary[idx - 1]) || (x < width - 1 && binary[idx + 1]) || (y > 0 && binary[idx - width]) || (y < height - 1 && binary[idx + width])) denoised[idx] = 1;
+    }
+  }
+  let minX = width, minY = height, maxX = 0, maxY = 0;
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    if (!denoised[y * width + x]) continue;
+    if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y;
+  }
+  if (minX > maxX || minY > maxY) return null;
+  const PAD = 4;
+  minX = Math.max(0, minX - PAD); minY = Math.max(0, minY - PAD);
+  maxX = Math.min(width - 1, maxX + PAD); maxY = Math.min(height - 1, maxY + PAD);
+  const cw = maxX - minX + 1, ch = maxY - minY + 1;
+  // One path of horizontal ink runs (same geometry as LushNote's rects, smaller markup)
+  let d = '';
+  for (let y = minY; y <= maxY; y++) {
+    let runStart = -1;
+    for (let x = minX; x <= maxX + 1; x++) {
+      const ink = x <= maxX && denoised[y * width + x];
+      if (ink && runStart < 0) runStart = x;
+      else if (!ink && runStart >= 0) { d += 'M' + (runStart - minX) + ' ' + (y - minY) + 'h' + (x - runStart) + 'v1h-' + (x - runStart) + 'z'; runStart = -1; }
+    }
+  }
+  return { svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + cw + ' ' + ch + '"><path fill="#1a1a1a" d="' + d + '"/></svg>', w: cw, h: ch };
+}
+
+// Render the traced SVG to a transparent PNG for Word, softening the pixel
+// edges so the stroke looks like smooth ink at print size.
+function _svgToPng(sig){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const s = Math.min(3, 1200 / sig.w);
+      const w = Math.max(1, Math.round(sig.w * s)), h = Math.max(1, Math.round(sig.h * s));
+      const c1 = document.createElement('canvas'); c1.width = w; c1.height = h;
+      const x1 = c1.getContext('2d'); x1.imageSmoothingEnabled = true; x1.imageSmoothingQuality = 'high';
+      x1.drawImage(img, 0, 0, w, h);
+      const c2 = document.createElement('canvas'); c2.width = w; c2.height = h;
+      const x2 = c2.getContext('2d');
+      x2.filter = 'blur(' + Math.max(0.5, s * 0.35).toFixed(2) + 'px)';
+      x2.drawImage(c1, 0, 0);
+      resolve({ dataUrl: c2.toDataURL('image/png'), w, h });
+    };
+    img.onerror = () => reject(new Error('could not render signature'));
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(sig.svg);
+  });
+}
+
+function handleSignatureUpload(input){
+  const file = input.files[0]; input.value = '';
+  if (!file) return;
+  if (!/^image\//.test(file.type)) { toast('Use a photo or image of your signature', 'error'); return; }
+  document.getElementById('exp-sig-label').textContent = 'Cleaning up…';
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = async () => {
+      try {
+        const traced = _signatureToSVG(img);
+        if (!traced) { toast('No signature found in that image', 'error'); return; }
+        const png = await _svgToPng(traced);
+        localStorage.setItem('gethired_signature', JSON.stringify({ dataUrl: png.dataUrl, w: png.w, h: png.h, ext: 'png' }));
+        renderSignatureState();
+        renderExportPreview();
+        toast('Signature cleaned up and saved ✔', 'success');
+      } catch (err) {
+        console.error(err);
+        toast('Could not process that image, try a smaller or clearer photo', 'error');
+      } finally {
+        renderSignatureState();
+      }
+    };
+    img.onerror = () => { renderSignatureState(); toast('Could not read that image', 'error'); };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderSignatureState(){
+  const sig = _loadSignature();
+  const prev = document.getElementById('exp-sig-preview');
+  const rm = document.getElementById('exp-sig-remove');
+  const empty = document.getElementById('exp-sig-empty');
+  const label = document.getElementById('exp-sig-label');
+  if (!prev) return;
+  const has = !!(sig && sig.dataUrl);
+  if (has) prev.src = sig.dataUrl;
+  prev.style.display = has ? 'block' : 'none';
+  empty.style.display = has ? 'none' : 'block';
+  rm.style.display = has ? 'inline-flex' : 'none';
+  label.textContent = has ? 'Replace signature' : 'Upload signature photo';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EXPORT STYLE: accent colour and font
+// ═══════════════════════════════════════════════════════════════
+const EXPORT_COLOURS = [
+  { hex: '156082', name: 'Original teal' }, { hex: '2563EB', name: 'Gaia blue' }, { hex: '1F3A5F', name: 'Navy' },
+  { hex: '111827', name: 'Black' }, { hex: '2F6B4F', name: 'Forest' }, { hex: '7A2E3A', name: 'Burgundy' }, { hex: '5B3F8C', name: 'Plum' },
+];
+const EXPORT_FONTS = [
+  { id: 'default', label: 'Template default (Times New Roman)', css: "'Times New Roman', Times, serif" },
+  { id: 'Aptos', label: 'Aptos', css: "Aptos, 'Segoe UI', Arial, sans-serif" },
+  { id: 'Calibri', label: 'Calibri', css: "Calibri, Carlito, 'Segoe UI', Arial, sans-serif" },
+  { id: 'Arial', label: 'Arial', css: "Arial, Helvetica, sans-serif" },
+  { id: 'Georgia', label: 'Georgia', css: "Georgia, 'Times New Roman', serif" },
+  { id: 'Garamond', label: 'Garamond', css: "Garamond, 'EB Garamond', Georgia, serif" },
+  { id: 'Cambria', label: 'Cambria', css: "Cambria, Caladea, Georgia, serif" },
+  { id: 'Times New Roman', label: 'Times New Roman', css: "'Times New Roman', Times, serif" },
+];
+function _exportStyle(){
+  let s = {};
+  try { s = JSON.parse(localStorage.getItem('gethired_export_style') || '{}') || {}; } catch(e) {}
+  const accent = /^[0-9A-Fa-f]{6}$/.test(s.accent || '') ? s.accent.toUpperCase() : '156082';
+  const font = EXPORT_FONTS.some(f => f.id === s.font) ? s.font : 'default';
+  return { accent, font };
+}
+function setExportStyle(patch){
+  const s = Object.assign(_exportStyle(), patch);
+  try { localStorage.setItem('gethired_export_style', JSON.stringify(s)); } catch(e) {}
+  renderStyleControls();
+  renderExportPreview();
+}
+function renderStyleControls(){
+  const s = _exportStyle();
+  const box = document.getElementById('exp-swatches');
+  if (!box) return;
+  box.replaceChildren();
+  EXPORT_COLOURS.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'swatch'; b.style.background = '#' + c.hex;
+    b.title = c.name; b.setAttribute('aria-label', c.name);
+    b.setAttribute('aria-pressed', String(s.accent === c.hex));
+    b.onclick = () => setExportStyle({ accent: c.hex });
+    box.appendChild(b);
+  });
+  const custom = document.createElement('label');
+  const isCustom = !EXPORT_COLOURS.some(c => c.hex === s.accent);
+  custom.className = 'swatch swatch-custom'; custom.title = 'Custom colour';
+  custom.setAttribute('aria-pressed', String(isCustom));
+  if (isCustom) custom.style.background = '#' + s.accent;
+  const pick = document.createElement('input');
+  pick.type = 'color'; pick.value = '#' + s.accent; pick.setAttribute('aria-label', 'Custom colour');
+  pick.oninput = () => setExportStyle({ accent: pick.value.slice(1).toUpperCase() });
+  custom.appendChild(pick);
+  box.appendChild(custom);
+  const sel = document.getElementById('exp-font');
+  if (!sel.options.length) EXPORT_FONTS.forEach(f => sel.add(new Option(f.label, f.id)));
+  sel.value = s.font;
+}
+// Lighter partner shade for the cover-letter table header (template pairs 156082 with 215E99)
+function _tint(hex, amt){
+  const n = parseInt(hex, 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+  const t = v => Math.round(v + (255 - v) * amt).toString(16).padStart(2, '0');
+  return (t(r) + t(g) + t(b)).toUpperCase();
+}
+function _applyExportColours(){
+  const s = _exportStyle();
+  ACCENT = s.accent;
+  CLHDR = s.accent === '156082' ? '215E99' : _tint(s.accent, 0.12);
+}
+async function _applyExportStyle(zip){
+  const s = _exportStyle();
+  const swap = x => x.replace(/156082/gi, ACCENT).replace(/215E99/gi, CLHDR);
+  for (const name of Object.keys(zip.files)) {
+    if (/^word\/(header\d*|footer\d*|styles)\.xml$/.test(name)) zip.file(name, swap(await zip.file(name).async('string')));
+  }
+  const tp = 'word/theme/theme1.xml';
+  if (!zip.file(tp)) return;
+  let theme = await zip.file(tp).async('string');
+  theme = theme.replace(/(<a:accent1>\s*<a:srgbClr val=")[0-9A-Fa-f]{6}/, '$1' + ACCENT);
+  if (s.font !== 'default') {
+    const f = xesc(s.font);
+    theme = theme.replace(/<a:(majorFont|minorFont)>([\s\S]*?)<\/a:\1>/g, (m, tag, inner) =>
+      '<a:' + tag + '>' + inner.replace(/<a:latin typeface="[^"]*"[^>]*\/>/, '<a:latin typeface="' + f + '"/>').replace(/<a:cs typeface="[^"]*"\/>/, '<a:cs typeface="' + f + '"/>') + '</a:' + tag + '>');
+  }
+  zip.file(tp, theme);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EXPORT DRAFTS: the parsed reply, with your edits, kept per document type
+// ═══════════════════════════════════════════════════════════════
+function _loadDrafts(){ try { return JSON.parse(localStorage.getItem('gethired_export_draft') || '{}') || {}; } catch(e) { return {}; } }
+let _draftTimer;
+function saveExportDraft(){
+  clearTimeout(_draftTimer);
+  _draftTimer = setTimeout(() => {
+    const d = _loadDrafts();
+    d[exportType] = exportData;
+    try { localStorage.setItem('gethired_export_draft', JSON.stringify(d)); } catch(e) { toast('Could not save your edits (storage full)', 'error'); }
+  }, 600);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PREVIEW & EDIT: an editable picture of the document
+// ═══════════════════════════════════════════════════════════════
+const _plainOK = (() => { const d = document.createElement('div'); d.contentEditable = 'plaintext-only'; return d.contentEditable === 'plaintext-only'; })();
+function _el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function _getPath(obj, path){ return path.split('.').reduce((o, k) => (o == null ? o : o[isNaN(k) ? k : +k]), obj); }
+function _ed(path, tag, cls, single, placeholder){
+  const e = _el(tag || 'div', 'ed' + (cls ? ' ' + cls : ''));
+  e.contentEditable = _plainOK ? 'plaintext-only' : 'true';
+  e.spellcheck = true;
+  e.dataset.path = path;
+  e.dataset.ph = placeholder || 'Click to type';
+  e.textContent = _getPath(exportData, path) || '';
+  if (single) e.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); e.blur(); } });
+  e.addEventListener('input', () => {
+    let v = e.innerText.replace(/\u00a0/g, ' ');
+    if (single) v = v.replace(/\s*\n\s*/g, ' ');
+    setPath(exportData, path, v.replace(/\n+$/, ''));
+    saveExportDraft();
+  });
+  if (!_plainOK) e.addEventListener('paste', ev => { ev.preventDefault(); document.execCommand('insertText', false, (ev.clipboardData || window.clipboardData).getData('text')); });
+  return e;
+}
+function _rmBtn(label, fn){ const b = _el('button', 'doc-rm', '×'); b.type = 'button'; b.title = label; b.setAttribute('aria-label', label); b.onclick = fn; return b; }
+function _addBtn(label, fn){ const b = _el('button', 'doc-add', '+ ' + label); b.type = 'button'; b.onclick = fn; return b; }
+function _listEditor(arrPath, cls, label){
+  const wrap = _el('div', 'doc-list ' + (cls || ''));
+  const arr = _getPath(exportData, arrPath) || [];
+  arr.forEach((_, i) => {
+    const row = _el('div', 'doc-li');
+    row.append(_el('span', 'doc-dot', '•'), _ed(arrPath + '.' + i, 'div', 'doc-li-text'), _rmBtn('Remove ' + label, () => { arr.splice(i, 1); saveExportDraft(); renderExportPreview(); }));
+    wrap.appendChild(row);
+  });
+  wrap.appendChild(_addBtn(label, () => { arr.push(''); saveExportDraft(); renderExportPreview(); const all = document.querySelectorAll('[data-path^="' + arrPath + '."]'); if (all.length) all[all.length - 1].focus(); }));
+  return wrap;
+}
+function _docHeading(t){ return _el('div', 'doc-h', t); }
+function _letterhead(){
+  const p = P.personal || {};
+  const lh = _el('div', 'doc-letterhead');
+  lh.title = 'Edit your name and contact details in the Profile Builder';
+  lh.appendChild(_el('div', 'doc-name', (_shortName(p.fullName) || 'Your Name').toUpperCase()));
+  const bits = [p.phone, p.email, p.location].filter(v => String(v || '').trim());
+  const links = [p.linkedin && 'LinkedIn', p.portfolio && 'Portfolio', p.seekUrl && 'SEEK', p.rtwUrl && 'Right to Work'].filter(Boolean);
+  lh.appendChild(_el('div', 'doc-contact', bits.concat(links).join('  |  ')));
+  return lh;
+}
+
+function renderExportPreview(){
+  const el = document.getElementById('exp-preview');
+  const empty = document.getElementById('exp-empty');
+  if (!el) return;
+  const btn = document.getElementById('exp-download-btn');
+  if (!exportData) { el.style.display = 'none'; empty.style.display = 'block'; el.replaceChildren(); if (btn) btn.disabled = true; return; }
+  empty.style.display = 'none'; el.style.display = 'block';
+  if (btn) btn.disabled = false;
+  const st = _exportStyle();
+  el.style.setProperty('--doc-accent', '#' + st.accent);
+  el.style.setProperty('--doc-accent-2', '#' + (st.accent === '156082' ? '215E99' : _tint(st.accent, 0.12)));
+  el.style.fontFamily = (EXPORT_FONTS.find(f => f.id === st.font) || EXPORT_FONTS[0]).css;
+  el.replaceChildren(_letterhead());
+  const d = exportData;
+  if (exportType === 'cl') {
+    el.append(_ed('salutation', 'div', 'doc-p', true, 'Dear Hiring Manager,'), _ed('intro', 'div', 'doc-p', false, 'Opening paragraph'), _ed('about', 'div', 'doc-p', false, 'About you'));
+    const tbl = _el('div', 'doc-table');
+    const hdr = _el('div', 'doc-tr doc-th');
+    hdr.append(_el('div', 'doc-td', 'What the Role Requires'), _el('div', 'doc-td', 'How I Can Contribute'));
+    tbl.appendChild(hdr);
+    d.table.forEach((r, i) => {
+      const tr = _el('div', 'doc-tr');
+      tr.append(_ed('table.' + i + '.req', 'div', 'doc-td', false, 'Requirement'), _ed('table.' + i + '.con', 'div', 'doc-td', false, 'How you meet it'), _rmBtn('Remove row', () => { d.table.splice(i, 1); saveExportDraft(); renderExportPreview(); }));
+      tbl.appendChild(tr);
+    });
+    tbl.appendChild(_addBtn('row', () => { d.table.push({ req: '', con: '' }); saveExportDraft(); renderExportPreview(); }));
+    el.appendChild(tbl);
+    d.closing.forEach((_, i) => {
+      const row = _el('div', 'doc-para-row');
+      row.append(_ed('closing.' + i, 'div', 'doc-p', false, 'Closing paragraph'), _rmBtn('Remove paragraph', () => { d.closing.splice(i, 1); saveExportDraft(); renderExportPreview(); }));
+      el.appendChild(row);
+    });
+    el.appendChild(_addBtn('paragraph', () => { d.closing.push(''); saveExportDraft(); renderExportPreview(); }));
+    el.appendChild(_el('div', 'doc-p doc-signoff', 'Kind regards,'));
+    const sig = _loadSignature();
+    if (sig && sig.dataUrl) { const im = _el('img', 'doc-sig'); im.src = sig.dataUrl; im.alt = 'Signature'; el.appendChild(im); }
+    el.appendChild(_ed('signName', 'div', 'doc-p doc-signname', true, 'Your name'));
+  } else {
+    if (d.summary != null) { el.append(_docHeading('Professional Summary'), _ed('summary', 'div', 'doc-p', false, 'Summary')); }
+    el.append(_docHeading('Core Competencies'), _listEditor('competencies', 'doc-cols', 'competency'));
+    el.appendChild(_docHeading('Professional Experience'));
+    d.experience.forEach((x, i) => {
+      const role = _el('div', 'doc-role');
+      const top = _el('div', 'doc-role-top');
+      top.append(_ed('experience.' + i + '.title', 'div', 'doc-role-title', true, 'Job title'), _ed('experience.' + i + '.dates', 'div', 'doc-role-dates', true, 'Dates'), _rmBtn('Remove role', () => { d.experience.splice(i, 1); saveExportDraft(); renderExportPreview(); }));
+      role.append(top, _ed('experience.' + i + '.org', 'div', 'doc-role-org', true, 'Organisation'));
+      if (x.previously) role.appendChild(_ed('experience.' + i + '.previously', 'div', 'doc-role-prev', true));
+      role.appendChild(_listEditor('experience.' + i + '.bullets', '', 'bullet'));
+      el.appendChild(role);
+    });
+    el.appendChild(_addBtn('role', () => { d.experience.push({ title: '', dates: '', org: '', previously: '', bullets: [''], linkLabel: null, linkUrl: null, orgLabel: null, orgUrl: null }); saveExportDraft(); renderExportPreview(); }));
+    if (d.education.length) {
+      el.appendChild(_docHeading('Education'));
+      d.education.forEach((x, i) => {
+        const role = _el('div', 'doc-role');
+        const top = _el('div', 'doc-role-top');
+        top.append(_ed('education.' + i + '.degree', 'div', 'doc-role-title', true, 'Degree'), _ed('education.' + i + '.years', 'div', 'doc-role-dates', true, 'Years'), _rmBtn('Remove', () => { d.education.splice(i, 1); saveExportDraft(); renderExportPreview(); }));
+        role.append(top, _ed('education.' + i + '.inst', 'div', 'doc-role-org', true, 'Institution'));
+        el.appendChild(role);
+      });
+    }
+    el.append(_docHeading('Certifications'), _listEditor('certifications', '', 'certification'));
+    el.append(_docHeading('Key Achievements'), _listEditor('achievements', '', 'achievement'));
+    el.appendChild(_docHeading('Referees'));
+    if (d.referees[0] && d.referees[0].available != null) el.appendChild(_ed('referees.0.available', 'div', 'doc-p', false, 'Available upon request.'));
+    else d.referees.forEach((r, i) => {
+      const role = _el('div', 'doc-role');
+      role.append(_ed('referees.' + i + '.name', 'div', 'doc-role-title', true, 'Name'), _ed('referees.' + i + '.title', 'div', 'doc-role-org', true, 'Title'), _ed('referees.' + i + '.contact', 'div', 'doc-p', true, 'Contact'));
+      el.appendChild(role);
+    });
+  }
+  const status = document.getElementById('exp-parse-status');
+  if (status) status.textContent = 'parsed ✔';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Refresh the page from saved data (used after your account data loads)
+// ═══════════════════════════════════════════════════════════════
+window.gethiredReloadFromStorage = function(){
+  P = loadProfileData();
+  sampleSections.clear();
+  try { JSON.parse(localStorage.getItem('gethired_sample_sections') || '[]').forEach(s => sampleSections.add(s)); } catch(e) {}
+  renderProfileForm();
+  restoreJD();
+  loadPromptBuilder();
+  const d = _loadDrafts();
+  exportData = d[exportType] || null;
+  renderStyleControls();
+  renderSignatureState();
+  renderExportPreview();
+};
+
+document.getElementById('gh-year').textContent = new Date().getFullYear();
+</script>
+<script type="module" src="../js/gethired-sync.js?v=20261018g"></script>
 </body>
 </html>
