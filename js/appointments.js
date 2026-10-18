@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!form) return;
 
+  form.addEventListener('input', (e) => {
+    if (!e.target.classList.contains('error')) return;
+    e.target.classList.remove('error');
+    const errEl = e.target.parentElement.querySelector('.field-error');
+    if (errEl) { errEl.textContent = ''; errEl.classList.remove('visible'); }
+  });
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 

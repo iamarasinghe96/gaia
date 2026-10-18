@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="css/styles.css?v=20261018b" />
+  <link rel="stylesheet" href="css/styles.css?v=20261018c" />
   <script>document.documentElement.classList.add('js')</script>
 
   <script type="application/ld+json">
@@ -442,7 +442,7 @@
               </div>
               <div class="form-group">
                 <label for="f-service">Interested in</label>
-                <select id="f-service" name="service">
+                <select id="f-service" name="service" data-enhance>
                   <option value="">Select a service</option>
                   <option>AI &amp; Intelligent Automation</option>
                   <option>Healthcare IT</option>
@@ -457,7 +457,7 @@
             </div>
             <div class="form-group">
               <label for="f-datetime">Preferred date &amp; time</label>
-              <input id="f-datetime" name="datetime" type="datetime-local" />
+              <input id="f-datetime" name="datetime" type="datetime-local" data-enhance />
               <p class="field-error" role="alert"></p>
             </div>
             <div class="form-group">
@@ -520,7 +520,8 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=20261018b" defer></script>
-  <script src="js/appointments.js?v=20261018b" defer></script>
+  <script src="js/main.js?v=20261018c" defer></script>
+  <script src="js/form-controls.js?v=20261018c" defer></script>
+  <script src="js/appointments.js?v=20261018c" defer></script>
 </body>
 </html>
