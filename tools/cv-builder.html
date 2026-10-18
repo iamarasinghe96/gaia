@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018h">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018i">
 </head>
 <body>
 
@@ -303,54 +303,33 @@
           <span class="badge badge-count" id="jd-count">0 chars</span>
         </div>
       </div>
-      <label class="jd-label" for="jd-input">Job Description</label>
+      <div class="jd-titlebar">
+        <span></span>
+        <label class="jd-label" for="jd-input">Job Description</label>
+        <div class="jd-actions">
+          <button class="btn btn-danger" onclick="clearJD()">&#x2715; Clear JD</button>
+          <button class="btn btn-outline copy-btn" id="copy-jd-btn" onclick="copyJD(this)">&#x2398; Copy</button>
+        </div>
+      </div>
       <textarea id="jd-input" class="jd-big" placeholder="Paste the full job description here." oninput="updateCount('jd-input','jd-count');updateStatus();saveJD()"></textarea>
-      <div class="jd-actions">
-        <button class="btn btn-danger" onclick="clearJD()">&#x2715; Clear JD</button>
-        <button class="btn btn-ghost" onclick="copyField('jd-input')">&#x2398; Copy</button>
+
+      <div class="jd-go">
+        <div class="jd-hint" id="status-row" role="status" aria-live="polite">
+          <div class="status-dot" id="status-dot"></div>
+          <span id="status-text">Loading…</span>
+          <span class="status-sep">·</span>
+          <span id="status-detail">Initialising</span>
+        </div>
+        <div class="jd-copy">
+          <button class="btn btn-lg copy-prompt" id="copy-cl-btn" data-which="cl" onclick="copyPrompt('cl')"><span class="cp-icon">&#x2398;</span><span class="cp-label">Copy Cover Letter Prompt</span></button>
+          <button class="btn btn-lg copy-prompt" id="copy-cv-btn" data-which="cv" onclick="copyPrompt('cv')"><span class="cp-icon">&#x2398;</span><span class="cp-label">Copy CV Prompt</span></button>
+        </div>
       </div>
 
-      <!-- Status row -->
-      <div class="status-row" id="status-row">
-        <div class="status-dot" id="status-dot"></div>
-        <span id="status-text">Loading…</span>
-        <span class="status-sep">·</span>
-        <span id="status-detail" style="color:var(--muted)">Initialising</span>
-      </div>
-
-      <!-- Build buttons -->
-      <div class="jd-build">
-        <button class="btn btn-green btn-lg" onclick="buildPrompts()">&#x25B6; Build Prompts</button>
-        <button class="btn btn-outline btn-lg" onclick="clearOutputs()">&#x21BA; Reset Output</button>
-      </div>
-
-      <!-- Output section -->
-      <div class="output-section">
-        <div class="output-header">
-          <div class="output-title">Built Prompts: Ready to Copy into Claude</div>
-          <div class="output-tabs">
-            <button class="output-tab active" onclick="switchOutputTab('cl')">Cover Letter Prompt</button>
-            <button class="output-tab" onclick="switchOutputTab('cv')">CV / LaTeX Prompt</button>
-          </div>
-        </div>
-        <div class="output-panel visible" id="out-cover-letter">
-          <div class="output-panel-header">
-            <span class="output-panel-title">COVER LETTER PROMPT · CV Bank + JD injected</span>
-            <button class="btn btn-outline" onclick="copyOutput('out-cover-letter')">&#x2398; Copy</button>
-          </div>
-          <div class="output-content" id="out-cl-content" style="display:none">
-            <div class="output-empty"><div class="empty-icon">&#x1F4C4;</div>Hit <strong>Build Prompts</strong> to generate your cover letter prompt.</div>
-          </div>
-        </div>
-        <div class="output-panel" id="out-cv-latex">
-          <div class="output-panel-header">
-            <span class="output-panel-title">CV / LATEX PROMPT · CV Bank + JD injected</span>
-            <button class="btn btn-outline" onclick="copyOutput('out-cv-latex')">&#x2398; Copy</button>
-          </div>
-          <div class="output-content" id="out-cv-content" style="display:none">
-            <div class="output-empty"><div class="empty-icon">&#x1F4DD;</div>Hit <strong>Build Prompts</strong> to generate your CV / LaTeX prompt.</div>
-          </div>
-        </div>
+      <!-- Built prompts are assembled here behind the scenes for copying -->
+      <div hidden>
+        <div class="output-panel" id="out-cover-letter"><div class="output-content" id="out-cl-content"></div></div>
+        <div class="output-panel" id="out-cv-latex"><div class="output-content" id="out-cv-content"></div></div>
       </div>
 
       <!-- Your prompt templates -->
@@ -541,8 +520,8 @@
       <h2>&#x2461; Prompt Builder</h2>
       <ol>
         <li>Paste the job description into the big box. It saves automatically.</li>
-        <li>Click <strong>&#x25B6; Build Prompts</strong>. Your CV Bank and the job description are injected into both prompt templates.</li>
-        <li>Click <strong>&#x2398; Copy</strong> on the built prompt, then paste it into <a href="https://claude.ai" target="_blank" rel="noopener">Claude</a>.</li>
+        <li>Click <strong>&#x2398; Copy Cover Letter Prompt</strong> or <strong>&#x2398; Copy CV Prompt</strong>. Your CV Bank and the job description are injected into the template and the finished prompt is copied in one step. The button turns green once copied.</li>
+        <li>Paste it into <a href="https://claude.ai" target="_blank" rel="noopener">Claude</a>.</li>
       </ol>
       <h3>Customising the prompt templates</h3>
       <ul>
@@ -2003,9 +1982,8 @@ function buildPrompts() {
 
   renderOutput('out-cl-content', clBuilt, cvBank, jd);
   renderOutput('out-cv-content', cvBuilt, cvBank, jd);
-  toast('Prompts built \u2014 ready to copy \u2714', 'success');
   updateStatus();
-  document.querySelector('.output-section').scrollIntoView({ behavior:'smooth', block:'start' });
+  return { cl: clBuilt, cv: cvBuilt };
 }
 
 function renderOutput(elId, text, cvBank, jd) {
@@ -3169,8 +3147,54 @@ window.gethiredReloadFromStorage = function(){
   renderExportPreview();
 };
 
+// ═══════════════════════════════════════════════════════════════
+// ONE-CLICK COPY: builds the prompt and copies it. Buttons show their state:
+// grey = something missing, blue = ready, green = copied (until the JD changes)
+// ═══════════════════════════════════════════════════════════════
+const _copied = { cl: null, cv: null };
+const _copyLabels = { cl: ['Copy Cover Letter Prompt', 'Cover Letter Prompt Copied'], cv: ['Copy CV Prompt', 'CV Prompt Copied'] };
+function _copySig(){ return document.getElementById('jd-input').value + '\u0000' + document.getElementById('cv-bank').value; }
+function refreshCopyButtons(){
+  const hasCv = !!document.getElementById('cv-bank').value.trim();
+  const hasJD = !!document.getElementById('jd-input').value.trim();
+  const sig = _copySig();
+  ['cl', 'cv'].forEach(which => {
+    const btn = document.getElementById(which === 'cl' ? 'copy-cl-btn' : 'copy-cv-btn');
+    if (!btn) return;
+    const hasTmpl = !!document.getElementById(which === 'cl' ? 'cl-prompt' : 'cv-prompt').value.trim();
+    const ready = hasCv && hasJD && hasTmpl;
+    const copied = ready && _copied[which] === sig;
+    btn.classList.toggle('is-ready', ready && !copied);
+    btn.classList.toggle('is-copied', copied);
+    btn.setAttribute('aria-disabled', String(!ready));
+    btn.querySelector('.cp-icon').textContent = copied ? '✓' : '⎘';
+    btn.querySelector('.cp-label').textContent = _copyLabels[which][copied ? 1 : 0];
+  });
+}
+async function copyPrompt(which){
+  const built = buildPrompts();
+  if (!built) return;
+  const text = built[which];
+  if (!text || !text.trim()) { toast('This prompt template is empty, open Your prompt templates to add it', 'error'); return; }
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) { toast('Your browser blocked copying, please try again', 'error'); return; }
+  _copied[which] = _copySig();
+  refreshCopyButtons();
+  toast((which === 'cl' ? 'Cover letter' : 'CV') + ' prompt copied ✔ Paste it into Claude', 'success');
+}
+async function copyJD(btn){
+  const v = document.getElementById('jd-input').value;
+  if (!v.trim()) { toast('Nothing to copy', 'error'); return; }
+  try { await navigator.clipboard.writeText(v); } catch (e) { toast('Your browser blocked copying', 'error'); return; }
+  btn.classList.add('is-copied'); btn.textContent = '✓ Copied';
+  clearTimeout(btn._t);
+  btn._t = setTimeout(() => { btn.classList.remove('is-copied'); btn.innerHTML = '&#x2398; Copy'; }, 1600);
+}
+const _gaiaUpdateStatus = updateStatus;
+updateStatus = function(){ _gaiaUpdateStatus(); refreshCopyButtons(); };
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261018h"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261018i"></script>
 </body>
 </html>
