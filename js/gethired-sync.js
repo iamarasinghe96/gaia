@@ -1,14 +1,15 @@
 // Google sign-in and cloud autosave for the GetHired CV Prompt Builder.
 // The app keeps working exactly as before on localStorage; this module mirrors
 // its keys to Firestore (users/{uid}/data/{key}) while the visitor is signed in.
-import { firebaseConfig } from './firebase-config.js?v=20261018g';
+import { firebaseConfig, polishUrl } from './firebase-config.js?v=20261018l';
 
 const SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
 const KEYS = [
   'gethired_profile_v1', 'cv_content_bank', 'cl_prompt', 'cv_prompt', 'gethired_jd',
   'gethired_export_draft', 'gethired_export_style', 'gethired_signature',
-  'gethired_polish_snapshot', 'gethired_sample_sections',
+  'gethired_polish_snapshot',
 ];
+const RETIRED = ['gethired_sample_sections'];
 const OWNER = 'gethired_owner';
 const MAX_LEN = 900000;
 const $ = id => document.getElementById(id);
@@ -51,7 +52,7 @@ function status(state) {
   }[state] || '';
 }
 
-const hasLocalData = () => KEYS.some(k => ls.get(k) !== null && k !== 'gethired_sample_sections');
+const hasLocalData = () => KEYS.some(k => ls.get(k) !== null);
 const reloadApp = () => { if (typeof window.gethiredReloadFromStorage === 'function') window.gethiredReloadFromStorage(); };
 
 function clearLocal() {
@@ -143,7 +144,10 @@ async function start() {
     let cloud = {};
     try {
       const snap = await fs.getDocs(fs.collection(db, 'users', user.uid, 'data'));
-      snap.forEach(d => { if (KEYS.includes(d.id) && typeof d.data().value === 'string') cloud[d.id] = d.data().value; });
+      snap.forEach(d => {
+        if (KEYS.includes(d.id) && typeof d.data().value === 'string') cloud[d.id] = d.data().value;
+        else if (RETIRED.includes(d.id)) fs.deleteDoc(d.ref || docFor(user.uid, d.id)).catch(() => {});
+      });
     } catch (err) {
       console.error('Could not load account data', err);
       window.toast && window.toast("Couldn't load your saved data. Please refresh the page.", 'error');
@@ -182,6 +186,27 @@ async function start() {
     reloadApp();
     status('saved');
   }
+
+  // Polish with AI: send the CV bank to the proxy with this user's sign-in token
+  window.gethiredPolish = async text => {
+    if (!polishUrl) return { ok: false, error: 'not_configured' };
+    if (!a.currentUser) return { ok: false, error: 'signin' };
+    let idToken;
+    try { idToken = await a.currentUser.getIdToken(); } catch { return { ok: false, error: 'auth' }; }
+    try {
+      const res = await fetch(polishUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+        body: JSON.stringify({ text }),
+      });
+      const data = await res.json().catch(() => null);
+      if (data) return data;
+      return { ok: false, error: res.status === 404 ? 'not_configured' : 'busy' };
+    } catch (err) {
+      console.error('Polish request failed', err);
+      return { ok: false, error: 'network' };
+    }
+  };
 
   $('gh-sign-in').addEventListener('click', async () => {
     try {

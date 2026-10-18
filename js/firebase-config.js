@@ -6,3 +6,6 @@ export const firebaseConfig = {
   projectId: 'gaia-symbiosis',
   appId: '1:417282000388:web:f8234a773c58b438069751',
 };
+
+// "Polish with AI" endpoint (api/polish.js on Vercel).
+export const polishUrl = '/api/polish';
