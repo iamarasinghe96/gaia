@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018i">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018j">
 </head>
 <body>
 
@@ -729,14 +729,10 @@ const SAMPLE_P = {
     'Australian market — always include: full working rights, Brisbane QLD location'
 };
 
-// Sections whose example panel is open. Remembered per browser as a convenience.
-const sampleSections = (() => {
-  try { return new Set(JSON.parse(localStorage.getItem('gethired_sample_sections') || '[]')); }
-  catch (e) { return new Set(); }
-})();
-function _saveSampleSections(){
-  try { localStorage.setItem('gethired_sample_sections', JSON.stringify([...sampleSections])); } catch (e) {}
-}
+// Sections whose example panel is open. Not saved: examples start hidden on every visit.
+const sampleSections = new Set();
+try { localStorage.removeItem('gethired_sample_sections'); } catch (e) {}
+function _saveSampleSections(){}
 
 // Render a section's body against SAMPLE_P, read-only, with the add/remove buttons removed.
 let SAMPLE_MODE = false;
@@ -3136,7 +3132,6 @@ function renderExportPreview(){
 window.gethiredReloadFromStorage = function(){
   P = loadProfileData();
   sampleSections.clear();
-  try { JSON.parse(localStorage.getItem('gethired_sample_sections') || '[]').forEach(s => sampleSections.add(s)); } catch(e) {}
   renderProfileForm();
   restoreJD();
   loadPromptBuilder();
@@ -3195,6 +3190,6 @@ updateStatus = function(){ _gaiaUpdateStatus(); refreshCopyButtons(); };
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261018i"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261018j"></script>
 </body>
 </html>
