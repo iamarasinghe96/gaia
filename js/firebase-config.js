@@ -7,5 +7,5 @@ export const firebaseConfig = {
   appId: '1:417282000388:web:f8234a773c58b438069751',
 };
 
-// Web app URL of google-apps-script/Polish.gs (the "Polish with AI" proxy). Empty until deployed.
-export const polishUrl = '';
+// "Polish with AI" endpoint (api/polish.js on Vercel).
+export const polishUrl = '/api/polish';
