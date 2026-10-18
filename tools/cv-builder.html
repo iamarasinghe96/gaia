@@ -3,26 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com; frame-src https://*.firebaseapp.com https://accounts.google.com https://apis.google.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>CV Builder: Create an ATS-Friendly CV | Gaia Symbiosis</title>
-  <meta name="description" content="Build a professional, ATS-friendly CV tailored to each job with AI suggestions. The Gaia Symbiosis CV Builder is coming soon. Join the waitlist." />
+  <title>CV Prompt Builder: Tailored CV &amp; Cover Letter Prompts | Gaia Symbiosis</title>
+  <meta name="description" content="Free ATS-optimised CV and cover letter prompt builder. Save your CV content bank, paste a job description and get tailored prompts ready for Claude. Sign in with Google to save every application." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#05070d" />
   <link rel="canonical" href="https://gaiasymbiosis.com/tools/cv-builder.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Gaia Symbiosis" />
   <meta property="og:url" content="https://gaiasymbiosis.com/tools/cv-builder.html" />
-  <meta property="og:title" content="CV Builder | Gaia Symbiosis" />
-  <meta property="og:description" content="Create a clean, ATS-friendly CV tailored to every role. Coming soon." />
+  <meta property="og:title" content="CV Prompt Builder | Gaia Symbiosis" />
+  <meta property="og:description" content="Tailored, ATS-optimised CV and cover letter prompts for every job you apply for." />
   <meta property="og:image" content="https://gaiasymbiosis.com/assets/logo-512.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="96x96" href="../assets/logo-96.png" />
   <link rel="apple-touch-icon" href="../assets/logo-512.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="../css/styles.css?v=20261018d" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="../css/styles.css?v=20261018e" />
+  <link rel="stylesheet" href="../css/cv-builder.css?v=20261018e" />
   <script>document.documentElement.classList.add('js')</script>
   <script type="application/ld+json">
   {
@@ -30,7 +31,9 @@
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        "name": "Gaia Symbiosis CV Builder",
+        "name": "Gaia Symbiosis CV Prompt Builder",
+        "description": "Build ATS-optimised CV and cover letter prompts from your saved content bank and a job description.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "AUD" },
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
         "url": "https://gaiasymbiosis.com/tools/cv-builder.html",
@@ -41,7 +44,7 @@
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gaiasymbiosis.com/" },
           { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://gaiasymbiosis.com/services.html" },
-          { "@type": "ListItem", "position": 3, "name": "CV Builder", "item": "https://gaiasymbiosis.com/tools/cv-builder.html" }
+          { "@type": "ListItem", "position": 3, "name": "CV Prompt Builder", "item": "https://gaiasymbiosis.com/tools/cv-builder.html" }
         ]
       }
     ]
@@ -63,7 +66,7 @@
           <li class="has-menu">
             <button class="menu-trigger is-current" type="button" aria-expanded="false" aria-controls="tools-menu">Tools <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
             <ul class="dropdown" id="tools-menu">
-              <li><a href="../tools/cv-builder.html"><strong>CV Builder</strong><span>ATS-friendly CVs · Coming soon</span></a></li>
+              <li><a href="../tools/cv-builder.html"><strong>CV Prompt Builder</strong><span class="live">Tailored CV prompts · Live</span></a></li>
               <li><a href="../tools/job-search.html"><strong>Job Search Assistant</strong><span>Find and track roles · Coming soon</span></a></li>
               <li><a href="https://lushnote.com.au" target="_blank" rel="noopener"><strong>LushNote</strong><span class="live">AI clinical notes · Live</span></a></li>
             </ul>
@@ -79,7 +82,7 @@
   <div class="mobile-menu" id="mobile-menu">
     <a href="../services.html">Services</a>
     <p class="mobile-label">Tools</p>
-    <a class="mobile-sub" href="../tools/cv-builder.html">CV Builder</a>
+    <a class="mobile-sub" href="../tools/cv-builder.html">CV Prompt Builder</a>
     <a class="mobile-sub" href="../tools/job-search.html">Job Search Assistant</a>
     <a class="mobile-sub" href="https://lushnote.com.au" target="_blank" rel="noopener">LushNote</a>
     <a href="../index.html#work">Work</a>
@@ -88,77 +91,185 @@
   </div>
 
   <main id="main">
-    <section class="page-hero" aria-labelledby="page-title">
+    <section class="page-hero cvb-hero" aria-labelledby="page-title">
       <div class="hero-bg" aria-hidden="true"><div class="hero-grid"></div><div class="orb orb-1"></div></div>
       <div class="container">
-        <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="../index.html">Home</a></li><li><a href="../services.html#tools">Tools</a></li><li aria-current="page">CV Builder</li></ol></nav>
-        <p class="reveal"><span class="status status--soon">Coming soon</span></p>
-        <h1 id="page-title" class="reveal" style="--d:.08s;margin-top:1.25rem">A CV that gets you <span class="grad">to the interview.</span></h1>
-        <p class="reveal" style="--d:.16s">Build a clean, ATS-friendly CV in minutes, tailor it to every job ad with AI, and download a polished PDF. Free to start.</p>
+        <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="../index.html">Home</a></li><li><a href="../services.html#tools">Tools</a></li><li aria-current="page">CV Prompt Builder</li></ol></nav>
+        <div class="cvb-hero-row">
+          <div>
+            <h1 id="page-title" class="reveal">CV Prompt Builder</h1>
+            <p class="cvb-sub reveal" style="--d:.08s">ATS-optimised prompt assembly tool</p>
+          </div>
+          <div class="cvb-account reveal" style="--d:.12s" id="account">
+            <div id="account-out" hidden>
+              <button class="btn cvb-google" type="button" id="sign-in"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Sign in with Google</button>
+            </div>
+            <div id="account-in" class="cvb-user" hidden>
+              <span id="account-avatar"></span>
+              <span class="cvb-user-text"><strong id="account-name"></strong><span id="account-email"></span></span>
+              <button class="btn btn-ghost-light btn-xs" type="button" id="sign-out">Sign out</button>
+            </div>
+            <p class="cvb-account-note" id="account-note" hidden></p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="features-title">
-      <div class="container tool-page-grid">
-        <div class="reveal">
-          <p class="eyebrow">What you'll get</p>
-          <h2 id="features-title">Everything you need for a standout CV.</h2>
-          <ul class="feature-list">
-            <li><span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span><div><strong>Recruiter-approved templates</strong><span>Clean layouts that read well to people and to applicant tracking systems.</span></div></li>
-            <li><span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 1.9 5.8L20 10l-5 3.6L16.5 20 12 16.4 7.5 20 9 13.6 4 10l6.1-1.2z"/></svg></span><div><strong>AI tailoring for each role</strong><span>Paste a job ad and get suggestions to match its keywords and priorities.</span></div></li>
-            <li><span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></span><div><strong>One-click PDF export</strong><span>Download a pixel-perfect PDF, ready to send or upload.</span></div></li>
-            <li><span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><div><strong>Private by design</strong><span>Your CV data stays yours. It is never sold or shared.</span></div></li>
-          </ul>
-          <form class="waitlist" data-tool="CV Builder" novalidate>
-            <label for="wl-email" class="sr-only">Email address</label>
-            <input id="wl-email" type="email" placeholder="you@email.com" autocomplete="email" required />
-            <button type="submit" class="btn btn-primary">Join the waitlist</button>
-          </form>
-          <p class="waitlist-msg" role="status" aria-live="polite"></p>
+    <div class="cvb is-loading" id="cvb">
+      <div class="cvb-container">
+        <div class="cvb-appbar">
+          <p class="cvb-sync" id="sync" data-state="loading" role="status" aria-live="polite">Loading saved data…</p>
+          <div class="cvb-actions">
+            <button class="btn btn-outline btn-xs" type="button" id="clear-all">Clear All</button>
+            <button class="btn btn-dark btn-xs" type="button" id="save-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Save All</button>
+          </div>
         </div>
 
-        <div class="mock reveal" style="--d:.1s" aria-hidden="true">
-          <div class="mock-bar"><i></i><i></i><i></i></div>
-          <div class="mock-body">
-            <div class="mock-cols">
-              <div style="display:grid;gap:.75rem">
-                <div class="sk w-60"></div>
-                <div class="sk h-md"></div>
-                <div class="sk h-md"></div>
-                <div class="sk w-40"></div>
-                <div class="sk h-md"></div>
-                <div class="sk blue h-md"></div>
-              </div>
-              <div style="display:grid;gap:.6rem;padding:1rem;border:1px solid var(--border);border-radius:12px">
-                <div class="sk blue w-60" style="height:18px"></div>
-                <div class="sk w-40"></div>
-                <div class="sk"></div>
-                <div class="sk w-80"></div>
-                <div class="sk"></div>
-                <div class="sk w-40" style="margin-top:.5rem"></div>
-                <div class="sk"></div>
-                <div class="sk w-80"></div>
-                <div class="sk w-60"></div>
+        <div class="cvb-intro">
+          <strong>How this works:</strong> Fill in your CV Content Bank (saved automatically), then paste your Cover Letter and LaTeX CV prompts (also saved). Paste any job description, hit <strong>Build Prompts</strong>: the tool injects your content bank and JD into both prompts, ready to copy into Claude. <strong>Sign in with Google</strong> to keep everything, including each application, in your account on any device.
+        </div>
+
+        <section class="cvb-panel cvb-apps" aria-labelledby="apps-title">
+          <div class="cvb-apps-head">
+            <div class="cvb-panel-label">
+              <span class="cvb-num dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
+              <div>
+                <h2 class="cvb-panel-title" id="apps-title">Your applications</h2>
+                <p class="cvb-panel-desc" id="apps-desc">Each job description is saved as an application</p>
               </div>
             </div>
+            <button class="btn btn-primary btn-xs" type="button" id="new-app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New application</button>
           </div>
-          <div class="mock-overlay"><span class="status">In development</span></div>
-        </div>
-      </div>
-    </section>
+          <div class="cvb-apps-list" id="app-list"><p class="cvb-apps-empty">No saved applications yet. Paste a job description below and it saves automatically.</p></div>
+        </section>
 
-    <section class="section section--alt" aria-labelledby="cta-title">
-      <div class="container">
-        <div class="cta-band reveal">
-          <h2 id="cta-title">Need a hand with your career now?</h2>
-          <p>While the CV Builder is in development, explore our other tools or get in touch.</p>
-          <div class="hero-actions">
-            <a href="job-search.html" class="btn btn-primary">See Job Search Assistant</a>
-            <a href="../services.html#tools" class="btn btn-ghost-light">All tools</a>
+        <div class="cvb-grid">
+          <section class="cvb-panel" aria-labelledby="cv-bank-title">
+            <div class="cvb-panel-header">
+              <div class="cvb-panel-label">
+                <span class="cvb-num">1</span>
+                <div>
+                  <h2 class="cvb-panel-title" id="cv-bank-title">Master CV Content Bank</h2>
+                  <p class="cvb-panel-desc">Your profile, experience, story bank</p>
+                </div>
+              </div>
+              <div class="cvb-badges">
+                <span class="cvb-badge cvb-badge-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>auto-saved</span>
+                <span class="cvb-badge cvb-badge-count" id="cv-count">0 chars</span>
+              </div>
+            </div>
+            <textarea id="cv-bank" aria-labelledby="cv-bank-title" spellcheck="false" readonly placeholder="Paste your full Master CV Content Bank here: your profile summary, all work experience, story bank, skills, education, certifications, and any other relevant content.&#10;&#10;This is saved automatically so you only need to paste it once. Update it whenever your profile changes."></textarea>
+            <div class="cvb-toolbar">
+              <button class="btn btn-outline btn-xs" type="button" data-clear="cv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Clear</button>
+              <button class="btn btn-soft btn-xs" type="button" data-copy="cv-bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+              <div class="cvb-toolbar-right"><button class="btn btn-primary btn-xs" type="button" data-save="cv">Save</button></div>
+            </div>
+          </section>
+          <section class="cvb-panel" aria-labelledby="jd-input-title">
+            <div class="cvb-panel-header">
+              <div class="cvb-panel-label">
+                <span class="cvb-num dark">4</span>
+                <div>
+                  <h2 class="cvb-panel-title" id="jd-input-title">Job Description</h2>
+                  <p class="cvb-panel-desc">Paste the target role · saved to this application</p>
+                </div>
+              </div>
+              <div class="cvb-badges">
+                <span class="cvb-badge cvb-badge-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>auto-saved</span>
+                <span class="cvb-badge cvb-badge-count" id="jd-count">0 chars</span>
+              </div>
+            </div>
+            <label class="sr-only" for="app-title">Application name</label>
+            <input class="cvb-title-input" id="app-title" type="text" maxlength="120" readonly placeholder="Role and organisation, e.g. Project Officer, Federation Council (optional)" />
+            <textarea id="jd-input" class="jd-area" aria-labelledby="jd-input-title" spellcheck="false" readonly placeholder="Paste the full job description here for each new application.&#10;&#10;Each job description is saved as its own application, so you can come back to it later. Start a new application for each new role."></textarea>
+            <div class="cvb-toolbar">
+              <button class="btn btn-danger btn-xs" type="button" id="clear-jd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Clear JD</button>
+              <button class="btn btn-soft btn-xs" type="button" data-copy="jd-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+              <div class="cvb-toolbar-right"><span class="cvb-panel-desc" id="jd-char-live"></span></div>
+            </div>
+          </section>
+          <section class="cvb-panel" aria-labelledby="cl-prompt-title">
+            <div class="cvb-panel-header">
+              <div class="cvb-panel-label">
+                <span class="cvb-num">2</span>
+                <div>
+                  <h2 class="cvb-panel-title" id="cl-prompt-title">Cover Letter Prompt</h2>
+                  <p class="cvb-panel-desc">Template saved · JD + CV auto-injected on build</p>
+                </div>
+              </div>
+              <div class="cvb-badges">
+                <span class="cvb-badge cvb-badge-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>auto-saved</span>
+                <span class="cvb-badge cvb-badge-count" id="cl-count">0 chars</span>
+              </div>
+            </div>
+            <textarea id="cl-prompt" class="prompt-area" aria-labelledby="cl-prompt-title" spellcheck="false" readonly placeholder="Paste your Cover Letter prompt template here.&#10;&#10;The tool will automatically replace:&#10;  [PASTE JOB DESCRIPTION HERE]  →  your pasted JD&#10;  [PASTE YOUR FULL MASTER CV CONTENT BANK HERE]  →  your CV content bank&#10;&#10;Keep those exact placeholder strings in your template."></textarea>
+            <div class="cvb-toolbar">
+              <button class="btn btn-outline btn-xs" type="button" data-clear="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Clear</button>
+              <button class="btn btn-soft btn-xs" type="button" data-copy="cl-prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy template</button>
+              <div class="cvb-toolbar-right"><button class="btn btn-primary btn-xs" type="button" data-save="cl">Save</button></div>
+            </div>
+          </section>
+          <section class="cvb-panel" aria-labelledby="cv-prompt-title">
+            <div class="cvb-panel-header">
+              <div class="cvb-panel-label">
+                <span class="cvb-num">3</span>
+                <div>
+                  <h2 class="cvb-panel-title" id="cv-prompt-title">CV / LaTeX Prompt</h2>
+                  <p class="cvb-panel-desc">Template saved · JD + CV auto-injected on build</p>
+                </div>
+              </div>
+              <div class="cvb-badges">
+                <span class="cvb-badge cvb-badge-saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>auto-saved</span>
+                <span class="cvb-badge cvb-badge-count" id="cv-count2">0 chars</span>
+              </div>
+            </div>
+            <textarea id="cv-prompt" class="prompt-area" aria-labelledby="cv-prompt-title" spellcheck="false" readonly placeholder="Paste your CV / LaTeX prompt template here.&#10;&#10;Same placeholder injection applies:&#10;  [PASTE JOB DESCRIPTION HERE]  →  your pasted JD&#10;  [PASTE YOUR FULL MASTER CV CONTENT BANK HERE]  →  your CV content bank"></textarea>
+            <div class="cvb-toolbar">
+              <button class="btn btn-outline btn-xs" type="button" data-clear="cvp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>Clear</button>
+              <button class="btn btn-soft btn-xs" type="button" data-copy="cv-prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy template</button>
+              <div class="cvb-toolbar-right"><button class="btn btn-primary btn-xs" type="button" data-save="cvp">Save</button></div>
+            </div>
+          </section>
+
+          <div class="cvb-status" id="status-row">
+            <span class="cvb-dot" id="status-dot"></span>
+            <span class="cvb-status-text" id="status-text">Loading saved data…</span>
+            <span class="cvb-sep">·</span>
+            <span id="status-detail">Checking saved data</span>
           </div>
+
+          <div class="cvb-build">
+            <button class="btn btn-primary btn-lg" type="button" id="build"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 4 14 8-14 8z"/></svg>Build Prompts</button>
+            <button class="btn btn-outline btn-lg" type="button" id="reset-output"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Reset Output</button>
+          </div>
+
+          <section class="cvb-output" id="output" aria-labelledby="output-title">
+            <div class="cvb-output-head">
+              <h2 class="cvb-output-title" id="output-title">Built Prompts: Ready to Copy into Claude</h2>
+              <div class="cvb-tabs" role="tablist" aria-label="Built prompts">
+                <button class="cvb-tab" type="button" role="tab" id="tab-cl" aria-controls="out-cover-letter" aria-selected="true" data-tab="cover-letter">Cover Letter Prompt</button>
+                <button class="cvb-tab" type="button" role="tab" id="tab-cv" aria-controls="out-cv-latex" aria-selected="false" data-tab="cv-latex">CV / LaTeX Prompt</button>
+              </div>
+            </div>
+            <div class="cvb-out-panel visible" id="out-cover-letter" role="tabpanel" aria-labelledby="tab-cl">
+              <div class="cvb-out-head">
+                <span class="cvb-out-label">COVER LETTER PROMPT · with CV Bank + JD injected</span>
+                <button class="btn btn-outline btn-xs" type="button" data-copy-out="out-cl-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+              </div>
+              <div class="cvb-out-content" id="out-cl-content"></div>
+            </div>
+            <div class="cvb-out-panel" id="out-cv-latex" role="tabpanel" aria-labelledby="tab-cv">
+              <div class="cvb-out-head">
+                <span class="cvb-out-label">CV / LATEX PROMPT · with CV Bank + JD injected</span>
+                <button class="btn btn-outline btn-xs" type="button" data-copy-out="out-cv-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+              </div>
+              <div class="cvb-out-content" id="out-cv-content"></div>
+            </div>
+          </section>
         </div>
       </div>
-    </section>
+    </div>
+    <div class="cvb-toast" id="toast" role="status" aria-live="polite"></div>
   </main>
 
   <footer class="footer">
@@ -201,6 +312,7 @@
     </div>
   </footer>
 
-  <script src="../js/main.js?v=20261018d" defer></script>
+  <script src="../js/main.js?v=20261018e" defer></script>
+  <script type="module" src="../js/cv-builder.js?v=20261018e"></script>
 </body>
 </html>
