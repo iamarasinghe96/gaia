@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018g">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261018h">
 </head>
 <body>
 
@@ -248,11 +248,11 @@
   </div>
 </header>
 
-<nav class="main-nav">
-  <button class="main-nav-tab active" id="nav-profile" onclick="switchView('profile')">&#x2460; Profile Builder</button>
-  <button class="main-nav-tab" id="nav-prompt" onclick="switchView('prompt')">&#x2461; Prompt Builder</button>
-  <button class="main-nav-tab" id="nav-export" onclick="switchView('export')">&#x2462; Export to Word</button>
-  <button class="main-nav-tab nav-help" id="nav-help" onclick="switchView('help')">&#x2463; How it works</button>
+<nav class="main-nav" aria-label="Steps">
+  <button class="main-nav-tab active" id="nav-profile" onclick="switchView('profile')"><span class="step-n">1</span><span class="step-t">Profile Builder<small>Your details, once</small></span></button>
+  <button class="main-nav-tab" id="nav-prompt" onclick="switchView('prompt')"><span class="step-n">2</span><span class="step-t">Prompt Builder<small>Paste the job ad</small></span></button>
+  <button class="main-nav-tab" id="nav-export" onclick="switchView('export')"><span class="step-n">3</span><span class="step-t">Export to Word<small>Preview &amp; download</small></span></button>
+  <button class="main-nav-tab nav-help" id="nav-help" onclick="switchView('help')"><span class="step-n">?</span><span class="step-t">How it works</span></button>
 </nav>
 
 <!-- ═══════════════════════════════ PROFILE BUILDER VIEW ═══════════════════════════════ -->
@@ -3171,6 +3171,6 @@ window.gethiredReloadFromStorage = function(){
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261018g"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261018h"></script>
 </body>
 </html>
