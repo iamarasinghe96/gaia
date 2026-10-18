@@ -1,118 +1,88 @@
 /**
- * Gaia Symbiosis: booking form handler
- *
- * Saves each "Book a call" request to a Google Sheet and emails you a
- * notification.
- *
- * Setup:
- * 1. Open your Google Sheet, then Extensions > Apps Script.
- * 2. Replace everything in Code.gs with this file and click Save.
- * 3. Pick testSetup in the function dropdown, click Run, and allow the
- *    permissions. You should get a test email within a minute.
- * 4. Deploy > Manage deployments > edit (pencil) > Version: New version > Deploy.
- *    The web app URL stays the same. If you instead create a NEW deployment,
- *    put its URL in js/appointments.js (Execute as: Me, Who has access: Anyone).
+ * Gaia Symbiosis: booking form handler (Google Apps Script, bound to the "Book a Call" sheet)
+ * Saves each request to the first tab and emails a notification.
+ * After changing this file: Save, then Deploy > Manage deployments > edit > Version: New version > Deploy.
  */
 
 const NOTIFY_EMAIL = 'iamarasinghe96@gmail.com';
-// Rows go into the first tab. Values are matched to columns by header name,
-// so existing columns can be in any order.
-const HEADERS = ['Timestamp', 'Name', 'Email', 'Company', 'Service', 'Message', 'Preferred Date & Time'];
+const SERVICES = [
+  'AI & Intelligent Automation', 'Healthcare IT', 'Government & Compliance', 'Web Apps & Portals',
+  'Data Tools & ESG Reporting', 'Process Automation', 'Something else',
+];
+const MAX_PER_HOUR = 20;
 
 function doPost(e) {
   const p = (e && e.parameter) || {};
 
-  // Hidden "website" field is left empty by people and filled in by spam bots.
-  if (p.website) return json_({ result: 'success' });
+  // Bots fill the hidden "website" field; pretend success so they move on.
+  if (p.website) return reply_('success');
 
-  if (!p.name || !p.email) return json_({ result: 'error', message: 'Missing name or email' });
+  const name = text_(p.name, 100);
+  const email = text_(p.email, 254);
+  const company = text_(p.company, 150);
+  const service = SERVICES.indexOf(p.service) >= 0 ? p.service : 'Something else';
+  const message = text_(p.message, 3000, true);
+  const when = text_(p.datetime, 25);
+
+  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return reply_('error', 'Invalid name or email');
 
   const lock = LockService.getScriptLock();
-  lock.waitLock(10000);
+  if (!lock.tryLock(10000)) return reply_('error', 'Busy, please try again');
   try {
-    const sheet = getSheet_();
-    const values = {
-      timestamp: new Date(), name: clean_(p.name), email: clean_(p.email), company: clean_(p.company),
-      service: clean_(p.service), message: clean_(p.message), 'preferred date & time': formatWhen_(p.datetime),
-    };
-    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    sheet.appendRow(headers.map(h => { const v = values[String(h).trim().toLowerCase()]; return v === undefined ? '' : v; }));
+    const cache = CacheService.getScriptCache();
+    const count = Number(cache.get('count') || 0);
+    if (count >= MAX_PER_HOUR) return reply_('error', 'Too many requests, please email instead');
+    cache.put('count', String(count + 1), 3600);
+
+    const dupKey = 'dup_' + Utilities.base64EncodeWebSafe(email.toLowerCase()).slice(0, 200);
+    if (cache.get(dupKey)) return reply_('success');
+    cache.put(dupKey, '1', 120);
+
+    SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow([
+      new Date(), cell_(name), cell_(email), cell_(company), cell_(service), cell_(message), cell_(when),
+    ]);
   } finally {
     lock.releaseLock();
   }
 
   try {
-    notify_(p);
+    MailApp.sendEmail({
+      to: NOTIFY_EMAIL,
+      replyTo: email,
+      subject: oneLine_('New call request: ' + name + ' (' + service + ')'),
+      body: 'Name: ' + name + '\nEmail: ' + email + '\nCompany: ' + (company || '-') +
+        '\nService: ' + service + '\nPreferred time: ' + (when || '-') + '\n\nMessage:\n' + (message || '-'),
+      name: 'Gaia Symbiosis website',
+    });
   } catch (err) {
-    // The request is already saved in the sheet, so still report success.
     console.error('Email failed: ' + err);
   }
 
-  return json_({ result: 'success' });
+  return reply_('success');
 }
 
-/** Run this once from the editor to grant permissions and send yourself a test email. */
-function testSetup() {
-  console.log('Writing to sheet: ' + getSheet_().getName());
-  console.log('Email quota left today: ' + MailApp.getRemainingDailyQuota());
-  notify_({
-    name: 'Test Person', email: NOTIFY_EMAIL, company: 'Test Co',
-    service: 'AI & Intelligent Automation', datetime: '2026-10-20T10:30',
-    message: 'This is a test from testSetup().',
-  });
+function testEmail() {
+  MailApp.sendEmail(NOTIFY_EMAIL, 'Test from Gaia Symbiosis form', 'If you got this, email notifications work.');
 }
 
-function getSheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss) throw new Error('Open this script from the Google Sheet: Extensions > Apps Script.');
-  const sheet = ss.getSheets()[0];
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(HEADERS);
-    sheet.setFrozenRows(1);
-    sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
-  }
-  return sheet;
+// Trim, cap length, and remove control characters (keeps line breaks only where allowed).
+function text_(v, max, multiline) {
+  let s = String(v || '').slice(0, max);
+  s = multiline ? s.replace(/[^\S\n]+/g, ' ').replace(/[\u0000-\u0009\u000B-\u001F\u007F]/g, '')
+                : s.replace(/[\u0000-\u001F\u007F]+/g, ' ');
+  return s.trim();
 }
 
-function notify_(p) {
-  const when = formatWhen_(p.datetime);
-  const rows = [
-    ['Name', p.name], ['Email', p.email], ['Company', p.company],
-    ['Service', p.service], ['Preferred time', when], ['Message', p.message],
-  ];
-  const html = '<h2 style="font-family:Arial,sans-serif;margin:0 0 12px">New call request</h2>'
-    + '<table style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">'
-    + rows.map(([k, v]) => '<tr><td style="padding:6px 16px 6px 0;color:#5b6475;vertical-align:top">' + k
-      + '</td><td style="padding:6px 0">' + esc_(v || '-').replace(/\n/g, '<br>') + '</td></tr>').join('')
-    + '</table><p style="font-family:Arial,sans-serif;font-size:13px;color:#5b6475">Reply to this email to respond directly.</p>';
-  const text = rows.map(([k, v]) => k + ': ' + (v || '-')).join('\n');
-
-  MailApp.sendEmail({
-    to: NOTIFY_EMAIL,
-    replyTo: clean_(p.email),
-    subject: 'New call request: ' + clean_(p.name) + (p.service ? ' (' + clean_(p.service) + ')' : ''),
-    body: text,
-    htmlBody: html,
-    name: 'Gaia Symbiosis website',
-  });
+// Stop the sheet from treating visitor text as a formula (e.g. =IMPORTXML(...)).
+function cell_(s) {
+  return /^[=+\-@\t\r]/.test(s) ? "'" + s : s;
 }
 
-function formatWhen_(v) {
-  if (!v) return '';
-  const d = new Date(v);
-  if (isNaN(d)) return clean_(v);
-  return Utilities.formatDate(d, Session.getScriptTimeZone(), "EEE d MMM yyyy, h:mm a");
+function oneLine_(s) {
+  return s.replace(/[\r\n]+/g, ' ').slice(0, 200);
 }
 
-function clean_(v) {
-  // Strip characters that would make the sheet treat input as a formula.
-  return String(v || '').slice(0, 5000).replace(/^[=+\-@]/, "'$&");
-}
-
-function esc_(v) {
-  return String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-}
-
-function json_(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+function reply_(result, message) {
+  return ContentService.createTextOutput(JSON.stringify(message ? { result: result, message: message } : { result: result }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
