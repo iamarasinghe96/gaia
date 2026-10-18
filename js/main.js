@@ -29,6 +29,48 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', e => { if (e.key === 'Escape') { close(); setNav(); } });
   }
 
+  /* Tools dropdown (hover on desktop, tap/keyboard everywhere) */
+  document.querySelectorAll('.has-menu').forEach(item => {
+    const trigger = item.querySelector('.menu-trigger');
+    const setOpen = open => { item.classList.toggle('open', open); trigger.setAttribute('aria-expanded', String(open)); };
+    trigger.addEventListener('click', e => { e.stopPropagation(); setOpen(!item.classList.contains('open')); });
+    item.addEventListener('mouseleave', () => setOpen(false));
+    document.addEventListener('click', e => { if (!item.contains(e.target)) setOpen(false); });
+    item.addEventListener('keydown', e => { if (e.key === 'Escape') { setOpen(false); trigger.focus(); } });
+  });
+
+  /* News slider */
+  document.querySelectorAll('[data-slider]').forEach(slider => {
+    const track = slider.querySelector('.slider-track');
+    const slides = [...track.children];
+    const dotsBox = slider.querySelector('.slider-dots');
+    let index = 0;
+    slider.classList.toggle('single', slides.length < 2);
+    const dots = slides.map((slide, i) => {
+      slide.setAttribute('aria-label', `${i + 1} of ${slides.length}`);
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `Show update ${i + 1}`);
+      b.addEventListener('click', () => go(i));
+      dotsBox.appendChild(b);
+      return b;
+    });
+    const mark = i => { index = i; dots.forEach((d, j) => d.setAttribute('aria-current', String(j === i))); };
+    const go = i => { const n = (i + slides.length) % slides.length; track.scrollTo({ left: slides[n].offsetLeft - track.offsetLeft, behavior: 'smooth' }); mark(n); };
+    mark(0);
+    slider.querySelectorAll('.slider-arrow').forEach(a => a.addEventListener('click', () => go(index + Number(a.dataset.dir))));
+    if ('IntersectionObserver' in window) {
+      const so = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) mark(slides.indexOf(e.target)); }), { root: track, threshold: 0.6 });
+      slides.forEach(s => so.observe(s));
+    }
+    if (slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let paused = false;
+      ['mouseenter', 'focusin', 'touchstart'].forEach(ev => slider.addEventListener(ev, () => { paused = true; }, { passive: true }));
+      ['mouseleave', 'focusout'].forEach(ev => slider.addEventListener(ev, () => { paused = false; }));
+      setInterval(() => { if (!paused && !document.hidden) go(index + 1); }, 7000);
+    }
+  });
+
   /* Scroll reveal */
   const reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {

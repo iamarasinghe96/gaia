@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="css/styles.css?v=20261017c" />
+  <link rel="stylesheet" href="css/styles.css?v=20261018a" />
   <script>document.documentElement.classList.add('js')</script>
 
   <script type="application/ld+json">
@@ -84,7 +84,14 @@
       <nav aria-label="Primary">
         <ul class="nav-links">
           <li><a href="services.html">Services</a></li>
-          <li><a href="services.html#tools">Tools</a></li>
+          <li class="has-menu">
+            <button class="menu-trigger" type="button" aria-expanded="false" aria-controls="tools-menu">Tools <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <ul class="dropdown" id="tools-menu">
+              <li><a href="tools/cv-builder.html"><strong>CV Builder</strong><span>ATS-friendly CVs · Coming soon</span></a></li>
+              <li><a href="tools/job-search.html"><strong>Job Search Assistant</strong><span>Find and track roles · Coming soon</span></a></li>
+              <li><a href="https://lushnote.com.au" target="_blank" rel="noopener"><strong>LushNote</strong><span class="live">AI clinical notes · Live</span></a></li>
+            </ul>
+          </li>
           <li><a href="#work">Work</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact" class="btn btn-primary btn-sm">Book a call</a></li>
@@ -95,7 +102,10 @@
   </header>
   <div class="mobile-menu" id="mobile-menu">
     <a href="services.html">Services</a>
-    <a href="services.html#tools">Tools</a>
+    <p class="mobile-label">Tools</p>
+    <a class="mobile-sub" href="tools/cv-builder.html">CV Builder</a>
+    <a class="mobile-sub" href="tools/job-search.html">Job Search Assistant</a>
+    <a class="mobile-sub" href="https://lushnote.com.au" target="_blank" rel="noopener">LushNote</a>
     <a href="#work">Work</a>
     <a href="#about">About</a>
     <a href="#contact" class="btn btn-primary">Book a call</a>
@@ -131,29 +141,36 @@
           <picture><source srcset="assets/logo-512.webp" type="image/webp" /><img class="hero-logo" src="assets/logo-512.png" alt="" width="360" height="360" fetchpriority="high" /></picture>
         </div>
       </div>
-      <a href="#services" class="scroll-cue" aria-label="Scroll to services"></a>
     </section>
 
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>AI agents</span><span>Workflow automation</span><span>Healthcare IT</span><span>Government systems</span><span>Web applications</span><span>ESG reporting</span><span>Offline-first tools</span><span>Queue management</span>
-        <span>AI agents</span><span>Workflow automation</span><span>Healthcare IT</span><span>Government systems</span><span>Web applications</span><span>ESG reporting</span><span>Offline-first tools</span><span>Queue management</span>
-      </div>
-    </div>
 
-    <!-- Award -->
-    <section class="award" aria-labelledby="award-title">
-      <div class="container award-inner">
-        <picture class="award-img reveal"><source srcset="assets/award-finalist.webp" type="image/webp" /><img src="assets/award-finalist.png" alt="LushNote is a Finalist in the Information Technology category of the 2026 Australian Professionals Small Business Champion Awards" width="240" height="499" loading="lazy" decoding="async" /></picture>
-        <div class="reveal" style="--d:.08s">
-          <h2 id="award-title">LushNote is a national award finalist.</h2>
-          <p class="lead">LushNote, built by Gaia Symbiosis, is a Finalist in the <strong>Information Technology</strong> category of the <strong>2026 Australian Professionals Small Business Champion Awards</strong>.</p>
-          <p>LushNote gives doctors AI-powered clinical notes and referral letters, turning a consultation recording into structured notes in seconds.</p>
-          <div class="about-actions" style="margin-top:2rem">
-            <a href="https://lushnote.com.au" class="btn btn-primary" target="_blank" rel="noopener">Visit LushNote
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-            </a>
-            <a href="#contact" class="btn btn-outline">Build something with us</a>
+    <!-- News & updates: add another <article class="slide"> to create a new slide -->
+    <section class="news" aria-labelledby="news-title">
+      <h2 id="news-title" class="sr-only">News and updates</h2>
+      <div class="container">
+        <div class="slider" data-slider aria-roledescription="carousel" aria-label="News and updates">
+          <div class="slider-track">
+            <article class="slide" aria-roledescription="slide">
+              <div class="slide-inner">
+            <picture class="award-img reveal"><source srcset="assets/award-finalist.webp" type="image/webp" /><img src="assets/award-finalist.png" alt="LushNote is a Finalist in the Information Technology category of the 2026 Australian Professionals Small Business Champion Awards" width="240" height="499" loading="lazy" decoding="async" /></picture>
+            <div class="reveal" style="--d:.08s">
+              <h3 class="slide-title">LushNote is a national award finalist.</h3>
+              <p class="lead">LushNote, built by Gaia Symbiosis, is a Finalist in the <strong>Information Technology</strong> category of the <strong>2026 Australian Professionals Small Business Champion Awards</strong>.</p>
+              <p>LushNote gives doctors AI-powered clinical notes and referral letters, turning a consultation recording into structured notes in seconds.</p>
+              <div class="about-actions" style="margin-top:2rem">
+                <a href="https://lushnote.com.au" class="btn btn-primary" target="_blank" rel="noopener">Visit LushNote
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </a>
+                <a href="#contact" class="btn btn-outline">Build something with us</a>
+              </div>
+            </div>
+              </div>
+            </article>
+          </div>
+          <div class="slider-controls">
+            <button class="slider-arrow" type="button" data-dir="-1" aria-label="Previous update"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+            <div class="slider-dots"></div>
+            <button class="slider-arrow" type="button" data-dir="1" aria-label="Next update"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
           </div>
         </div>
       </div>
@@ -502,7 +519,7 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=20261017c" defer></script>
-  <script src="js/appointments.js?v=20261017c" defer></script>
+  <script src="js/main.js?v=20261018a" defer></script>
+  <script src="js/appointments.js?v=20261018a" defer></script>
 </body>
 </html>

@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="../css/styles.css?v=20261017c" />
+  <link rel="stylesheet" href="../css/styles.css?v=20261018a" />
   <script>document.documentElement.classList.add('js')</script>
   <script type="application/ld+json">
   {
@@ -58,7 +58,14 @@
       <nav aria-label="Primary">
         <ul class="nav-links">
           <li><a href="../services.html">Services</a></li>
-          <li><a href="../services.html#tools" aria-current="page">Tools</a></li>
+          <li class="has-menu">
+            <button class="menu-trigger is-current" type="button" aria-expanded="false" aria-controls="tools-menu">Tools <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <ul class="dropdown" id="tools-menu">
+              <li><a href="../tools/cv-builder.html"><strong>CV Builder</strong><span>ATS-friendly CVs · Coming soon</span></a></li>
+              <li><a href="../tools/job-search.html"><strong>Job Search Assistant</strong><span>Find and track roles · Coming soon</span></a></li>
+              <li><a href="https://lushnote.com.au" target="_blank" rel="noopener"><strong>LushNote</strong><span class="live">AI clinical notes · Live</span></a></li>
+            </ul>
+          </li>
           <li><a href="../index.html#work">Work</a></li>
           <li><a href="../index.html#about">About</a></li>
           <li><a href="../index.html#contact" class="btn btn-primary btn-sm">Book a call</a></li>
@@ -69,7 +76,10 @@
   </header>
   <div class="mobile-menu" id="mobile-menu">
     <a href="../services.html">Services</a>
-    <a href="../services.html#tools">Tools</a>
+    <p class="mobile-label">Tools</p>
+    <a class="mobile-sub" href="../tools/cv-builder.html">CV Builder</a>
+    <a class="mobile-sub" href="../tools/job-search.html">Job Search Assistant</a>
+    <a class="mobile-sub" href="https://lushnote.com.au" target="_blank" rel="noopener">LushNote</a>
     <a href="../index.html#work">Work</a>
     <a href="../index.html#about">About</a>
     <a href="../index.html#contact" class="btn btn-primary">Book a call</a>
@@ -167,6 +177,6 @@
     </div>
   </footer>
 
-  <script src="../js/main.js?v=20261017c" defer></script>
+  <script src="../js/main.js?v=20261018a" defer></script>
 </body>
 </html>
