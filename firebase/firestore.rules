@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// CV Prompt Builder: each signed-in user can only read and write their own data.
+// Paste into Firebase console > Firestore Database > Rules, then Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function textOk(data, field, max) {
+      return !(field in data) || (data[field] is string && data[field].size() <= max);
+    }
+
+    match /users/{uid} {
+      allow read, delete: if isOwner(uid);
+      allow create, update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['cvBank', 'clPrompt', 'cvPrompt', 'updatedAt'])
+        && textOk(request.resource.data, 'cvBank', 200000)
+        && textOk(request.resource.data, 'clPrompt', 200000)
+        && textOk(request.resource.data, 'cvPrompt', 200000)
+        && request.resource.data.updatedAt == request.time;
+
+      match /applications/{appId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid)
+          && request.resource.data.keys().hasOnly(['title', 'jd', 'createdAt', 'updatedAt'])
+          && textOk(request.resource.data, 'title', 200)
+          && textOk(request.resource.data, 'jd', 100000)
+          && request.resource.data.updatedAt == request.time;
+      }
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
