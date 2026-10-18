@@ -1,4 +1,4 @@
-import { firebaseConfig } from './firebase-config.js';
+import { firebaseConfig } from './firebase-config.js?v=20261018f';
 
 const FIREBASE = 'https://www.gstatic.com/firebasejs/10.14.1/';
 const PH_JD = '[PASTE JOB DESCRIPTION HERE]';
