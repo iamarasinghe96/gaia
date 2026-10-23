@@ -1,7 +1,7 @@
 // Google sign-in and cloud autosave for the GetHired CV Prompt Builder.
 // The app keeps working exactly as before on localStorage; this module mirrors
 // its keys to Firestore (users/{uid}/data/{key}) while the visitor is signed in.
-import { firebaseConfig, polishUrl } from './firebase-config.js?v=20261018l';
+import { firebaseConfig, polishUrl } from './firebase-config.js?v=20261023a';
 
 const SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
 const KEYS = [
@@ -205,6 +205,36 @@ async function start() {
     } catch (err) {
       console.error('Polish request failed', err);
       return { ok: false, error: 'network' };
+    }
+  };
+
+  // Delete everything this account has saved, then the sign-in record itself
+  window.gethiredDeleteAll = async () => {
+    const user = a.currentUser;
+    if (!user) return { ok: false, error: 'signin' };
+    try {
+      pending.clear();
+      Object.keys(timers).forEach(k => clearTimeout(timers[k]));
+      push = null;
+      const snap = await fs.getDocs(fs.collection(db, 'users', user.uid, 'data'));
+      await Promise.all(snap.docs.map(d => fs.deleteDoc(d.ref)));
+      try {
+        await auth.deleteUser(user);
+      } catch (err) {
+        if (err.code !== 'auth/requires-recent-login') throw err;
+        await auth.reauthenticateWithPopup(user, provider);
+        await auth.deleteUser(user);
+      }
+      uid = null;
+      clearLocal();
+      reloadApp();
+      showAccount(null);
+      status('local');
+      return { ok: true };
+    } catch (err) {
+      console.error('Delete failed', err);
+      push = uid ? schedule : null;
+      return { ok: false, error: err.code === 'auth/popup-closed-by-user' ? 'cancelled' : 'failed' };
     }
   };
 
