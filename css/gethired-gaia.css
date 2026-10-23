@@ -166,6 +166,16 @@ select.field-input:focus { border-color: var(--navy); background-color: var(--wh
 .lang-list li[aria-selected="true"], .lang-list li:hover { background: var(--navy-pale); color: var(--navy-light); }
 @media (max-width: 640px) { .link-row { grid-template-columns: minmax(0, 1fr) 34px; } .link-row input[type=url] { grid-column: 1; } .link-row .chip-x { grid-row: 1 / span 2; grid-column: 2; } }
 
+/* Bullet list editor (bullets are on screen only) */
+.bl-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.bl-item { display: grid; grid-template-columns: 18px minmax(0, 1fr) 30px; align-items: start; gap: 6px; }
+.bl-dot { width: 7px; height: 7px; margin: 15px 0 0 6px; border-radius: 50%; background: var(--navy); }
+textarea.field-input.bl-input { min-height: 0; resize: none; overflow: hidden; line-height: 1.6; }
+.bl-item .chip-x { margin-top: 4px; opacity: .55; }
+.bl-item:hover .chip-x, .bl-item:focus-within .chip-x { opacity: 1; }
+.bl-sample { margin: 0; padding-left: 20px; font-size: 12px; color: var(--slate); line-height: 1.6; }
+.bl-sample li { margin-bottom: 4px; }
+
 /* Check spelling & continue */
 .continue-btn .cp-arrow { font-size: 16px; margin-left: 2px; transition: transform .25s; }
 .continue-btn.is-ready:hover .cp-arrow { transform: translateX(3px); }

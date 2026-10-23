@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023d">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023e">
 </head>
 <body>
 
@@ -614,7 +614,7 @@ function defaultP() {
     },
     summary: { headline:'', tagline:'', paragraphs:'' },
     skills:       [{ category:'', items:'' }],
-    workHistory:  [{ title:'', employer:'', startDate:'', endDate:'', nature:'', bullets:'', respUrl:'', milestonesUrl:'' }],
+    workHistory:  [{ title:'', employer:'', startDate:'', endDate:'', nature:'', description:'', bullets:'', respUrl:'', milestonesUrl:'' }],
     education:    [{ degree:'', institution:'', startYear:'', endYear:'', gpa:'', thesis:'', notes:'', credentialsUrl:'' }],
     certifications: [{ category:'', items:'' }],
     publications: { academic:'', awards:'' },
@@ -689,6 +689,7 @@ const SAMPLE_P = {
   ],
   workHistory: [
     { title:'Operations Coordinator', employer:'Brightwater Logistics Pty Ltd — Brisbane, QLD', startDate:'March 2022', endDate:'Present', nature:'Full-time, permanent',
+      description:'Runs day-to-day dispatch and depot operations for a regional freight company, working between drivers, warehouse staff and the operations manager.',
       respUrl:'https://example.com/steve/responsibilities', milestonesUrl:'https://example.com/steve/milestones',
       bullets:'Coordinated daily dispatch for a fleet of 45 vehicles across three depots, keeping on-time delivery above 96%.\nBuilt an Excel rostering tool that cut weekly scheduling time from six hours to one.\nLed monthly WHS inspections and closed 38 corrective actions with zero lost-time injuries in 2023.\nReported weekly KPIs to the operations manager and two regional directors.' },
     { title:'Administration Officer — Works Depot', employer:'Greenfield Shire Council — Toowoomba, QLD', startDate:'January 2019', endDate:'February 2022', nature:'Full-time',
@@ -955,9 +956,10 @@ function workHistoryBodyHTML() {
         fi('Responsibilities Link <span class="opt">optional</span>', inp(`workHistory.${i}.respUrl`, 'https://... — becomes a [Responsibilities] link')),
         fi('Milestones / Website Link <span class="opt">optional</span>', inp(`workHistory.${i}.milestonesUrl`, 'https://... — becomes a [Milestones] link'))
       )}
-      ${fg(1, fi('Bullet Points (one per line)', ta(`workHistory.${i}.bullets`, 'Led...\nCoordinated...\nBuilt...\n...', 6)))}
+      ${fg(1, fi('Position Description <span class="opt">optional</span>', ta(`workHistory.${i}.description`, 'One short paragraph about the position: what the role is for, who it serves, and its scope or team size.', 3)))}
+      ${fg(1, fi('Responsibilities &amp; Achievements <span class="opt">one bullet each</span>', bulletsHTML(`workHistory.${i}.bullets`, 'e.g. Led delivery of…')))}
     </div>`).join('');
-  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('workHistory',{title:'',employer:'',startDate:'',endDate:'',nature:'',bullets:''})">+ Add Role</button></div>`;
+  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('workHistory',{title:'',employer:'',startDate:'',endDate:'',nature:'',description:'',bullets:''})">+ Add Role</button></div>`;
 }
 
 function educationBodyHTML() {
@@ -1186,6 +1188,7 @@ function generateCVBankText() {
       if (j.nature)   push(`Nature: ${j.nature}`);
       if (j.respUrl)       push(`Responsibilities URL: ${j.respUrl}`);
       if (j.milestonesUrl) push(`Milestones URL: ${j.milestonesUrl}`);
+      if ((j.description || '').trim()) push(`Description: ${j.description.trim().replace(/\s*\n+\s*/g, ' ')}`);
       nl();
       (j.bullets || '').split('\n').filter(Boolean).forEach(b => push(b));
       nl(); nl();
@@ -1417,7 +1420,7 @@ function parseCVBankText(text) {
       const trimmed = block.trim();
       if (!trimmed) continue;
       const blines = trimmed.split('\n');
-      const job = { title:'', employer:'', startDate:'', endDate:'', nature:'', bullets:'', respUrl:'', milestonesUrl:'' };
+      const job = { title:'', employer:'', startDate:'', endDate:'', nature:'', description:'', bullets:'', respUrl:'', milestonesUrl:'' };
       const bullets = [];
       let headerDone = false;
       for (const line of blines) {
@@ -1430,6 +1433,8 @@ function parseCVBankText(text) {
         const mu  = t.match(/^Milestones URL:\s*(.+)/);
         if (ru) { job.respUrl = ru[1].trim(); continue; }
         if (mu) { job.milestonesUrl = mu[1].trim(); continue; }
+        const de = !headerDone && t.match(/^Description:\s*(.+)/);
+        if (de) { job.description = de[1].trim(); continue; }
         if (emp) { job.employer = emp[1]; continue; }
         if (per) {
           const parts = per[1].split(/\s*[\u2013\u2014-]\s*/);
@@ -3668,8 +3673,112 @@ function _savePromptIfCustom(key, text, def){
   else localStorage.setItem(key, text);
 }
 
+// ═══════════════════════════════════════════════════════════════
+// BULLET LIST EDITOR: shows each line of a "one per line" field as its own bullet.
+// The bullet marks are on screen only; the field is still saved as plain lines,
+// so the CV Bank and the prompts see exactly the same text as before.
+// ═══════════════════════════════════════════════════════════════
+const _BULLET_MARK = /^\s*(?:[-•*▪●◦‣–]|\d{1,2}[.)])\s+/;
+const _blId = path => 'bl-' + path.replace(/\./g, '-');
+function bulletsHTML(path, placeholder){
+  const raw = String(getPath(P, path) || '');
+  const items = raw ? raw.split('\n') : [''];
+  if (SAMPLE_MODE) return `<ul class="bl-sample">${items.filter(Boolean).map(t => `<li>${esc(t)}</li>`).join('')}</ul>`;
+  return `<div class="bl-list" id="${_blId(path)}" data-bl="${path}">${_blItems(items, placeholder)}</div>
+    <button type="button" class="btn btn-outline btn-sm" onclick="blAdd('${path}')">+ Add bullet</button>`;
+}
+function _blItems(items, placeholder){
+  return items.map((t, i) => `<div class="bl-item"><span class="bl-dot" aria-hidden="true"></span>
+    <textarea class="field-input bl-input" rows="1" aria-label="Bullet ${i + 1}" placeholder="${i === 0 ? esc(placeholder || '') : ''}"
+      oninput="blInput(this)" onkeydown="blKey(event, this)" onpaste="blPaste(event, this)">${esc(t)}</textarea>
+    <button type="button" class="chip-x" tabindex="-1" onclick="blRemove(this)" aria-label="Remove bullet ${i + 1}">&times;</button></div>`).join('');
+}
+const _blWrap = el => el.closest('.bl-list');
+const _blInputs = wrap => [...wrap.querySelectorAll('.bl-input')];
+function _blFit(el){ el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
+function _blSave(wrap){
+  setPath(P, wrap.dataset.bl, _blInputs(wrap).map(x => x.value).join('\n'));
+  debouncedSave();
+}
+// Rebuild one list from an array of lines, then put the caret back
+function _blSet(wrap, items, focusIdx, caret){
+  const path = wrap.dataset.bl;
+  if (!items.length) items = [''];
+  setPath(P, path, items.join('\n'));
+  debouncedSave();
+  const ph = _blInputs(wrap)[0]?.getAttribute('placeholder') || '';
+  wrap.innerHTML = _blItems(items, ph);
+  const inputs = _blInputs(wrap);
+  inputs.forEach(_blFit);
+  const el = inputs[Math.max(0, Math.min(focusIdx, inputs.length - 1))];
+  if (el) { el.focus(); const c = caret == null ? el.value.length : caret; el.setSelectionRange(c, c); }
+}
+function blInput(el){
+  if (el.value.includes('\n')) {               // e.g. text dropped in: split it into bullets
+    const wrap = _blWrap(el), inputs = _blInputs(wrap), i = inputs.indexOf(el);
+    const vals = inputs.map(x => x.value);
+    const parts = el.value.split('\n');
+    vals.splice(i, 1, ...parts);
+    return _blSet(wrap, vals, i + parts.length - 1);
+  }
+  _blFit(el); _blSave(_blWrap(el));
+}
+function blKey(e, el){
+  const wrap = _blWrap(el), inputs = _blInputs(wrap), i = inputs.indexOf(el), vals = inputs.map(x => x.value);
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    const a = el.selectionStart, b = el.selectionEnd;
+    vals.splice(i, 1, el.value.slice(0, a), el.value.slice(b));
+    _blSet(wrap, vals, i + 1, 0);
+  } else if (e.key === 'Backspace' && i > 0 && el.selectionStart === 0 && el.selectionEnd === 0) {
+    e.preventDefault();
+    const join = vals[i - 1].length;
+    vals.splice(i - 1, 2, vals[i - 1] + vals[i]);
+    _blSet(wrap, vals, i - 1, join);
+  } else if (e.key === 'ArrowUp' && i > 0 && el.selectionStart === 0) {
+    e.preventDefault(); inputs[i - 1].focus();
+  } else if (e.key === 'ArrowDown' && i < inputs.length - 1 && el.selectionEnd === el.value.length) {
+    e.preventDefault(); inputs[i + 1].focus();
+  }
+}
+// Pasting several lines makes several bullets; a bullet symbol at the start of a pasted
+// line is dropped, because the bullet is already shown on screen.
+function blPaste(e, el){
+  const text = (e.clipboardData || window.clipboardData).getData('text');
+  if (!text) return;
+  const lines = text.replace(/\r\n?/g, '\n').split('\n').map(l => l.replace(_BULLET_MARK, '').trimEnd()).filter(l => l.trim());
+  if (lines.length < 2 && !_BULLET_MARK.test(text)) return;
+  e.preventDefault();
+  const wrap = _blWrap(el), inputs = _blInputs(wrap), i = inputs.indexOf(el), vals = inputs.map(x => x.value);
+  const head = el.value.slice(0, el.selectionStart), tail = el.value.slice(el.selectionEnd);
+  if (!lines.length) return;
+  const parts = lines.slice();
+  parts[0] = head + parts[0];
+  const last = parts.length - 1, caret = parts[last].length;
+  parts[last] += tail;
+  vals.splice(i, 1, ...parts);
+  _blSet(wrap, vals, i + last, caret);
+}
+function blRemove(btn){
+  const wrap = _blWrap(btn), inputs = _blInputs(wrap), el = btn.parentElement.querySelector('.bl-input'), i = inputs.indexOf(el);
+  const vals = inputs.map(x => x.value); vals.splice(i, 1);
+  _blSet(wrap, vals, Math.max(0, i - 1));
+}
+function blAdd(path){
+  const wrap = document.getElementById(_blId(path));
+  const vals = _blInputs(wrap).map(x => x.value);
+  if (vals.length && !vals[vals.length - 1].trim()) return _blSet(wrap, vals, vals.length - 1);
+  _blSet(wrap, [...vals, ''], vals.length);
+}
+// Size bullets to their text whenever the form is drawn
+new MutationObserver(() => document.querySelectorAll('.bl-input').forEach(el => { if (!el.dataset.fit && el.offsetParent) { el.dataset.fit = 1; _blFit(el); } }))
+  .observe(document.getElementById('profile-form'), { childList: true, subtree: true });
+document.getElementById('profile-form').addEventListener('click', () => requestAnimationFrame(() =>
+  document.querySelectorAll('.bl-input').forEach(el => { if (el.offsetParent && !el.dataset.fit) { el.dataset.fit = 1; _blFit(el); } })));
+window.addEventListener('resize', () => document.querySelectorAll('.bl-input').forEach(el => el.offsetParent && _blFit(el)));
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261023d"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261023e"></script>
 </body>
 </html>
