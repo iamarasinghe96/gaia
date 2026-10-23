@@ -540,15 +540,22 @@ a.contact-item:hover { border-color: var(--blue); transform: translateX(4px); }
 @media (max-width: 640px) {
   .section { padding: 4.5rem 0; }
   .container { padding: 0 1rem; }
-  .hero { min-height: 0; padding: calc(var(--nav-h) + 1.5rem) 0 3.5rem; }
-  .show-stage { min-height: 16rem; }
-  .showcase { margin-top: 1.75rem; }
+  .hero { min-height: 0; padding: calc(var(--nav-h) + .5rem) 0 2rem; }
+  .hero-inner { gap: 1rem; }
+  .hero h1 { font-size: clamp(1.9rem, 8.6vw, 2.35rem); margin-bottom: 0; }
+  .showcase { margin-top: 1.1rem; }
+  .show-stage { min-height: 0; }
+  .show-meta { margin-bottom: .6rem; }
+  .show-name { font-size: 1.75rem; margin-bottom: .45rem; }
+  .show-line { font-size: .98rem; line-height: 1.55; margin-bottom: 1rem; }
+  .show-cta { padding: .62rem 1.1rem; font-size: .9rem; }
+  .show-dots { margin-top: 1rem; }
   .news { padding: 4rem 0 2.5rem; }
   .slide-inner { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
   .award-img img { width: 150px; margin: 0 auto; }
   .slide .about-actions { justify-content: center; }
   .slider-controls { margin-top: 2.25rem; }
-  .hero-visual { max-width: 210px; }
+  .hero-visual { max-width: clamp(92px, 19svh, 150px); }
   .grid-3, .process, .check-list, .form-row, .mock-cols { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr 1fr; border-top: 0; }
   .stat { padding: 1.5rem 1rem 1.5rem 1.25rem; border-top: 1px solid var(--border); }
