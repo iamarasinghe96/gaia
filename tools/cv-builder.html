@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023c">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023d">
 </head>
 <body>
 
@@ -608,7 +608,9 @@ function defaultP() {
       fullName:'', dob:'', address:'', location:'', phone:'', phone2:'',
       email:'', linkedin:'', portfolio:'', rtwUrl:'', seekUrl:'',
       rightToWork:'', locationNote:'', languages:'',
-      nic:'', sex:'', civilStatus:'', ethnicGroup:''
+      nic:'', sex:'', civilStatus:'', ethnicGroup:'',
+      street:'', street2:'', suburb:'', state:'', postcode:'', country:'',
+      otherLinks: []
     },
     summary: { headline:'', tagline:'', paragraphs:'' },
     skills:       [{ category:'', items:'' }],
@@ -843,9 +845,9 @@ function renderSectionBody(id) {
 }
 
 // ─── field helpers ───
-function inp(path, placeholder='') {
+function inp(path, placeholder='', list='') {
   if (SAMPLE_MODE) return `<input class="field-input" type="text" readonly tabindex="-1" value="${esc(getPath(P,path))}">`;
-  return `<input class="field-input" type="text" data-path="${path}" value="${esc(getPath(P,path))}" placeholder="${esc(placeholder)}">`;
+  return `<input class="field-input" type="text" data-path="${path}" value="${esc(getPath(P,path))}" placeholder="${esc(placeholder)}"${list ? ` list="${list}" autocomplete="off"` : ''}>`;
 }
 function ta(path, placeholder='', rows=3) {
   if (SAMPLE_MODE) return `<textarea class="field-input" readonly tabindex="-1" rows="${rows}">${esc(getPath(P,path))}</textarea>`;
@@ -864,13 +866,25 @@ function fg(cols, ...items) {
 
 function personalBodyHTML() {
   const p = 'personal';
+  _ensureAddressParts(P.personal);
   return `
     <div class="section-tip">Fields marked <span class="req">*</span> are used to personalise the Cover Letter LaTeX output. Others appear in the CV Bank for Claude to reference.</div>
     ${fg(2,
       fi('Full Name <span class="req">*</span>', inp(`${p}.fullName`, 'e.g. Jane Smith')),
       fi('Date of Birth <span class="opt">optional</span>', inp(`${p}.dob`, 'e.g. 15th March 1990'))
     )}
-    ${fg(1, fi('Full Address', inp(`${p}.address`, 'e.g. 12 Oak Street, Melbourne, VIC 3000, Australia')))}
+    ${fg(2,
+      fi('Street Address', inp(`${p}.street`, 'e.g. 12 Oak Street')),
+      fi('Address Line 2 <span class="opt">optional</span>', inp(`${p}.street2`, 'e.g. Unit 4 or building name'))
+    )}
+    ${fg(2,
+      fi('Suburb / City', inp(`${p}.suburb`, 'e.g. Melbourne')),
+      fi('State / Province', inp(`${p}.state`, 'e.g. VIC', 'gh-states'))
+    )}
+    ${fg(2,
+      fi('Postcode', inp(`${p}.postcode`, 'e.g. 3000')),
+      fi('Country', inp(`${p}.country`, 'e.g. Australia', 'gh-countries'))
+    )}
     ${fg(2,
       fi('Location for Letterhead <span class="req">*</span>', inp(`${p}.location`, 'e.g. Melbourne, VIC 3000')),
       fi('Primary Phone <span class="req">*</span>', inp(`${p}.phone`, 'e.g. +61 400 000 000'))
@@ -884,18 +898,19 @@ function personalBodyHTML() {
       fi('Portfolio / GitHub URL <span class="opt">optional</span>', inp(`${p}.portfolio`, 'e.g. https://yourname.github.io'))
     )}
     ${fg(1, fi('SEEK Profile URL <span class="opt">optional</span>', inp(`${p}.seekUrl`, 'e.g. https://www.seek.com.au/profiles/... — leave blank and the SEEK icon is left out of your letterhead')))}
+    ${fg(1, fi('Other Links <span class="opt">optional</span>', otherLinksHTML()))}
     ${fg(2,
       fi('Right to Work URL <span class="opt">optional</span>', inp(`${p}.rtwUrl`, 'e.g. https://yourname.github.io/rtw — leave blank if none')),
       fi('Right to Work Statement', inp(`${p}.rightToWork`, 'e.g. Unrestricted — Subclass 485 visa, valid until 2029'))
     )}
-    ${fg(1, fi('Location Note', inp(`${p}.locationNote`, 'e.g. Based in Melbourne — 5 min from CBD')))}
+    ${P.personal.locationNote ? fg(1, fi('Location Note <span class="opt">no longer needed</span>', inp(`${p}.locationNote`, '') + '<div class="field-hint">The prompts now work out your commute from your address and the job location. Clear this box to remove it; while it has text, the AI uses your wording instead.</div>')) : ''}
     ${fg(2,
-      fi('Languages', inp(`${p}.languages`, 'e.g. English (fluent), Mandarin (competent)')),
+      fi('Languages', languagesHTML()),
       fi('National ID / NIC <span class="opt">optional</span>', inp(`${p}.nic`, ''))
     )}
     ${fg(3,
-      fi('Sex <span class="opt">optional</span>', inp(`${p}.sex`, '')),
-      fi('Civil Status <span class="opt">optional</span>', inp(`${p}.civilStatus`, '')),
+      fi('Sex <span class="opt">optional</span>', sel(`${p}.sex`, ['Female', 'Male', 'Intersex'])),
+      fi('Civil Status <span class="opt">optional</span>', sel(`${p}.civilStatus`, ['Single', 'Married', 'De facto', 'Engaged', 'Separated', 'Divorced', 'Widowed'])),
       fi('Ethnic Group <span class="opt">optional</span>', inp(`${p}.ethnicGroup`, ''))
     )}`;
 }
@@ -1128,6 +1143,8 @@ function generateCVBankText() {
   if (p.portfolio)     push(`GitHub / Portfolio: ${p.portfolio}`);
   if (p.rtwUrl)        push(`Right to Work URL: ${p.rtwUrl}`);
   if (p.seekUrl)       push(`SEEK Profile: ${p.seekUrl}`);
+  (p.otherLinks || []).filter(l => l && (l.url || '').trim()).forEach(l =>
+    push(`Other URL (${(l.label || '').replace(/[()\n]/g, ' ').trim() || 'Website'}): ${l.url.trim()}`));
   if (p.sex)           push(`Sex: ${p.sex}`);
   if (p.civilStatus)   push(`Civil Status: ${p.civilStatus}`);
   if (p.ethnicGroup)   push(`Ethnic Group: ${p.ethnicGroup}`);
@@ -1351,6 +1368,7 @@ function parseCVBankText(text) {
     result.personal.portfolio   = parseField(b, 'GitHub / Portfolio') || parseField(b, 'Portfolio');
     result.personal.rtwUrl      = parseField(b, 'Right to Work URL') || parseField(b, 'RTW URL');
     result.personal.seekUrl     = parseField(b, 'SEEK Profile') || parseField(b, 'SEEK URL');
+    result.personal.otherLinks  = [...b.matchAll(/^Other URL(?: \(([^)]*)\))?:\s*(\S.*)$/gm)].map(m => ({ label: (m[1] || '').trim(), url: m[2].trim() }));
     result.personal.rightToWork = parseField(b, 'Right to Work \\(Australia\\)') || parseField(b, 'Right to Work');
     result.personal.locationNote= parseField(b, 'Location note');
     result.personal.languages   = parseField(b, 'Languages');
@@ -1865,6 +1883,7 @@ function loadPromptBuilder() {
   const cvBankText = generateCVBankText();
   document.getElementById('cv-bank').value = cvBankText;
   if (cvBankText.length > 20) localStorage.setItem('cv_content_bank', cvBankText);
+  _dropStalePromptCopies();
   document.getElementById('cl-prompt').value = localStorage.getItem('cl_prompt') || DEFAULTS.cl;
   document.getElementById('cv-prompt').value = localStorage.getItem('cv_prompt') || DEFAULTS.cvp;
   updateCount('cv-bank','cv-count');
@@ -2031,8 +2050,8 @@ function saveField(fieldId, storageKey) {
 
 function saveAll() {
   localStorage.setItem('cv_content_bank', document.getElementById('cv-bank').value);
-  localStorage.setItem('cl_prompt',       document.getElementById('cl-prompt').value);
-  localStorage.setItem('cv_prompt',       document.getElementById('cv-prompt').value);
+  _savePromptIfCustom('cl_prompt', document.getElementById('cl-prompt').value, DEFAULTS.cl);
+  _savePromptIfCustom('cv_prompt', document.getElementById('cv-prompt').value, DEFAULTS.cvp);
   saveProfileData();
   toast('All fields saved \u2714', 'success');
   updateStatus();
@@ -3419,6 +3438,10 @@ function _applyImportedProfile(profile){
     else next[k] = typeof v === 'string' ? v : base[k];
   }
   if (!next.usageNotes && P.usageNotes) next.usageNotes = P.usageNotes;
+  next.personal.address = composeAddress(next.personal) || next.personal.address || '';
+  next.personal.otherLinks = (Array.isArray(profile.otherLinks) ? profile.otherLinks : [])
+    .filter(l => l && /^https?:\/\//i.test(String(l.url || '').trim()))
+    .map(l => ({ label: String(l.label || '').trim(), url: String(l.url).trim() }));
   P = next;
   saveProfileData();
   renderProfileForm();
@@ -3464,8 +3487,191 @@ async function importFromCV(input){
   }
 }
 
+// ═══════════════════════════════════════════════════════════════
+// PERSONAL DETAILS: address parts, other links, languages, dropdowns.
+// Every widget stores its value in the same fields and CV Bank lines as before,
+// and none of them rewrites a saved value unless the user changes it.
+// ═══════════════════════════════════════════════════════════════
+const ADDR_PARTS = ['street', 'street2', 'suburb', 'state', 'postcode', 'country'];
+function composeAddress(p){
+  const statePost = [p.state, p.postcode].map(x => (x || '').trim()).filter(Boolean).join(' ');
+  return [p.street, p.street2, p.suburb, statePost, p.country].map(x => (x || '').trim()).filter(Boolean).join(', ');
+}
+// Split a one-line address into parts. The split is only used if the parts rebuild the
+// exact same line; otherwise the whole line goes into Street Address, so nothing is lost.
+function splitAddress(addr){
+  const line = (addr || '').trim();
+  const out = { street: '', street2: '', suburb: '', state: '', postcode: '', country: '' };
+  if (!line) return out;
+  const t = line.split(/\s*,\s*/), g = Object.assign({}, out);
+  if (t.length >= 3 && !/\d/.test(t[t.length - 1])) g.country = t.pop();
+  const m = t.length >= 2 && t[t.length - 1].match(/^(.*?)\s*(\d{3,6})$/);
+  if (m) { g.state = m[1]; g.postcode = m[2]; t.pop(); }
+  if (t.length >= 2) g.suburb = t.pop();
+  g.street = t.join(', ');
+  return composeAddress(g) === line ? g : Object.assign(out, { street: line });
+}
+function _ensureAddressParts(p){
+  if (p.address && ADDR_PARTS.every(k => !p[k])) Object.assign(p, splitAddress(p.address));
+}
+
+function sel(path, options){
+  const cur = getPath(P, path);
+  const opts = cur && !options.includes(cur) ? [cur, ...options] : options;
+  return `<select class="field-input" data-path="${path}"><option value="">Not stated</option>${opts.map(o => `<option${o === cur ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+}
+
+// ─── Other links (Facebook, Behance, YouTube…) ───
+function otherLinksHTML(){
+  const list = P.personal.otherLinks || [];
+  const rows = list.map((l, i) => `<div class="link-row">
+      <input class="field-input" type="text" data-path="personal.otherLinks.${i}.label" value="${esc(l.label)}" placeholder="Name, e.g. Facebook" list="gh-link-names" autocomplete="off" aria-label="Link name">
+      <input class="field-input" type="url" data-path="personal.otherLinks.${i}.url" value="${esc(l.url)}" placeholder="https://" aria-label="Link URL">
+      <button type="button" class="chip-x" onclick="removeOtherLink(${i})" aria-label="Remove ${esc(l.label || 'link')}">&times;</button>
+    </div>`).join('');
+  return `<div class="field-hint">Any other profile you want employers to see, such as Facebook, Behance, YouTube or a personal website. The AI links it only where it suits the job.</div>${rows}
+    <button type="button" class="btn btn-outline btn-sm" onclick="addOtherLink()">+ Add link</button>`;
+}
+function addOtherLink(){
+  if (!Array.isArray(P.personal.otherLinks)) P.personal.otherLinks = [];
+  P.personal.otherLinks.push({ label: '', url: '' });
+  saveProfileData(); renderSectionBody('personal');
+  const all = document.querySelectorAll('[data-path$=".label"][data-path^="personal.otherLinks."]');
+  if (all.length) all[all.length - 1].focus();
+}
+function removeOtherLink(i){
+  P.personal.otherLinks.splice(i, 1);
+  saveProfileData(); renderSectionBody('personal');
+}
+
+// ─── Languages: type to search, click to add as a card ───
+const LANGUAGES = ['Afrikaans','Albanian','Amharic','Arabic','Armenian','Assamese','Auslan','Azerbaijani','Basque','Belarusian','Bengali','Bosnian','Bulgarian','Burmese','Cantonese','Catalan','Cebuano','Croatian','Czech','Danish','Dari','Dhivehi','Dinka','Dutch','English','Estonian','Fijian','Filipino','Finnish','French','Georgian','German','Greek','Gujarati','Haitian Creole','Hakka','Hausa','Hebrew','Hindi','Hmong','Hokkien','Hungarian','Icelandic','Igbo','Indonesian','Irish','Italian','Japanese','Javanese','Kannada','Karen','Kazakh','Khmer','Kinyarwanda','Kirundi','Korean','Kurdish','Kyrgyz','Lao','Latvian','Lithuanian','Macedonian','Malay','Malayalam','Maltese','Mandarin','Maori','Marathi','Mongolian','Nepali','Norwegian','Odia','Oromo','Pashto','Persian (Farsi)','Polish','Portuguese','Punjabi','Romanian','Russian','Samoan','Serbian','Shona','Sindhi','Sinhala','Slovak','Slovenian','Somali','Spanish','Swahili','Swedish','Tagalog','Tamil','Telugu','Tetum','Thai','Tibetan','Tigrinya','Tongan','Turkish','Ukrainian','Urdu','Uzbek','Vietnamese','Welsh','Xhosa','Yiddish','Yoruba','Zulu'];
+const LANG_LEVELS = ['native', 'fluent', 'proficient', 'competent', 'conversational', 'basic'];
+// "English (fluent), Sinhala (native)" <-> [{name, level}]
+function _splitLangs(s){
+  const parts = []; let depth = 0, cur = '';
+  for (const ch of String(s || '')) {
+    if (ch === '(') depth++;
+    if (ch === ')') depth = Math.max(0, depth - 1);
+    if (ch === ',' && !depth) { parts.push(cur); cur = ''; } else cur += ch;
+  }
+  parts.push(cur);
+  return parts.map(x => x.trim()).filter(Boolean).map(x => {
+    const m = x.match(/^(.*?)\s*\(([^()]*)\)$/);
+    return m && m[1] ? { name: m[1], level: m[2].trim() } : { name: x, level: '' };
+  });
+}
+const _joinLangs = list => list.map(l => l.level ? `${l.name} (${l.level})` : l.name).join(', ');
+function _setLangs(list){
+  P.personal.languages = _joinLangs(list);
+  debouncedSave(); renderLanguages(true);
+}
+function languagesHTML(){
+  return `<div class="lang-field" id="lang-field">${_langInner()}</div>`;
+}
+function _langInner(){
+  const list = _splitLangs(P.personal.languages);
+  const chips = list.map((l, i) => {
+    const levels = l.level && !LANG_LEVELS.includes(l.level.toLowerCase()) ? [l.level, ...LANG_LEVELS] : LANG_LEVELS;
+    return `<span class="lang-chip"><span class="lang-name">${esc(l.name)}</span>
+      <select onchange="setLangLevel(${i}, this.value)" aria-label="${esc(l.name)} level"><option value="">level</option>${levels.map(v => `<option value="${esc(v)}"${v.toLowerCase() === l.level.toLowerCase() ? ' selected' : ''}>${esc(v)}</option>`).join('')}</select>
+      <button type="button" class="chip-x" onclick="removeLang(${i})" aria-label="Remove ${esc(l.name)}">&times;</button></span>`;
+  }).join('');
+  return `${chips ? `<div class="lang-chips">${chips}</div>` : ''}
+    <div class="lang-search"><input class="field-input" id="lang-input" type="text" placeholder="Type a language, e.g. Sinhala" autocomplete="off"
+      role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lang-list"
+      oninput="langSuggest()" onkeydown="langKey(event)" onblur="setTimeout(langClose, 150)">
+    <ul class="lang-list" id="lang-list" role="listbox" hidden></ul></div>`;
+}
+function renderLanguages(refocus){
+  const el = document.getElementById('lang-field');
+  if (!el) return;
+  el.innerHTML = _langInner();
+  if (refocus) document.getElementById('lang-input').focus();
+}
+let _langActive = 0;
+function langSuggest(){
+  const input = document.getElementById('lang-input'), ul = document.getElementById('lang-list');
+  const q = input.value.trim().toLowerCase();
+  const have = new Set(_splitLangs(P.personal.languages).map(l => l.name.toLowerCase()));
+  const hits = q ? LANGUAGES.filter(n => !have.has(n.toLowerCase()) && n.toLowerCase().includes(q))
+    .sort((a, b) => a.toLowerCase().indexOf(q) - b.toLowerCase().indexOf(q)).slice(0, 8) : [];
+  const typed = input.value.trim();
+  if (typed && !hits.length && !have.has(typed.toLowerCase())) hits.push(typed);
+  _langActive = 0;
+  ul.innerHTML = hits.map((n, i) => `<li role="option" data-name="${esc(n)}" aria-selected="${i === 0}" onmousedown="event.preventDefault(); addLang(this.dataset.name)">${LANGUAGES.includes(n) ? esc(n) : `Add “${esc(n)}”`}</li>`).join('');
+  ul.hidden = !hits.length;
+  input.setAttribute('aria-expanded', String(!ul.hidden));
+}
+function langKey(e){
+  const ul = document.getElementById('lang-list'), items = [...ul.querySelectorAll('li')];
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (!items.length) return;
+    e.preventDefault();
+    _langActive = (_langActive + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length;
+    items.forEach((li, i) => li.setAttribute('aria-selected', String(i === _langActive)));
+  } else if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const pick = items[_langActive] ? items[_langActive].dataset.name : e.target.value.trim();
+    if (pick) addLang(pick);
+  } else if (e.key === 'Escape') langClose();
+  else if (e.key === 'Backspace' && !e.target.value) {
+    const list = _splitLangs(P.personal.languages);
+    if (list.length) { list.pop(); _setLangs(list); }
+  }
+}
+function langClose(){
+  const ul = document.getElementById('lang-list'), input = document.getElementById('lang-input');
+  if (ul) ul.hidden = true;
+  if (input) input.setAttribute('aria-expanded', 'false');
+}
+function addLang(name){
+  name = String(name || '').replace(/[(),]/g, ' ').replace(/\s+/g, ' ').trim();
+  const list = _splitLangs(P.personal.languages);
+  if (name && !list.some(l => l.name.toLowerCase() === name.toLowerCase())) list.push({ name, level: '' });
+  _setLangs(list);
+}
+function removeLang(i){ const list = _splitLangs(P.personal.languages); list.splice(i, 1); _setLangs(list); }
+function setLangLevel(i, level){ const list = _splitLangs(P.personal.languages); list[i].level = level; P.personal.languages = _joinLangs(list); debouncedSave(); }
+
+// Keep the one-line Address (used by the CV Bank, prompts and letterhead) in step with its parts
+document.getElementById('profile-form').addEventListener('input', e => {
+  const path = e.target.dataset.path || '';
+  const part = path.startsWith('personal.') && path.slice(9);
+  if (!ADDR_PARTS.includes(part)) return;
+  P.personal[part] = e.target.value;
+  P.personal.address = composeAddress(P.personal);
+});
+
+// Suggestions for the State, Country and link name boxes
+document.body.insertAdjacentHTML('beforeend',
+  '<datalist id="gh-states">' + ['ACT','NSW','NT','QLD','SA','TAS','VIC','WA'].map(v => `<option value="${v}">`).join('') + '</datalist>' +
+  '<datalist id="gh-countries">' + ['Australia','New Zealand','Sri Lanka','India','United Kingdom','United States','Canada','Singapore','Malaysia','Philippines','China','Nepal','Pakistan','Bangladesh','Vietnam','Indonesia','South Africa','Ireland'].map(v => `<option value="${v}">`).join('') + '</datalist>' +
+  '<datalist id="gh-link-names">' + ['Facebook','Instagram','X (Twitter)','YouTube','TikTok','Behance','Dribbble','Medium','Substack','Stack Overflow','GitLab','Google Scholar','ResearchGate','ORCID','Personal website','Blog'].map(v => `<option value="${v.replace(/[()]/g, '')}">`).join('') + '</datalist>');
+
+// ─── Prompt copies ───
+const _OLD_PROMPT_HASHES = {"cl_prompt": ["b923b977"], "cv_prompt": ["c4bd1cd5"]};
+function _promptHash(text){
+  const t = String(text || '').replace(/\r\n?/g, '\n').trim();
+  let h = 0x811c9dc5;
+  for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h.toString(16);
+}
+function _dropStalePromptCopies(){
+  [['cl_prompt', DEFAULTS.cl], ['cv_prompt', DEFAULTS.cvp]].forEach(([key, def]) => {
+    const saved = localStorage.getItem(key);
+    if (!saved || !def) return;
+    const h = _promptHash(saved);
+    if (h === _promptHash(def) || _OLD_PROMPT_HASHES[key].includes(h)) localStorage.removeItem(key);
+  });
+}
+function _savePromptIfCustom(key, text, def){
+  if (def && _promptHash(text) === _promptHash(def)) localStorage.removeItem(key);
+  else localStorage.setItem(key, text);
+}
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261023c"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261023d"></script>
 </body>
 </html>

@@ -35,6 +35,12 @@ The content bank marks links with these exact labels. Map them as follows:
    or achievements                          ->  wrap that item: "- [Item](url)"
                                                 (achievements may instead take a
                                                 trailing " [View](url)")
+  "Other URL (<Name>):" in personal details ->  link it only where it genuinely supports
+                                                this application (e.g. a Behance or
+                                                YouTube profile for a creative role),
+                                                wrapping natural wording such as "my
+                                                [Behance portfolio](url)". Otherwise
+                                                leave it out.
 
 The bracketed labels [Responsibilities], [Milestones], [Website], [Credentials] and
 [View] are rendered bracketed and underlined by the Word export. Every other link — a
@@ -186,7 +192,7 @@ No bullet point should be longer than two lines
 No generic filler phrases ("responsible for," "assisted with," "helped to," "worked on") — replace all with specific, owned, active language
 The professional summary must not begin with "I"
 The CV must feel like it was written specifically for this job — not a generic document with the job title swapped in
-If the role is local to where the candidate lives, reference proximity naturally where it adds genuine value
+If the role is local to where the candidate lives, reference proximity naturally where it adds genuine value. Work out whether it is local yourself: compare the candidate's Address in the content bank's personal details with the work location in the JD, and estimate the usual travel time from the candidate's suburb to that location from your own knowledge of the area. If it is about 30 minutes or less, you may mention it once in the professional summary, as an approximate figure with the suburb and state only (e.g. "based in Albury, NSW, about 10 minutes from the site"). Never write the street address. Always say "about" or "around", because it is an estimate. If you are unsure of the location or the travel time, the role is fully remote, or the commute is long, leave proximity out, and never invent a willingness to relocate. If the content bank has a "Location note:", use its wording instead of your own estimate.
 If the role is in sustainability, ESG, or climate: lead with the largest-scale delivery in the content bank and any reporting or analysis tool the candidate built
 If the role is in project management or administration: lead with team size, KPI or deadline compliance, and any incident or quality record
 If the role is in finance or billing: lead with the largest quantified recovery, accuracy, or compliance achievement
