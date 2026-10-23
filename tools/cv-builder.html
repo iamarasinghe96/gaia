@@ -607,7 +607,7 @@ function defaultP() {
     personal: {
       fullName:'', dob:'', address:'', location:'', phone:'', phone2:'',
       email:'', linkedin:'', portfolio:'', rtwUrl:'', seekUrl:'',
-      rightToWork:'', locationNote:'', languages:'',
+      rightToWork:'', languages:'',
       nic:'', sex:'', civilStatus:'', ethnicGroup:'',
       street:'', street2:'', suburb:'', state:'', postcode:'', country:'',
       otherLinks: []
@@ -867,6 +867,7 @@ function fg(cols, ...items) {
 function personalBodyHTML() {
   const p = 'personal';
   _ensureAddressParts(P.personal);
+  delete P.personal.locationNote;
   return `
     <div class="section-tip">Fields marked <span class="req">*</span> are used to personalise the Cover Letter LaTeX output. Others appear in the CV Bank for Claude to reference.</div>
     ${fg(2,
@@ -903,7 +904,6 @@ function personalBodyHTML() {
       fi('Right to Work URL <span class="opt">optional</span>', inp(`${p}.rtwUrl`, 'e.g. https://yourname.github.io/rtw — leave blank if none')),
       fi('Right to Work Statement', inp(`${p}.rightToWork`, 'e.g. Unrestricted — Subclass 485 visa, valid until 2029'))
     )}
-    ${P.personal.locationNote ? fg(1, fi('Location Note <span class="opt">no longer needed</span>', inp(`${p}.locationNote`, '') + '<div class="field-hint">The prompts now work out your commute from your address and the job location. Clear this box to remove it; while it has text, the AI uses your wording instead.</div>')) : ''}
     ${fg(2,
       fi('Languages', languagesHTML()),
       fi('National ID / NIC <span class="opt">optional</span>', inp(`${p}.nic`, ''))
@@ -1150,7 +1150,6 @@ function generateCVBankText() {
   if (p.ethnicGroup)   push(`Ethnic Group: ${p.ethnicGroup}`);
   if (p.nic)           push(`NIC: ${p.nic}`);
   if (p.rightToWork)   push(`Right to Work (Australia): ${p.rightToWork}`);
-  if (p.locationNote)  push(`Location note: ${p.locationNote}`);
   if (p.languages)     push(`Languages: ${p.languages}`);
   nl();
 
@@ -1370,7 +1369,6 @@ function parseCVBankText(text) {
     result.personal.seekUrl     = parseField(b, 'SEEK Profile') || parseField(b, 'SEEK URL');
     result.personal.otherLinks  = [...b.matchAll(/^Other URL(?: \(([^)]*)\))?:\s*(\S.*)$/gm)].map(m => ({ label: (m[1] || '').trim(), url: m[2].trim() }));
     result.personal.rightToWork = parseField(b, 'Right to Work \\(Australia\\)') || parseField(b, 'Right to Work');
-    result.personal.locationNote= parseField(b, 'Location note');
     result.personal.languages   = parseField(b, 'Languages');
     result.personal.nic         = parseField(b, 'NIC');
     result.personal.sex         = parseField(b, 'Sex');
