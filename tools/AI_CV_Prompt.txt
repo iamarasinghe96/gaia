@@ -25,6 +25,10 @@ The content bank marks links with these exact labels. Map them as follows:
                                                 to that role's "### Title | Dates" line
   "Milestones URL:" under a role            ->  append " | [Milestones](url)"
                                                 to that role's organisation line
+  "Link: <words> | <url>" right after a     ->  wrap those exact words inside that bullet,
+   bullet under a role                          e.g. "... the [pilot registration](url) ...".
+                                                Keep the linked words in the bullet when
+                                                you reword it, so the link is never lost
   "Credentials URL:" under a qualification  ->  append " | [Credentials](url)"
                                                 to that institution line
   "LinkedIn:" under a referee               ->  "### <Name> | [LinkedIn](url)"
@@ -136,7 +140,7 @@ Rules:
 - [SUMMARY]: a 3-4 line professional summary as one paragraph, job-title specific. Fold the right-to-work statement into it, using the content bank's own wording for it. Embed project links where projects are named.
 - [COMPETENCIES]: 10-16 core skills pulled from the JD, one per line, each starting with "- ". They render as a two-column bulleted list.
 - [EXPERIENCE]: for each role, a header line "### <Job Title> | <Dates>", optionally followed by " | [Responsibilities](url)" or " | [Website](url)" as a third field. Next line: the organisation and location, optionally followed by " | [Milestones](url)". If the role absorbed an earlier title, add a line starting "Previously: <earlier title and dates>". Then 3-6 achievement bullets each starting with "- ". Separate roles with one blank line. Reverse chronological. Every bullet starts with a past-tense action verb and quantifies outcomes where possible.
-- In the content bank, a role's "Description:" line is background on the position (its purpose, scope and team). Use it to understand and frame the role, and draw on it only where it adds something the bullets do not. Never add it as an extra bullet or repeat what a bullet already says. Every other line under a role, after its header lines, is one separate responsibility or achievement: count and use each line once.
+- In the content bank, a role's "Description:" line is background on the position (its purpose, scope and team). Use it to understand and frame the role, and draw on it only where it adds something the bullets do not. Never add it as an extra bullet or repeat what a bullet already says. Every other line under a role, after its header lines, is one separate responsibility or achievement (except "Link:" lines, which belong to the bullet just above them): count and use each line once.
 - A role with a "Promoted from:" line in the content bank was a promotion at the same employer. Show the two as one entry: the later title and its dates in the "###" header line, then the "Previously: <earlier title and dates>" line described above, and do not list the earlier title again as a separate role. Draw the bullets from both roles, using each point once.
 - [EDUCATION]: for each qualification, a header line "### <Degree> | <Years>", then a line with the institution, optionally followed by " | [Credentials](url)". Reverse chronological.
 - [CERTIFICATIONS]: relevant certifications, one per line each starting with "- ", with the whole certification name wrapped as a link where the content bank provides one. Renders as two columns.

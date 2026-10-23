@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023f">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023g">
 </head>
 <body>
 
@@ -3682,64 +3682,115 @@ function _savePromptIfCustom(key, text, def){
 // BULLET LIST EDITOR: shows each line of a "one per line" field as its own bullet.
 // The bullet marks are on screen only; the field is still saved as plain lines,
 // so the CV Bank and the prompts see exactly the same text as before.
+// A bullet's links are saved as "Link: <words> | <url>" lines right after it.
 // ═══════════════════════════════════════════════════════════════
 const _BULLET_MARK = /^\s*(?:[-•*▪●◦‣–]|\d{1,2}[.)])\s+/;
+const _LINK_LINE = /^Link:\s*(.*?)\s*\|\s*(\S*)\s*$/;
 const _blId = path => 'bl-' + path.replace(/\./g, '-');
+// "text\nLink: words | url\ntext" <-> [{ text, links: [{ words, url }] }]
+function _blParse(raw){
+  const items = [];
+  String(raw || '').split('\n').forEach(line => {
+    const m = items.length && line.match(_LINK_LINE);
+    if (m) items[items.length - 1].links.push({ words: m[1], url: m[2] });
+    else items.push({ text: line, links: [] });
+  });
+  return items.length ? items : [{ text: '', links: [] }];
+}
+const _blJoin = items => items.flatMap(it => [it.text, ...it.links
+  .filter(l => l.words.trim() || l.url.trim())
+  .map(l => `Link: ${l.words.trim().replace(/\s*\|\s*/g, ' ')} | ${l.url.trim()}`)]).join('\n');
 function bulletsHTML(path, placeholder){
-  const raw = String(getPath(P, path) || '');
-  const items = raw ? raw.split('\n') : [''];
-  if (SAMPLE_MODE) return `<ul class="bl-sample">${items.filter(Boolean).map(t => `<li>${esc(t)}</li>`).join('')}</ul>`;
-  return `<div class="bl-list" id="${_blId(path)}" data-bl="${path}">${_blItems(items, placeholder)}</div>
+  const items = _blParse(getPath(P, path));
+  if (SAMPLE_MODE) return `<ul class="bl-sample">${items.filter(it => it.text).map(it => `<li>${esc(it.text)}${it.links.map(l => `<span class="bl-sample-link">&#x1F517; ${esc(l.words)}</span>`).join('')}</li>`).join('')}</ul>`;
+  return `<div class="bl-list" id="${_blId(path)}" data-bl="${path}" data-ph="${esc(placeholder || '')}">${_blItems(items, placeholder)}</div>
     <button type="button" class="btn btn-outline btn-sm" onclick="blAdd('${path}')">+ Add bullet</button>`;
 }
+function _blLinkRow(l){
+  return `<div class="bl-link"><span class="bl-link-icon" aria-hidden="true">&#x1F517;</span>
+    <input class="field-input" type="text" value="${esc(l.words)}" placeholder="Words to link, e.g. pilot registration" aria-label="Words to link" oninput="blLinkInput(this)">
+    <input class="field-input" type="url" value="${esc(l.url)}" placeholder="https://" aria-label="Link URL" oninput="blLinkInput(this)">
+    <button type="button" class="chip-x" onclick="blLinkRemove(this)" aria-label="Remove link">&times;</button>
+    <div class="bl-link-warn" hidden>These words are not in the bullet above, so the link has nothing to attach to.</div></div>`;
+}
 function _blItems(items, placeholder){
-  return items.map((t, i) => `<div class="bl-item"><span class="bl-dot" aria-hidden="true"></span>
-    <textarea class="field-input bl-input" rows="1" aria-label="Bullet ${i + 1}" placeholder="${i === 0 ? esc(placeholder || '') : ''}"
-      oninput="blInput(this)" onkeydown="blKey(event, this)" onpaste="blPaste(event, this)">${esc(t)}</textarea>
+  return items.map((it, i) => `<div class="bl-item"><span class="bl-dot" aria-hidden="true"></span>
+    <div class="bl-body"><textarea class="field-input bl-input" rows="1" aria-label="Bullet ${i + 1}" placeholder="${i === 0 ? esc(placeholder || '') : ''}"
+      oninput="blInput(this)" onkeydown="blKey(event, this)" onpaste="blPaste(event, this)">${esc(it.text)}</textarea>
+      <div class="bl-links">${it.links.map(_blLinkRow).join('')}</div>
+      <div class="bl-tools"><button type="button" class="bl-tool" onclick="blLinkAdd(this)">+ Link</button><button type="button" class="bl-tool bl-move" onclick="blMoveLinks(this)" hidden></button></div></div>
     <button type="button" class="chip-x" tabindex="-1" onclick="blRemove(this)" aria-label="Remove bullet ${i + 1}">&times;</button></div>`).join('');
 }
 const _blWrap = el => el.closest('.bl-list');
 const _blInputs = wrap => [...wrap.querySelectorAll('.bl-input')];
+const _blItemOf = el => el.closest('.bl-item');
 function _blFit(el){ el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
+// Read the list back from the screen
+function _blRead(wrap){
+  return [...wrap.querySelectorAll('.bl-item')].map(item => ({
+    text: item.querySelector('.bl-input').value,
+    links: [...item.querySelectorAll('.bl-link')].map(r => { const [w, u] = r.querySelectorAll('input'); return { words: w.value, url: u.value }; }),
+  }));
+}
+// Inline "(https://...)" links can be moved into the link boxes in one click
+const _INLINE_URL = /\s*\((https?:\/\/[^\s)]+)\)/g;
+function _blInlineLinks(text){
+  const out = [];
+  for (const m of text.matchAll(_INLINE_URL)) {
+    const before = text.slice(0, m.index);
+    const seg = before.split(/[,;:.]\s+|[,;:]|\(/).pop().replace(/^\s*(?:and|or|the)\s+/i, '').trim();
+    out.push({ words: seg, url: m[1] });
+  }
+  return out;
+}
+function _blCheck(item){
+  const text = item.querySelector('.bl-input').value.toLowerCase();
+  item.querySelectorAll('.bl-link').forEach(r => {
+    const w = r.querySelector('input').value.trim().toLowerCase();
+    r.querySelector('.bl-link-warn').hidden = !w || text.includes(w);
+  });
+  const n = _blInlineLinks(item.querySelector('.bl-input').value).length, mv = item.querySelector('.bl-move');
+  mv.hidden = !n;
+  mv.textContent = n === 1 ? 'Move 1 link out of the text' : `Move ${n} links out of the text`;
+}
 function _blSave(wrap){
-  setPath(P, wrap.dataset.bl, _blInputs(wrap).map(x => x.value).join('\n'));
+  setPath(P, wrap.dataset.bl, _blJoin(_blRead(wrap)));
   debouncedSave();
 }
-// Rebuild one list from an array of lines, then put the caret back
+// Rebuild one list from items, then put the caret back
 function _blSet(wrap, items, focusIdx, caret){
-  const path = wrap.dataset.bl;
-  if (!items.length) items = [''];
-  setPath(P, path, items.join('\n'));
+  if (!items.length) items = [{ text: '', links: [] }];
+  setPath(P, wrap.dataset.bl, _blJoin(items));
   debouncedSave();
-  const ph = _blInputs(wrap)[0]?.getAttribute('placeholder') || '';
-  wrap.innerHTML = _blItems(items, ph);
+  wrap.innerHTML = _blItems(items, wrap.dataset.ph);
   const inputs = _blInputs(wrap);
   inputs.forEach(_blFit);
+  wrap.querySelectorAll('.bl-item').forEach(_blCheck);
   const el = inputs[Math.max(0, Math.min(focusIdx, inputs.length - 1))];
   if (el) { el.focus(); const c = caret == null ? el.value.length : caret; el.setSelectionRange(c, c); }
 }
 function blInput(el){
+  const wrap = _blWrap(el);
   if (el.value.includes('\n')) {               // e.g. text dropped in: split it into bullets
-    const wrap = _blWrap(el), inputs = _blInputs(wrap), i = inputs.indexOf(el);
-    const vals = inputs.map(x => x.value);
+    const items = _blRead(wrap), i = _blInputs(wrap).indexOf(el);
     const parts = el.value.split('\n');
-    vals.splice(i, 1, ...parts);
-    return _blSet(wrap, vals, i + parts.length - 1);
+    items.splice(i, 1, { text: parts[0], links: items[i].links }, ...parts.slice(1).map(text => ({ text, links: [] })));
+    return _blSet(wrap, items, i + parts.length - 1);
   }
-  _blFit(el); _blSave(_blWrap(el));
+  _blFit(el); _blCheck(_blItemOf(el)); _blSave(wrap);
 }
 function blKey(e, el){
-  const wrap = _blWrap(el), inputs = _blInputs(wrap), i = inputs.indexOf(el), vals = inputs.map(x => x.value);
+  const wrap = _blWrap(el), inputs = _blInputs(wrap), i = inputs.indexOf(el);
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
-    const a = el.selectionStart, b = el.selectionEnd;
-    vals.splice(i, 1, el.value.slice(0, a), el.value.slice(b));
-    _blSet(wrap, vals, i + 1, 0);
+    const items = _blRead(wrap), a = el.selectionStart, b = el.selectionEnd;
+    items.splice(i, 1, { text: el.value.slice(0, a), links: items[i].links }, { text: el.value.slice(b), links: [] });
+    _blSet(wrap, items, i + 1, 0);
   } else if (e.key === 'Backspace' && i > 0 && el.selectionStart === 0 && el.selectionEnd === 0) {
     e.preventDefault();
-    const join = vals[i - 1].length;
-    vals.splice(i - 1, 2, vals[i - 1] + vals[i]);
-    _blSet(wrap, vals, i - 1, join);
+    const items = _blRead(wrap), join = items[i - 1].text.length;
+    items.splice(i - 1, 2, { text: items[i - 1].text + items[i].text, links: [...items[i - 1].links, ...items[i].links] });
+    _blSet(wrap, items, i - 1, join);
   } else if (e.key === 'ArrowUp' && i > 0 && el.selectionStart === 0) {
     e.preventDefault(); inputs[i - 1].focus();
   } else if (e.key === 'ArrowDown' && i < inputs.length - 1 && el.selectionEnd === el.value.length) {
@@ -3754,29 +3805,55 @@ function blPaste(e, el){
   const lines = text.replace(/\r\n?/g, '\n').split('\n').map(l => l.replace(_BULLET_MARK, '').trimEnd()).filter(l => l.trim());
   if (lines.length < 2 && !_BULLET_MARK.test(text)) return;
   e.preventDefault();
-  const wrap = _blWrap(el), inputs = _blInputs(wrap), i = inputs.indexOf(el), vals = inputs.map(x => x.value);
-  const head = el.value.slice(0, el.selectionStart), tail = el.value.slice(el.selectionEnd);
   if (!lines.length) return;
+  const wrap = _blWrap(el), i = _blInputs(wrap).indexOf(el), items = _blRead(wrap);
+  const head = el.value.slice(0, el.selectionStart), tail = el.value.slice(el.selectionEnd);
   const parts = lines.slice();
   parts[0] = head + parts[0];
   const last = parts.length - 1, caret = parts[last].length;
   parts[last] += tail;
-  vals.splice(i, 1, ...parts);
-  _blSet(wrap, vals, i + last, caret);
+  items.splice(i, 1, ...parts.map((t, k) => ({ text: t, links: k === 0 ? items[i].links : [] })));
+  _blSet(wrap, items, i + last, caret);
 }
 function blRemove(btn){
-  const wrap = _blWrap(btn), inputs = _blInputs(wrap), el = btn.parentElement.querySelector('.bl-input'), i = inputs.indexOf(el);
-  const vals = inputs.map(x => x.value); vals.splice(i, 1);
-  _blSet(wrap, vals, Math.max(0, i - 1));
+  const wrap = _blWrap(btn), item = _blItemOf(btn), i = [...wrap.querySelectorAll('.bl-item')].indexOf(item);
+  const items = _blRead(wrap); items.splice(i, 1);
+  _blSet(wrap, items, Math.max(0, i - 1));
 }
 function blAdd(path){
-  const wrap = document.getElementById(_blId(path));
-  const vals = _blInputs(wrap).map(x => x.value);
-  if (vals.length && !vals[vals.length - 1].trim()) return _blSet(wrap, vals, vals.length - 1);
-  _blSet(wrap, [...vals, ''], vals.length);
+  const wrap = document.getElementById(_blId(path)), items = _blRead(wrap);
+  if (items.length && !items[items.length - 1].text.trim()) return _blSet(wrap, items, items.length - 1);
+  _blSet(wrap, [...items, { text: '', links: [] }], items.length);
+}
+// ─── links under a bullet ───
+function blLinkAdd(btn){
+  const item = _blItemOf(btn), box = item.querySelector('.bl-links');
+  const ta = item.querySelector('.bl-input'), picked = ta.value.slice(ta.selectionStart, ta.selectionEnd).trim();
+  box.insertAdjacentHTML('beforeend', _blLinkRow({ words: picked, url: '' }));
+  const row = box.lastElementChild;
+  row.querySelectorAll('input')[picked ? 1 : 0].focus();
+  _blCheck(item);
+}
+function blLinkInput(el){ const item = _blItemOf(el); _blCheck(item); _blSave(_blWrap(el)); }
+function blLinkRemove(btn){
+  const wrap = _blWrap(btn), item = _blItemOf(btn);
+  btn.closest('.bl-link').remove();
+  _blCheck(item); _blSave(wrap);
+}
+function blMoveLinks(btn){
+  const wrap = _blWrap(btn), item = _blItemOf(btn), ta = item.querySelector('.bl-input');
+  const found = _blInlineLinks(ta.value);
+  if (!found.length) return;
+  ta.value = ta.value.replace(_INLINE_URL, '').replace(/\s+([,.;:])/g, '$1');
+  found.forEach(l => item.querySelector('.bl-links').insertAdjacentHTML('beforeend', _blLinkRow(l)));
+  _blFit(ta); _blCheck(item); _blSave(wrap);
+  toast(found.length === 1 ? 'Link moved ✔ Check the linked words.' : `${found.length} links moved ✔ Check the linked words.`, 'success');
 }
 // Size bullets to their text whenever the form is drawn
-new MutationObserver(() => document.querySelectorAll('.bl-input').forEach(el => { if (!el.dataset.fit && el.offsetParent) { el.dataset.fit = 1; _blFit(el); } }))
+new MutationObserver(() => {
+  document.querySelectorAll('.bl-item:not([data-chk])').forEach(it => { it.dataset.chk = 1; _blCheck(it); });
+  document.querySelectorAll('.bl-input').forEach(el => { if (!el.dataset.fit && el.offsetParent) { el.dataset.fit = 1; _blFit(el); } });
+})
   .observe(document.getElementById('profile-form'), { childList: true, subtree: true });
 document.getElementById('profile-form').addEventListener('click', () => requestAnimationFrame(() =>
   document.querySelectorAll('.bl-input').forEach(el => { if (el.offsetParent && !el.dataset.fit) { el.dataset.fit = 1; _blFit(el); } })));
@@ -3880,6 +3957,6 @@ document.getElementById('profile-form').addEventListener('input', () => {
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261023f"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261023g"></script>
 </body>
 </html>

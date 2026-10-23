@@ -15,14 +15,19 @@
           "after": "                                                (achievements may instead take a\n                                                trailing \" [View](url)\")\n  \"Other URL (<Name>):\" in personal details ->  link it only where it genuinely supports\n                                                this application (e.g. a Behance or\n                                                YouTube profile for a creative role),\n                                                wrapping natural wording such as \"my\n                                                [Behance portfolio](url)\". Otherwise\n                                                leave it out.\n"
         },
         {
-          "why": "New Position Description field per role; tells the AI how role descriptions and bullet lines are read so nothing is counted twice.",
+          "why": "New Position Description field per role; tells the AI how role descriptions and bullet lines are read so nothing is counted twice. Updated: \"Link:\" lines belong to the bullet above.",
           "before": "- [EXPERIENCE]: for each role, a header line \"### <Job Title> | <Dates>\", optionally followed by \" | [Responsibilities](url)\" or \" | [Website](url)\" as a third field. Next line: the organisation and location, optionally followed by \" | [Milestones](url)\". If the role absorbed an earlier title, add a line starting \"Previously: <earlier title and dates>\". Then 3-6 achievement bullets each starting with \"- \". Separate roles with one blank line. Reverse chronological. Every bullet starts with a past-tense action verb and quantifies outcomes where possible.\n",
-          "after": "- [EXPERIENCE]: for each role, a header line \"### <Job Title> | <Dates>\", optionally followed by \" | [Responsibilities](url)\" or \" | [Website](url)\" as a third field. Next line: the organisation and location, optionally followed by \" | [Milestones](url)\". If the role absorbed an earlier title, add a line starting \"Previously: <earlier title and dates>\". Then 3-6 achievement bullets each starting with \"- \". Separate roles with one blank line. Reverse chronological. Every bullet starts with a past-tense action verb and quantifies outcomes where possible.\n- In the content bank, a role's \"Description:\" line is background on the position (its purpose, scope and team). Use it to understand and frame the role, and draw on it only where it adds something the bullets do not. Never add it as an extra bullet or repeat what a bullet already says. Every other line under a role, after its header lines, is one separate responsibility or achievement: count and use each line once.\n"
+          "after": "- [EXPERIENCE]: for each role, a header line \"### <Job Title> | <Dates>\", optionally followed by \" | [Responsibilities](url)\" or \" | [Website](url)\" as a third field. Next line: the organisation and location, optionally followed by \" | [Milestones](url)\". If the role absorbed an earlier title, add a line starting \"Previously: <earlier title and dates>\". Then 3-6 achievement bullets each starting with \"- \". Separate roles with one blank line. Reverse chronological. Every bullet starts with a past-tense action verb and quantifies outcomes where possible.\n- In the content bank, a role's \"Description:\" line is background on the position (its purpose, scope and team). Use it to understand and frame the role, and draw on it only where it adds something the bullets do not. Never add it as an extra bullet or repeat what a bullet already says. Every other line under a role, after its header lines, is one separate responsibility or achievement (except \"Link:\" lines, which belong to the bullet just above them): count and use each line once.\n"
         },
         {
           "why": "New Promoted tick on roles at the same employer; tells the AI to show the promotion with the existing Previously: line.",
           "before": "- [EDUCATION]: for each qualification, a header line \"### <Degree> | <Years>\", then a line with the institution, optionally followed by \" | [Credentials](url)\". Reverse chronological.\n",
           "after": "- A role with a \"Promoted from:\" line in the content bank was a promotion at the same employer. Show the two as one entry: the later title and its dates in the \"###\" header line, then the \"Previously: <earlier title and dates>\" line described above, and do not list the earlier title again as a separate role. Draw the bullets from both roles, using each point once.\n- [EDUCATION]: for each qualification, a header line \"### <Degree> | <Years>\", then a line with the institution, optionally followed by \" | [Credentials](url)\". Reverse chronological.\n"
+        },
+        {
+          "why": "New per-bullet links in work history: tells the AI to bind each link to its words.",
+          "before": "  \"Milestones URL:\" under a role            ->  append \" | [Milestones](url)\"\n                                                to that role's organisation line\n",
+          "after": "  \"Milestones URL:\" under a role            ->  append \" | [Milestones](url)\"\n                                                to that role's organisation line\n  \"Link: <words> | <url>\" right after a     ->  wrap those exact words inside that bullet,\n   bullet under a role                          e.g. \"... the [pilot registration](url) ...\".\n                                                Keep the linked words in the bullet when\n                                                you reword it, so the link is never lost\n"
         }
       ]
     },
@@ -38,6 +43,11 @@
           "why": "New Other Links field in the profile.",
           "before": "The portfolio URL from the content bank's personal details is linked wherever the portfolio is named. ",
           "after": "The portfolio URL from the content bank's personal details is linked wherever the portfolio is named. Any \"Other URL (<Name>):\" in the personal details (e.g. Facebook, Behance, YouTube) is linked only where it genuinely supports this application, wrapping natural wording such as \"my [Behance portfolio](url)\"; otherwise leave it out. "
+        },
+        {
+          "why": "New per-bullet links in work history: tells the AI to bind each link to its words.",
+          "before": "Write \"a [scheduling tool I built](url)\", not \"scheduling tool [link]\". ",
+          "after": "Write \"a [scheduling tool I built](url)\", not \"scheduling tool [link]\". A \"Link: <words> | <url>\" line under a work-history bullet links those words: when you mention that work, wrap the same words as [words](url). "
         }
       ]
     }
