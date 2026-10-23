@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023e">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023f">
 </head>
 <body>
 
@@ -945,13 +945,14 @@ function workHistoryBodyHTML() {
       </div>
       ${fg(2,
         fi('Job Title', inp(`workHistory.${i}.title`, 'e.g. Operations Coordinator')),
-        fi('Employer', inp(`workHistory.${i}.employer`, 'e.g. Company name — City, State'))
+        fi('Employer', inp(`workHistory.${i}.employer`, 'e.g. Company name — City, State', 'gh-employers'))
       )}
       ${fg(3,
         fi('Start Date', inp(`workHistory.${i}.startDate`, 'e.g. April 2025')),
         fi('End Date', inp(`workHistory.${i}.endDate`, 'e.g. Present')),
-        fi('Nature of Employment <span class="opt">optional</span>', inp(`workHistory.${i}.nature`, 'e.g. Full-time, Permanent'))
+        fi('Nature of Employment <span class="opt">optional</span>', sel(`workHistory.${i}.nature`, EMPLOYMENT_TYPES))
       )}
+      <div class="promo-slot" data-role="${i}">${promoHTML(i)}</div>
       ${fg(2,
         fi('Responsibilities Link <span class="opt">optional</span>', inp(`workHistory.${i}.respUrl`, 'https://... — becomes a [Responsibilities] link')),
         fi('Milestones / Website Link <span class="opt">optional</span>', inp(`workHistory.${i}.milestonesUrl`, 'https://... — becomes a [Milestones] link'))
@@ -959,7 +960,7 @@ function workHistoryBodyHTML() {
       ${fg(1, fi('Position Description <span class="opt">optional</span>', ta(`workHistory.${i}.description`, 'One short paragraph about the position: what the role is for, who it serves, and its scope or team size.', 3)))}
       ${fg(1, fi('Responsibilities &amp; Achievements <span class="opt">one bullet each</span>', bulletsHTML(`workHistory.${i}.bullets`, 'e.g. Led delivery of…')))}
     </div>`).join('');
-  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('workHistory',{title:'',employer:'',startDate:'',endDate:'',nature:'',description:'',bullets:''})">+ Add Role</button></div>`;
+  return workHistoryToolbar() + cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('workHistory',{title:'',employer:'',startDate:'',endDate:'',nature:'',description:'',bullets:''})">+ Add Role</button></div>`;
 }
 
 function educationBodyHTML() {
@@ -1186,6 +1187,8 @@ function generateCVBankText() {
       const jPeriod = [j.startDate, j.endDate].filter(Boolean).join(' \u2013 ');
       if (jPeriod)    push(`Period: ${jPeriod}`);
       if (j.nature)   push(`Nature: ${j.nature}`);
+      const prevRole = j.promoted && _promotedFrom(j);
+      if (prevRole) push(`Promoted from: ${prevRole.title || 'an earlier role'}${_period(prevRole) ? ` (${_period(prevRole)})` : ''}`);
       if (j.respUrl)       push(`Responsibilities URL: ${j.respUrl}`);
       if (j.milestonesUrl) push(`Milestones URL: ${j.milestonesUrl}`);
       if ((j.description || '').trim()) push(`Description: ${j.description.trim().replace(/\s*\n+\s*/g, ' ')}`);
@@ -1433,6 +1436,7 @@ function parseCVBankText(text) {
         const mu  = t.match(/^Milestones URL:\s*(.+)/);
         if (ru) { job.respUrl = ru[1].trim(); continue; }
         if (mu) { job.milestonesUrl = mu[1].trim(); continue; }
+        if (!headerDone && /^Promoted from:/.test(t)) { job.promoted = true; continue; }
         const de = !headerDone && t.match(/^Description:\s*(.+)/);
         if (de) { job.description = de[1].trim(); continue; }
         if (emp) { job.employer = emp[1]; continue; }
@@ -3520,6 +3524,7 @@ function _ensureAddressParts(p){
 
 function sel(path, options){
   const cur = getPath(P, path);
+  if (SAMPLE_MODE) return `<input class="field-input" type="text" readonly tabindex="-1" value="${esc(cur)}">`;
   const opts = cur && !options.includes(cur) ? [cur, ...options] : options;
   return `<select class="field-input" data-path="${path}"><option value="">Not stated</option>${opts.map(o => `<option${o === cur ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
 }
@@ -3777,8 +3782,104 @@ document.getElementById('profile-form').addEventListener('click', () => requestA
   document.querySelectorAll('.bl-input').forEach(el => { if (el.offsetParent && !el.dataset.fit) { el.dataset.fit = 1; _blFit(el); } })));
 window.addEventListener('resize', () => document.querySelectorAll('.bl-input').forEach(el => el.offsetParent && _blFit(el)));
 
+// ═══════════════════════════════════════════════════════════════
+// WORK HISTORY: employment type, employer suggestions, promotions, sort by period
+// ═══════════════════════════════════════════════════════════════
+const EMPLOYMENT_TYPES = ['Full-time', 'Full-time, permanent', 'Full-time, fixed-term', 'Part-time', 'Part-time, permanent', 'Part-time, fixed-term', 'Casual', 'Contract', 'Temporary', 'Internship', 'Volunteer', 'Freelance', 'Self-employed'];
+const _MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+// "June 2023", "Jun 2023", "06/2023", "2023-06", "2023", "Present" -> a sortable month number
+function _periodValue(s, isEnd){
+  const t = String(s || '').trim().toLowerCase();
+  if (!t) return null;
+  if (/^(present|current|now|ongoing|today|to date)/.test(t)) return Infinity;
+  let m = t.match(/([a-z]{3,})\.?\s*,?\s*(\d{4})/);
+  if (m && _MONTHS[m[1].slice(0, 3)] != null) return +m[2] * 12 + _MONTHS[m[1].slice(0, 3)];
+  if ((m = t.match(/^(\d{1,2})[\/.\-](\d{4})$/))) return +m[2] * 12 + (+m[1] - 1);
+  if ((m = t.match(/^(\d{4})[\/.\-](\d{1,2})\b/))) return +m[1] * 12 + (+m[2] - 1);
+  if ((m = t.match(/\b(\d{4})\b/))) return +m[1] * 12 + (isEnd ? 11 : 0);
+  return null;
+}
+const _period = j => [j.startDate, j.endDate].filter(Boolean).join(' – ');
+const _sameEmployer = (a, b) => !!a && a.trim().toLowerCase().replace(/\s+/g, ' ') === String(b || '').trim().toLowerCase().replace(/\s+/g, ' ');
+// The most recent earlier role at the same employer, or null
+function _promotedFrom(j){
+  const start = _periodValue(j.startDate, false);
+  if (start == null || !j.employer || !j.employer.trim()) return null;
+  let best = null, bestStart = -Infinity;
+  P.workHistory.forEach(o => {
+    if (o === j || !_sameEmployer(o.employer, j.employer)) return;
+    const s = _periodValue(o.startDate, false);
+    if (s != null && s < start && s > bestStart) { best = o; bestStart = s; }
+  });
+  return best;
+}
+function promoHTML(i){
+  if (SAMPLE_MODE) return '';
+  const j = P.workHistory[i], prev = j && _promotedFrom(j);
+  if (!prev) return '';
+  return `<label class="promo-check"><input type="checkbox" onchange="setPromoted(${i}, this.checked)"${j.promoted ? ' checked' : ''}>
+    <span><strong>Promoted</strong> from my earlier role here${prev.title ? `: ${esc(prev.title)}` : ''}</span></label>`;
+}
+function setPromoted(i, on){ P.workHistory[i].promoted = on; debouncedSave(); }
+function _refreshRoleExtras(){
+  document.querySelectorAll('#bsb-workHistory .promo-slot').forEach(el => {
+    if (!el.closest('.sample-col')) el.innerHTML = promoHTML(+el.dataset.role);
+  });
+  const names = [...new Set(P.workHistory.map(j => (j.employer || '').trim()).filter(Boolean))];
+  let dl = document.getElementById('gh-employers');
+  if (!dl) { dl = document.createElement('datalist'); dl.id = 'gh-employers'; document.body.appendChild(dl); }
+  dl.innerHTML = names.map(n => `<option value="${esc(n)}">`).join('');
+}
+document.getElementById('profile-form').addEventListener('input', e => {
+  const path = e.target.dataset.path || '';
+  if (!/^workHistory\.\d+\.(employer|title|startDate|endDate)$/.test(path)) return;
+  setPath(P, path, e.target.value);
+  _refreshRoleExtras();
+});
+document.getElementById('profile-form').addEventListener('focusin', e => {
+  if ((e.target.dataset.path || '').endsWith('.employer')) _refreshRoleExtras();
+});
+
+let _whUndo = null;
+function workHistoryToolbar(){
+  if (SAMPLE_MODE) return '';
+  setTimeout(_refreshRoleExtras, 0);            // employer suggestions follow every redraw
+  if (P.workHistory.length < 2) return '';
+  return `<div class="wh-toolbar"><span>Most recent role first, the way CVs are read.</span>
+    <button type="button" class="btn btn-outline btn-sm" onclick="sortWorkHistory()">&#x21C5; Sort by period</button>
+    ${_whUndo ? '<button type="button" class="btn btn-outline btn-sm" onclick="undoSortWorkHistory()">Undo sort</button>' : ''}</div>`;
+}
+function sortWorkHistory(){
+  const before = JSON.stringify(P.workHistory);
+  const cmp = (a, b) => a === b ? 0 : (a > b ? -1 : 1);
+  const rows = P.workHistory.map((j, i) => ({ j, i,
+    end: _periodValue(j.endDate, true) ?? _periodValue(j.startDate, true), start: _periodValue(j.startDate, false) }));
+  rows.sort((a, b) => {
+    const ad = a.end != null || a.start != null, bd = b.end != null || b.start != null;
+    if (ad !== bd) return ad ? -1 : 1;            // roles without dates keep their order, at the end
+    if (!ad) return a.i - b.i;
+    return cmp(a.end ?? -1, b.end ?? -1) || cmp(a.start ?? -1, b.start ?? -1) || a.i - b.i;
+  });
+  P.workHistory = rows.map(r => r.j);
+  if (JSON.stringify(P.workHistory) === before) { toast('Already in order, newest first ✔', 'success'); return; }
+  _whUndo = before;
+  saveProfileData(); renderSectionBody('workHistory');
+  toast('Roles sorted, newest first ✔', 'success');
+}
+function undoSortWorkHistory(){
+  if (!_whUndo) return;
+  P.workHistory = JSON.parse(_whUndo); _whUndo = null;
+  saveProfileData(); renderSectionBody('workHistory');
+}
+// Any other edit ends the chance to undo the sort
+document.getElementById('profile-form').addEventListener('input', () => {
+  if (!_whUndo) return;
+  _whUndo = null;
+  document.querySelectorAll('.wh-toolbar button:nth-of-type(2)').forEach(b => b.remove());
+});
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261023e"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261023f"></script>
 </body>
 </html>

@@ -176,6 +176,12 @@ textarea.field-input.bl-input { min-height: 0; resize: none; overflow: hidden; l
 .bl-sample { margin: 0; padding-left: 20px; font-size: 12px; color: var(--slate); line-height: 1.6; }
 .bl-sample li { margin-bottom: 4px; }
 
+/* Work history: promotion tick and sort bar */
+.promo-check { display: flex; align-items: center; gap: 10px; margin: -2px 0 12px; padding: 9px 12px; border-radius: 10px; background: var(--orange-pale); border: 1px solid #fed7aa; font-size: 13px; color: var(--ink); cursor: pointer; }
+.promo-check input { width: 17px; height: 17px; accent-color: var(--orange); flex: none; }
+.wh-toolbar { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px 10px; margin-bottom: 12px; }
+.wh-toolbar span { margin-right: auto; font-size: 12px; color: var(--slate); }
+
 /* Check spelling & continue */
 .continue-btn .cp-arrow { font-size: 16px; margin-left: 2px; transition: transform .25s; }
 .continue-btn.is-ready:hover .cp-arrow { transform: translateX(3px); }
