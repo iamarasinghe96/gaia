@@ -65,9 +65,10 @@ p { color: var(--muted); }
 
 .eyebrow {
   display: inline-flex; align-items: center; gap: .5rem;
-  font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  font-size: clamp(1rem, 1.4vw, 1.2rem); font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
   color: var(--blue); margin-bottom: 1rem;
 }
+.about-eyebrow { display: flex; margin-bottom: 2rem; }
 .section--dark .eyebrow, .page-hero .eyebrow, .hero .eyebrow { color: var(--blue-light); }
 
 .section-head { max-width: 640px; margin-bottom: 3.5rem; }
@@ -598,7 +599,10 @@ a.contact-item:hover { border-color: var(--blue); transform: translateX(4px); }
   .form-card { padding: 1.5rem; }
   .cta-band { padding: 3.25rem 1.25rem; border-radius: 20px; }
   .cta-band::after { border-radius: 19px; }
-  .footer-top { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem 1rem; }
+  .footer-top > div:first-child { grid-column: 1 / -1; }
+  .footer ul a { font-size: .85rem; }
+  .footer h4 { margin-bottom: .9rem; }
   .waitlist { flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) {
