@@ -1,7 +1,7 @@
 // Google sign-in and cloud autosave for the GetHired CV Prompt Builder.
 // The app keeps working exactly as before on localStorage; this module mirrors
 // its keys to Firestore (users/{uid}/data/{key}) while the visitor is signed in.
-import { firebaseConfig, polishUrl } from './firebase-config.js?v=20261023a';
+import { firebaseConfig, polishUrl } from './firebase-config.js?v=20261023b';
 
 const SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
 const KEYS = [
@@ -204,6 +204,25 @@ async function start() {
       return { ok: false, error: res.status === 404 ? 'not_configured' : 'busy' };
     } catch (err) {
       console.error('Polish request failed', err);
+      return { ok: false, error: 'network' };
+    }
+  };
+
+  // Import from CV: send extracted CV text (or a PDF) to the import function
+  window.gethiredImportCV = async payload => {
+    if (!a.currentUser) return { ok: false, error: 'signin' };
+    let idToken;
+    try { idToken = await a.currentUser.getIdToken(); } catch { return { ok: false, error: 'auth' }; }
+    try {
+      const res = await fetch('/api/import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => null);
+      return data || { ok: false, error: res.status === 404 ? 'not_configured' : res.status === 413 ? 'too_long' : 'busy' };
+    } catch (err) {
+      console.error('Import request failed', err);
       return { ok: false, error: 'network' };
     }
   };

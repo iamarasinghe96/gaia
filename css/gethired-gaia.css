@@ -133,6 +133,16 @@ textarea { font-size: 12.5px; }
 .profile-next { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin: 6px 0 18px; }
 .polish-body { padding: 16px 18px; }
 
+/* Import from CV */
+.import-bar { display: flex; align-items: center; justify-content: space-between; gap: 14px 20px; flex-wrap: wrap; margin-bottom: 14px; padding: 14px 16px 14px 20px; border-radius: var(--radius); background: linear-gradient(135deg, #eef4ff, #fff7ed); border: 1px solid #dbe5f7; }
+.import-bar-text { min-width: 0; flex: 1 1 320px; line-height: 1.45; }
+.import-bar-text strong { display: block; font-size: 14px; color: var(--ink); }
+.import-bar-text span { font-size: 12.5px; color: var(--slate); }
+.import-btn { cursor: pointer; gap: 7px; }
+.import-btn .cp-icon { font-weight: 700; }
+.import-btn.is-working { opacity: .8; cursor: progress; pointer-events: none; }
+.import-btn.is-working .cp-icon { animation: polishSpin 1s linear infinite; display: inline-block; }
+
 /* Check spelling & continue */
 .continue-btn .cp-arrow { font-size: 16px; margin-left: 2px; transition: transform .25s; }
 .continue-btn.is-ready:hover .cp-arrow { transform: translateX(3px); }

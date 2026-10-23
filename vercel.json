@@ -3,6 +3,9 @@
   "functions": {
     "api/polish.js": {
       "maxDuration": 60
+    },
+    "api/import.js": {
+      "maxDuration": 60
     }
   },
   "headers": [

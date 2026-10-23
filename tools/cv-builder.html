@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023a">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023c">
 </head>
 <body>
 
@@ -259,9 +259,15 @@
 <div id="view-profile" class="view active">
   <div class="container">
     <!-- Profile form (rendered by JS) -->
+    <div class="import-bar">
+      <div class="import-bar-text"><strong>Have a CV already?</strong><span>Import a PDF or Word CV and AI fills in your profile, or load a CV Bank you exported earlier.</span></div>
+      <label class="btn btn-primary import-btn"><span class="cp-icon">&#x2191;</span><span class="cp-label">Import from CV</span><input type="file" accept=".pdf,.docx,.txt,.md,application/pdf,text/plain" hidden onchange="importFromCV(this)"></label>
+    </div>
+
     <div id="profile-form"></div>
 
     <div class="profile-next">
+      <label class="btn btn-outline import-btn"><span class="cp-icon">&#x2191;</span><span class="cp-label">Import from CV</span><input type="file" accept=".pdf,.docx,.txt,.md,application/pdf,text/plain" hidden onchange="importFromCV(this)"></label>
       <button class="btn btn-outline" onclick="exportCVBank()">&#x2193; Export CV Bank (.txt)</button>
       <button class="btn btn-lg copy-prompt is-ready continue-btn" id="continue-btn" onclick="polishAndContinue()"><span class="cp-icon">&#x2728;</span><span class="cp-label">Check spelling &amp; use in Prompt Builder</span><span class="cp-arrow">&#x2192;</span></button>
     </div>
@@ -480,7 +486,8 @@
       <ol>
         <li>Fill in your details section by section. Fields marked <span class="req">*</span> are required.</li>
         <li>Click <strong>&#x1F4A1; Show example</strong> on any section to see a filled-in example (Steve Smith, fictional) beside your own fields.</li>
-        <li>Everything saves automatically. Click <strong>Export CV Bank (.txt)</strong> to download a copy of your profile, or <strong>Use in Prompt Builder</strong> to go straight to Step 2.</li>
+        <li><strong>Import from CV</strong> fills your profile for you: choose a PDF or Word CV and the AI copies your details into the right fields (sign in first), or choose a CV Bank (.txt) you exported earlier to load it exactly, with no AI.</li>
+        <li>Everything saves automatically. Click <strong>Export CV Bank (.txt)</strong> to download a copy of your profile.</li>
       </ol>
     </section>
     <section class="panel help-card">
@@ -3349,8 +3356,116 @@ async function deleteAllMyData(){
 }
 new MutationObserver(_syncDeleteZone).observe(document.getElementById('gh-user'), { attributes: true, attributeFilter: ['hidden'] });
 
+// ═══════════════════════════════════════════════════════════════
+// IMPORT FROM CV: an exported CV Bank (.txt) is read directly, no AI.
+// Any other CV (PDF, Word, text) is read by AI on the server and mapped to the profile.
+// ═══════════════════════════════════════════════════════════════
+const IMPORT_ERRORS = {
+  signin: 'Sign in with Google (top right) to import a CV with AI. Exported CV Bank (.txt) files work without signing in.',
+  busy: 'The AI is busy right now. Please try again in one minute.',
+  network: 'Could not reach the server. Check your connection and try again.',
+  limit: "You've imported several CVs this hour. Please try again later.",
+  too_long: 'That CV is too long to import. Try a shorter version or a PDF under 3 MB.',
+  unreadable: "Couldn't read any CV details from that file. If it's a scanned image, try a PDF exported from Word or Google Docs.",
+  auth: 'Your sign-in has expired. Sign out, sign back in, then try again.',
+  not_configured: "Import from CV isn't switched on yet. Please try again later.",
+};
+const _looksLikeCVBank = t => /^\s*PERSONAL INFORMATION\s*$/m.test(t) && /^\s*Full Name:/m.test(t);
+// True when the profile holds anything beyond the empty template
+function _profileHasData(){
+  try {
+    const now = generateCVBankText(), saved = P;
+    P = defaultP(); const empty = generateCVBankText(); P = saved;
+    return now !== empty;
+  } catch (e) { return false; }
+}
+function _setImportBusy(on, label){
+  document.querySelectorAll('.import-btn').forEach(b => {
+    b.disabled = on; b.classList.toggle('is-working', on);
+    b.querySelector('.cp-label').textContent = on ? (label || 'Reading your CV…') : 'Import from CV';
+  });
+}
+function _readAs(file, how){
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+    how === 'text' ? r.readAsText(file) : r.readAsArrayBuffer(file);
+  });
+}
+async function _docxText(buf){
+  const zip = await JSZip.loadAsync(buf);
+  const f = zip.file('word/document.xml');
+  if (!f) throw new Error('not a Word document');
+  const xml = await f.async('string');
+  return xml
+    .replace(/<w:tab\/>/g, '\t').replace(/<w:br[^>]*\/>/g, '\n').replace(/<\/w:p>/g, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'")
+    .replace(/\n{3,}/g, '\n\n').trim();
+}
+function _b64(buf){
+  const bytes = new Uint8Array(buf); let s = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+function _applyImportedProfile(profile){
+  const base = defaultP();
+  const next = {};
+  for (const k of Object.keys(base)) {
+    const v = profile[k];
+    if (Array.isArray(base[k])) next[k] = Array.isArray(v) && v.length ? v.map(row => Object.assign({}, base[k][0], row)) : base[k];
+    else if (base[k] && typeof base[k] === 'object') next[k] = Object.assign({}, base[k], v || {});
+    else next[k] = typeof v === 'string' ? v : base[k];
+  }
+  if (!next.usageNotes && P.usageNotes) next.usageNotes = P.usageNotes;
+  P = next;
+  saveProfileData();
+  renderProfileForm();
+  document.querySelectorAll('.builder-section-body').forEach(el => el.classList.remove('collapsed'));
+  document.querySelectorAll('.section-toggle').forEach(el => { el.innerHTML = '&#x25BE;'; });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+async function importFromCV(input){
+  const file = input.files && input.files[0];
+  input.value = '';
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) { toast(IMPORT_ERRORS.too_long, 'error'); return; }
+  const name = file.name.toLowerCase();
+  const kind = /\.pdf$/.test(name) || file.type === 'application/pdf' ? 'pdf'
+    : /\.docx$/.test(name) ? 'docx'
+    : /\.(txt|md|text)$/.test(name) || /^text\//.test(file.type) ? 'text' : null;
+  if (!kind) { toast('Choose a PDF, Word (.docx) or text (.txt) file.', 'error'); return; }
+  const okToReplace = () => !_profileHasData() || confirm('Replace your current profile with the details from "' + file.name + '"?\n\nYou can review and edit everything afterwards.');
+  try {
+    let text = '';
+    if (kind === 'text') text = String(await _readAs(file, 'text'));
+    if (kind === 'docx') text = await _docxText(await _readAs(file, 'buffer'));
+    if (kind === 'text' && _looksLikeCVBank(text)) {
+      if (!okToReplace()) return;
+      _applyBankText(_sanitize(text));
+      toast('CV Bank imported ✔ Review your details below.', 'success');
+      return;
+    }
+    if (typeof window.gethiredImportCV !== 'function') { toast(IMPORT_ERRORS.not_configured, 'error'); return; }
+    if (document.getElementById('gh-user').hidden) { toast(IMPORT_ERRORS.signin, 'error'); return; }
+    if (!okToReplace()) return;
+    _setImportBusy(true, 'AI is reading your CV…');
+    const payload = kind === 'pdf' ? { pdf: _b64(await _readAs(file, 'buffer')) } : { text: _sanitize(text) };
+    const res = await window.gethiredImportCV(payload);
+    if (!res || !res.ok || !res.profile) { toast(IMPORT_ERRORS[res && res.error] || IMPORT_ERRORS.busy, 'error'); return; }
+    _applyImportedProfile(res.profile);
+    toast('CV imported ✔ Check every section: AI can miss or misplace details.', 'success');
+  } catch (err) {
+    console.error(err);
+    toast(kind === 'docx' ? "Couldn't open that Word file. Try saving it as PDF and importing again." : IMPORT_ERRORS.unreadable, 'error');
+  } finally {
+    _setImportBusy(false);
+  }
+}
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261023a"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261023c"></script>
 </body>
 </html>
