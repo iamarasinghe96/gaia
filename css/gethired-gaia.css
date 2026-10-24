@@ -394,4 +394,33 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
   .jd-actions { justify-self: center; }
   .header-sub { display: none; }
 }
+/* Header labels and icons: icons show only on phones */
+.hd-icon { display: none; width: 17px; height: 17px; }
+.header-actions > .btn .hd-icon { display: inline-block; width: 14px; height: 14px; margin-right: 6px; vertical-align: -2px; }
+.gh-ctx { display: none; }
+@media (max-width: 640px) {
+  header { flex-wrap: nowrap; gap: 8px; padding: 8px 10px 8px 12px; min-height: 56px; }
+  .header-brand { flex: 1 1 auto; min-width: 0; gap: 10px; }
+  .header-brand > div { flex: 1 1 auto; min-width: 0; }
+  .header-logo { width: 34px; height: 34px; flex: none; }
+  .header-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .gh-ctx { display: block; position: relative; height: 24px; overflow: hidden; }
+  .gh-ctx-t { position: absolute; inset: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 16px; font-weight: 700; line-height: 24px; letter-spacing: -.015em; color: #fff;
+    transition: opacity .5s cubic-bezier(.22, .61, .36, 1), transform .5s cubic-bezier(.22, .61, .36, 1), filter .5s cubic-bezier(.22, .61, .36, 1); }
+  .gh-ctx-t.in { opacity: 0; transform: translateY(9px); filter: blur(5px); }
+  .gh-ctx-t.out { opacity: 0; transform: translateY(-9px); filter: blur(5px); }
+  .header-actions { flex: none; flex-wrap: nowrap; gap: 4px; }
+  .hd-label { display: none; }
+  .hd-icon, .header-actions > .btn .hd-icon { display: block; width: 17px; height: 17px; margin: 0; }
+  .header-actions .btn { width: 36px; height: 36px; padding: 0 !important; display: inline-grid; place-items: center; }
+  .gh-google svg { width: 18px; height: 18px; }
+  .gh-sync { font-size: 0; gap: 0; margin: 0; padding: 0 7px; height: 36px; }
+  .gh-sync::before { width: 9px; height: 9px; }
+  .gh-privacy { padding: 0; width: 36px; height: 36px; justify-content: center; }
+  .gh-privacy svg { width: 17px; height: 17px; }
+  .gh-user { gap: 4px; padding: 2px; }
+  .gh-user-name { display: none; }
+  #gh-avatar { width: 30px; height: 30px; }
+  .gh-user .btn { width: 30px !important; height: 30px !important; border: 0 !important; background: transparent !important; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

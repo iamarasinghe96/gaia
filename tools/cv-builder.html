@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261023g">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261024a">
 </head>
 <body>
 
@@ -236,15 +236,16 @@
     <a class="header-logo" href="../index.html" aria-label="Gaia Symbiosis home"><img src="../assets/logo-96.png" alt="" width="32" height="32"></a>
     <div>
       <div class="header-title">GetHired · CV Prompt Builder</div>
+      <div class="gh-ctx" id="gh-ctx" aria-hidden="true"></div>
       <div class="header-sub">by <a href="../index.html">Gaia Symbiosis</a> · ATS-optimised prompt assembly tool</div>
     </div>
   </div>
   <div class="header-actions">
     <span class="gh-sync" id="gh-sync" role="status" aria-live="polite"></span>
-    <a class="gh-privacy" href="../privacy.html" title="How your data is protected"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Private &amp; secure</a>
-    <button class="btn" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)" onclick="saveAll()">&#x2191; Save All</button>
-    <button class="btn gh-google" id="gh-sign-in" type="button" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Sign in with Google</button>
-    <div class="gh-user" id="gh-user" hidden><span id="gh-avatar"></span><span class="gh-user-name" id="gh-name"></span><button class="btn" id="gh-sign-out" type="button" style="color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)">Sign out</button></div>
+    <a class="gh-privacy" href="../privacy.html" title="How your data is protected"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span class="hd-label">Private &amp; secure</span></a>
+    <button class="btn" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)" onclick="saveAll()" aria-label="Save all"><svg class="hd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg><span class="hd-label">Save All</span></button>
+    <button class="btn gh-google" id="gh-sign-in" type="button" hidden aria-label="Sign in with Google"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span class="hd-label">Sign in with Google</span></button>
+    <div class="gh-user" id="gh-user" hidden><span id="gh-avatar"></span><span class="gh-user-name" id="gh-name"></span><button class="btn" id="gh-sign-out" type="button" style="color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)" aria-label="Sign out"><svg class="hd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><span class="hd-label">Sign out</span></button></div>
   </div>
 </header>
 
@@ -3955,8 +3956,52 @@ document.getElementById('profile-form').addEventListener('input', () => {
   document.querySelectorAll('.wh-toolbar button:nth-of-type(2)').forEach(b => b.remove());
 });
 
+// ═══════════════════════════════════════════════════════════════
+// PHONE HEADER: one line, showing the section you are in. The name fades
+// to the next one as you scroll (hidden on wider screens by CSS).
+// ═══════════════════════════════════════════════════════════════
+(() => {
+  const box = document.getElementById('gh-ctx');
+  if (!box) return;
+  const header = document.querySelector('body > header');
+  let shown = '', ticking = false;
+  const set = text => {
+    if (text === shown) return;
+    shown = text;
+    box.querySelectorAll('.gh-ctx-t').forEach(old => { old.classList.add('out'); setTimeout(() => old.remove(), 500); });
+    const next = document.createElement('span');
+    next.className = 'gh-ctx-t in';
+    next.textContent = text;
+    box.appendChild(next);
+    requestAnimationFrame(() => requestAnimationFrame(() => next.classList.remove('in')));
+  };
+  const clean = t => String(t || '').replace(/^[^\p{L}]+/u, '').replace(/\s+/g, ' ').trim();
+  const update = () => {
+    ticking = false;
+    if (!box.offsetParent) return;
+    const view = document.querySelector('.view.active');
+    if (!view) return;
+    const id = view.id.replace('view-', '');
+    const tab = document.querySelector(`#nav-${id} .step-t`);
+    const viewName = clean(tab ? tab.firstChild.textContent : 'GetHired');
+    const sel = id === 'help' ? 'h2' : id === 'profile' ? '.builder-section-hdr .panel-title' : '.panel-title';
+    const line = header.getBoundingClientRect().bottom + 24;
+    let cur = '';
+    for (const h of view.querySelectorAll(sel)) {
+      if (!h.offsetParent) continue;
+      if (h.getBoundingClientRect().top < line) cur = h.textContent; else break;
+    }
+    set(clean(cur) || viewName);
+  };
+  const soon = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', soon, { passive: true });
+  addEventListener('resize', soon);
+  document.querySelector('.main-nav')?.addEventListener('click', () => setTimeout(update, 60));
+  update();
+})();
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261023g"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261024a"></script>
 </body>
 </html>
