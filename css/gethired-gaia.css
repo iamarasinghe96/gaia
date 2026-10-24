@@ -424,3 +424,9 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
   .gh-user .btn { width: 30px !important; height: 30px !important; border: 0 !important; background: transparent !important; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Touch screens: iPhone and iPad zoom into any text box smaller than 16px.
+   16px text in form fields stops that, and pinch-zoom still works. */
+@media (hover: none) and (pointer: coarse) {
+  input:not([type=checkbox]):not([type=radio]):not([type=range]), textarea, select { font-size: 16px !important; }
+}
