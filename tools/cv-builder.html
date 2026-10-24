@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261024b">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261024c">
 </head>
 <body>
 
@@ -616,7 +616,7 @@ function defaultP() {
     summary: { headline:'', tagline:'', paragraphs:'' },
     skills:       [{ category:'', items:'' }],
     workHistory:  [{ title:'', employer:'', startDate:'', endDate:'', nature:'', description:'', bullets:'', respUrl:'', milestonesUrl:'' }],
-    education:    [{ degree:'', institution:'', startYear:'', endYear:'', gpa:'', thesis:'', notes:'', credentialsUrl:'' }],
+    education:    [{ degree:'', institution:'', startYear:'', endYear:'', majors:'', gpa:'', thesis:'', notes:'', credentialsUrl:'' }],
     certifications: [{ category:'', items:'' }],
     publications: { academic:'', awards:'' },
     storyBank:    [{ title:'', usedFor:'', text:'' }],
@@ -698,7 +698,7 @@ const SAMPLE_P = {
       bullets:'Processed 200+ purchase orders a month and reconciled contractor invoices against delivery records.\nRedesigned the depot job request form, reducing incomplete requests by 40%.\nTrained six new starters on council procurement and records procedures.' }
   ],
   education: [
-    { degree:'Bachelor of Business — Supply Chain Management', institution:'Example University, Brisbane', startYear:'2015', endYear:'2018', gpa:'Distinction average', thesis:'Reducing Last-Mile Delivery Costs in Regional Queensland', notes:'Dean\'s List 2017', credentialsUrl:'https://example.com/steve/degree' },
+    { degree:'Bachelor of Business — Supply Chain Management', majors:'Supply Chain Management\nBusiness Analytics', institution:'Example University, Brisbane', startYear:'2015', endYear:'2018', gpa:'Distinction average', thesis:'Reducing Last-Mile Delivery Costs in Regional Queensland', notes:'Dean\'s List 2017', credentialsUrl:'https://example.com/steve/degree' },
     { degree:'Certificate IV in Work Health and Safety', institution:'Example TAFE, Toowoomba', startYear:'2020', endYear:'2020', gpa:'', thesis:'', notes:'Completed part-time while working', credentialsUrl:'' }
   ],
   certifications: [
@@ -977,6 +977,7 @@ function educationBodyHTML() {
         fi('Start Year', inp(`education.${i}.startYear`, 'e.g. 2020')),
         fi('End Year', inp(`education.${i}.endYear`, 'e.g. 2022'))
       )}
+      ${fg(1, fi('Majors <span class="opt">optional</span>', chipsHTML(`education.${i}.majors`, MAJOR_SUGGESTIONS, 'Type a subject, e.g. Finance')))}
       ${fg(2,
         fi('Grade / GPA <span class="opt">optional</span>', inp(`education.${i}.gpa`, 'e.g. Merit / 3.2 GPA')),
         fi('Thesis / Dissertation <span class="opt">optional</span>', inp(`education.${i}.thesis`, 'e.g. Thesis title'))
@@ -984,7 +985,7 @@ function educationBodyHTML() {
       ${fg(1, fi('Additional Notes <span class="opt">optional</span>', inp(`education.${i}.notes`, 'e.g. Full Tuition Scholarship Holder')))}
       ${fg(1, fi('Credentials Link <span class="opt">optional</span>', inp(`education.${i}.credentialsUrl`, 'https://... — becomes a [Credentials] link next to the institution')))}
     </div>`).join('');
-  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('education',{degree:'',institution:'',startYear:'',endYear:'',gpa:'',thesis:'',notes:''})">+ Add Education</button></div>`;
+  return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('education',{degree:'',institution:'',startYear:'',endYear:'',majors:'',gpa:'',thesis:'',notes:''})">+ Add Education</button></div>`;
 }
 
 function certificationsBodyHTML() {
@@ -1212,6 +1213,8 @@ function generateCVBankText() {
       if (ePeriod) instLine += ` (${ePeriod})`;
       if (instLine) push(instLine);
       if (e.gpa)    push(`Grade/GPA: ${e.gpa}`);
+      const majors = String(e.majors || '').split('\n').map(m => m.trim()).filter(Boolean);
+      if (majors.length) push(`Majors: ${majors.join('; ')}`);
       if (e.thesis) push(`Thesis: ${e.thesis}`);
       if (e.notes)  push(e.notes);
       if (e.credentialsUrl) push(`Credentials URL: ${e.credentialsUrl}`);
@@ -1478,6 +1481,8 @@ function parseCVBankText(text) {
         const gpa = line.match(/^Grade\/GPA:\s*(.+)/);
         const the = line.match(/^(?:Dissertation|Thesis):\s*(.+)/i);
         const cru = line.match(/^Credentials URL:\s*(.+)/i);
+        const maj = line.match(/^Majors?:\s*(.+)/i);
+        if (maj) { curEdu.majors = maj[1].split(';').map(m => m.trim()).filter(Boolean).join('\n'); continue; }
         if (cru) { curEdu.credentialsUrl = cru[1].trim(); continue; }
         if (gpa) { curEdu.gpa = gpa[1]; continue; }
         if (the) { curEdu.thesis = the[1]; continue; }
@@ -4000,8 +4005,80 @@ document.getElementById('profile-form').addEventListener('input', () => {
   update();
 })();
 
+// ═══════════════════════════════════════════════════════════════
+// CHIPS: type to search, Enter or tap to add as a card, × to remove.
+// Saved as one item per line, like the other "one per line" fields.
+// ═══════════════════════════════════════════════════════════════
+const MAJOR_SUGGESTIONS = ['Accounting','Actuarial Science','Agriculture','Anthropology','Applied Mathematics','Architecture','Artificial Intelligence','Biochemistry','Biology','Biomedical Engineering','Biotechnology','Business Administration','Business Analytics','Chemical Engineering','Chemistry','Civil Engineering','Climate Science','Communications','Computer Engineering','Computer Science','Construction Management','Criminology','Cyber Security','Data Science','Design','Digital Marketing','Early Childhood Education','Economics','Education','Electrical Engineering','Electronic Engineering','Engineering Management','English','Entrepreneurship','Environmental Management','Environmental Science','Event Management','Finance','Financial Mathematics','Food Science','Geography','Geology','Graphic Design','Health Administration','Health Science','History','Hospitality Management','Human Resource Management','Human Services','Industrial Engineering','Information Systems','Information Technology','International Business','International Relations','Journalism','Law','Linguistics','Logistics','Management','Marketing','Mathematics','Mechanical Engineering','Mechatronics','Media Studies','Medicine','Midwifery','Nursing','Nutrition','Occupational Therapy','Operations Management','Pharmacy','Philosophy','Physics','Physiotherapy','Political Science','Project Management','Psychology','Public Administration','Public Health','Public Policy','Quantity Surveying','Real Estate','Renewable Energy','Risk Management','Social Work','Sociology','Software Engineering','Sport Science','Statistics','Strategic Management','Supply Chain Management','Sustainability','Sustainable Finance','Teaching','Tourism','Urban Planning','Veterinary Science'];
+const _chipId = path => 'ch-' + path.replace(/\./g, '-');
+const _chipList = path => String(getPath(P, path) || '').split('\n').map(x => x.trim()).filter(Boolean);
+const _chipOpts = {};
+function chipsHTML(path, suggestions, placeholder){
+  const list = _chipList(path);
+  if (SAMPLE_MODE) return `<div class="lang-chips">${list.map(x => `<span class="lang-chip lang-chip-ro"><span class="lang-name">${esc(x)}</span></span>`).join('')}</div>`;
+  _chipOpts[path] = { suggestions, placeholder };
+  return `<div class="lang-field" id="${_chipId(path)}" data-chips="${path}">${_chipInner(path)}</div>`;
+}
+function _chipInner(path){
+  const list = _chipList(path), id = _chipId(path), o = _chipOpts[path] || {};
+  return `${list.length ? `<div class="lang-chips">${list.map((x, i) => `<span class="lang-chip lang-chip-ro"><span class="lang-name">${esc(x)}</span>
+      <button type="button" class="chip-x" onclick="chipRemove('${path}', ${i})" aria-label="Remove ${esc(x)}">&times;</button></span>`).join('')}</div>` : ''}
+    <div class="lang-search"><input class="field-input chip-input" type="text" placeholder="${esc(o.placeholder || '')}" autocomplete="off"
+      role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="${id}-list"
+      oninput="chipSuggest('${path}')" onkeydown="chipKey(event, '${path}')" onblur="setTimeout(() => chipClose('${path}'), 150)">
+    <ul class="lang-list" id="${id}-list" role="listbox" hidden></ul></div>`;
+}
+const _chipEls = path => { const box = document.getElementById(_chipId(path)); return { box, input: box.querySelector('.chip-input'), ul: box.querySelector('.lang-list') }; };
+function _chipSave(path, list){
+  setPath(P, path, list.join('\n')); debouncedSave();
+  const { box } = _chipEls(path);
+  box.innerHTML = _chipInner(path);
+  _chipEls(path).input.focus();
+}
+function chipSuggest(path){
+  const { input, ul } = _chipEls(path), o = _chipOpts[path] || {};
+  const q = input.value.trim().toLowerCase(), typed = input.value.trim();
+  const have = new Set(_chipList(path).map(x => x.toLowerCase()));
+  const hits = q ? (o.suggestions || []).filter(n => !have.has(n.toLowerCase()) && n.toLowerCase().includes(q))
+    .sort((a, b) => a.toLowerCase().indexOf(q) - b.toLowerCase().indexOf(q)).slice(0, 8) : [];
+  if (typed && !hits.some(n => n.toLowerCase() === q) && !have.has(q)) hits.push(typed);
+  ul.dataset.active = 0;
+  ul.innerHTML = hits.map((n, i) => `<li role="option" data-name="${esc(n)}" aria-selected="${i === 0}" onmousedown="event.preventDefault(); chipAdd('${path}', this.dataset.name)">${(o.suggestions || []).includes(n) ? esc(n) : `Add “${esc(n)}”`}</li>`).join('');
+  ul.hidden = !hits.length;
+  input.setAttribute('aria-expanded', String(!ul.hidden));
+}
+function chipKey(e, path){
+  const { input, ul } = _chipEls(path), items = [...ul.querySelectorAll('li')];
+  let a = +ul.dataset.active || 0;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (!items.length) return;
+    e.preventDefault();
+    a = (a + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length; ul.dataset.active = a;
+    items.forEach((li, i) => li.setAttribute('aria-selected', String(i === a)));
+  } else if (e.key === 'Enter' || e.key === ',' || e.key === ';') {
+    e.preventDefault();
+    const pick = !ul.hidden && items[a] ? items[a].dataset.name : input.value.trim();
+    if (pick) chipAdd(path, pick);
+  } else if (e.key === 'Escape') chipClose(path);
+  else if (e.key === 'Backspace' && !input.value) {
+    const list = _chipList(path);
+    if (list.length) { list.pop(); _chipSave(path, list); }
+  }
+}
+function chipClose(path){
+  const box = document.getElementById(_chipId(path)); if (!box) return;
+  const { input, ul } = _chipEls(path); ul.hidden = true; input.setAttribute('aria-expanded', 'false');
+}
+function chipAdd(path, name){
+  name = String(name || '').replace(/[;\n]/g, ' ').replace(/\s+/g, ' ').trim();
+  const list = _chipList(path);
+  if (name && !list.some(x => x.toLowerCase() === name.toLowerCase())) list.push(name);
+  _chipSave(path, list);
+}
+function chipRemove(path, i){ const list = _chipList(path); list.splice(i, 1); _chipSave(path, list); }
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261024b"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261024c"></script>
 </body>
 </html>

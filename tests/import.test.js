@@ -14,7 +14,7 @@ test('normalizeProfile keeps only known fields as strings', () => {
   assert.equal(p.personal.hacker, undefined);
   assert.equal(p.evil, undefined);
   assert.equal(p.workHistory[0].bullets, 'Led a team of 12 analysts');
-  assert.deepEqual(Object.keys(p.education[0]), ['degree', 'institution', 'startYear', 'endYear', 'gpa', 'thesis', 'notes', 'credentialsUrl']);
+  assert.deepEqual(Object.keys(p.education[0]), ['degree', 'institution', 'startYear', 'endYear', 'majors', 'gpa', 'thesis', 'notes', 'credentialsUrl']);
   assert.equal(p.usageNotes, '');
   assert.equal(filledSections(p), 2);
 });
