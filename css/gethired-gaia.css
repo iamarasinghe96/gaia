@@ -396,6 +396,12 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
   .jd-actions { justify-self: center; }
   .header-sub { display: none; }
 }
+/* Phones and tablets: the step bar sits just under the header. It shows while
+   scrolling down and slides fully behind the header while scrolling up. */
+@media (max-width: 900px) {
+  .main-nav { top: var(--hdr-h, 0px); transition: transform .38s cubic-bezier(.22, .61, .36, 1), box-shadow .2s; will-change: transform; }
+  .main-nav.nav-away { transform: translateY(calc(-100% - 2px)); pointer-events: none; }
+}
 /* Header labels and icons: icons show only on phones */
 .hd-icon { display: none; width: 17px; height: 17px; }
 .header-actions > .btn .hd-icon { display: inline-block; width: 14px; height: 14px; margin-right: 6px; vertical-align: -2px; }
