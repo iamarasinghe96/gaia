@@ -405,8 +405,8 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
   .jd-actions { justify-self: center; }
   .header-sub { display: none; }
 }
-/* Phones and tablets: the step bar sits just under the header. It shows while
-   scrolling down and slides fully behind the header while scrolling up. */
+/* Phones and tablets: the step bar sits just under the header. It slides fully
+   behind the header while moving down the page and comes back when moving up. */
 @media (max-width: 900px) {
   .main-nav { top: var(--hdr-h, 0px); transition: transform .38s cubic-bezier(.22, .61, .36, 1), box-shadow .2s; will-change: transform; }
   .main-nav.nav-away { transform: translateY(calc(-100% - 2px)); pointer-events: none; }

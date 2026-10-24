@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261024e">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261024f">
 </head>
 <body>
 
@@ -4101,8 +4101,8 @@ function chipAdd(path, name){
 function chipRemove(path, i){ const list = _chipList(path); list.splice(i, 1); _chipSave(path, list); }
 
 // ═══════════════════════════════════════════════════════════════
-// STEP BAR ON PHONES: shown while scrolling down, hidden while scrolling up,
-// always shown near the top of the page.
+// STEP BAR ON PHONES: hidden while moving down the page, shown again when
+// moving back up, and always shown near the top of the page.
 // ═══════════════════════════════════════════════════════════════
 (() => {
   const nav = document.querySelector('.main-nav'), header = document.querySelector('body > header');
@@ -4115,7 +4115,7 @@ function chipRemove(path, i){ const list = _chipList(path); list.splice(i, 1); _
     const y = scrollY, dy = y - lastY;
     if (!small.matches || y < 40) { nav.classList.remove('nav-away'); lastY = y; return; }
     if (Math.abs(dy) < 8) return;
-    nav.classList.toggle('nav-away', dy < 0);
+    nav.classList.toggle('nav-away', dy > 0);
     lastY = y;
   };
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
@@ -4159,6 +4159,6 @@ document.getElementById('profile-form').addEventListener('click', e => {
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261024e"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261024f"></script>
 </body>
 </html>
