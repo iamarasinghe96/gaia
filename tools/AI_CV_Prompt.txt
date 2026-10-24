@@ -26,7 +26,7 @@ The content bank marks links with these exact labels. Map them as follows:
   "Milestones URL:" under a role            ->  append " | [Milestones](url)"
                                                 to that role's organisation line
   "Link: <words> | <url>" right after a     ->  wrap those exact words inside that bullet,
-   bullet under a role                          e.g. "... the [pilot registration](url) ...".
+   bullet under a role, or under a story        e.g. "... the [pilot registration](url) ...".
                                                 Keep the linked words in the bullet when
                                                 you reword it, so the link is never lost
   "Credentials URL:" under a qualification  ->  append " | [Credentials](url)"

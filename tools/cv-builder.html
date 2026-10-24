@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261024d">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261024e">
 </head>
 <body>
 
@@ -619,7 +619,7 @@ function defaultP() {
     education:    [{ degree:'', institution:'', startYear:'', endYear:'', majors:'', gpa:'', thesis:'', notes:'', credentialsUrl:'' }],
     certifications: [{ category:'', items:'' }],
     publications: { academic:'', awards:'' },
-    storyBank:    [{ title:'', usedFor:'', text:'' }],
+    storyBank:    [{ title:'', usedFor:'', text:'', links:'' }],
     projects:     [{ name:'', description:'', url:'' }],
     achievements: [{ category:'', items:'' }],
     referees:     [{ name:'', title:'', email:'', phone:'', linkedin:'' }],
@@ -996,7 +996,7 @@ function certificationsBodyHTML() {
         <button class="btn btn-danger" onclick="removeItem('certifications',${i})">&#x2715; Remove</button>
       </div>
       ${fg(1, fi('Category Heading', inp(`certifications.${i}.category`, 'e.g. Sustainable Finance / Climate')))}
-      ${fg(1, fi('Certifications (one per line — add " | https://link" to make it clickable)', ta(`certifications.${i}.items`, 'Climate-Related Financial Disclosures | https://link-to-credential\nIntroduction to ESG\n...', 4)))}
+      ${fg(1, fi('Certifications <span class="opt">one per row, each with its own link</span>', bulletsHTML(`certifications.${i}.items`, 'e.g. Climate-Related Financial Disclosures', 'url', '+ Add certification')))}
     </div>`).join('');
   return cards +
     `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('certifications',{category:'',items:''})">+ Add Category</button></div>` +
@@ -1017,8 +1017,9 @@ function storyBankBodyHTML() {
       ${fg(1, fi('Story Title', inp(`storyBank.${i}.title`, 'e.g. The Rostering Rebuild — Process Improvement')))}
       ${fg(1, fi('Best Used For', inp(`storyBank.${i}.usedFor`, 'e.g. Project management, data/analytics, automation, admin, operations roles')))}
       ${fg(1, fi('Story Text', ta(`storyBank.${i}.text`, 'Write the full story here. Include the challenge, what you did, and the measurable outcome. Multiple paragraphs are fine.', 7)))}
+      ${fg(1, fi('Links <span class="opt">optional — the words in the story to link, and where to</span>', storyLinksHTML(i)))}
     </div>`).join('');
-  return tip + cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('storyBank',{title:'',usedFor:'',text:''})">+ Add Story</button></div>`;
+  return tip + cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('storyBank',{title:'',usedFor:'',text:'',links:''})">+ Add Story</button></div>`;
 }
 
 function projectsBodyHTML() {
@@ -1043,7 +1044,7 @@ function achievementsBodyHTML() {
         <button class="btn btn-danger" onclick="removeItem('achievements',${i})">&#x2715; Remove</button>
       </div>
       ${fg(1, fi('Category', inp(`achievements.${i}.category`, 'e.g. Music Competitions')))}
-      ${fg(1, fi('Items (one per line)', ta(`achievements.${i}.items`, 'Year: placing — competition\n...', 4)))}
+      ${fg(1, fi('Items <span class="opt">one per row, each with its own link</span>', bulletsHTML(`achievements.${i}.items`, 'e.g. 2023: First place — State Music Competition', 'url', '+ Add item')))}
     </div>`).join('');
   return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('achievements',{category:'',items:''})">+ Add Category</button></div>`;
 }
@@ -1258,6 +1259,7 @@ function generateCVBankText() {
       push(`STORY ${i+1}: ${s.title || 'Story'}`);
       if (s.usedFor) push(`Best used for: ${s.usedFor}`);
       if (s.text)    push(s.text);
+      String(s.links || '').split('\n').filter(l => l.trim()).forEach(l => push(`Link: ${l.trim()}`));
       nl();
     });
     nl();
@@ -1544,10 +1546,13 @@ function parseCVBankText(text) {
       let text = trimmed;
       if (titleM) text = text.replace(titleM[0], '').trim();
       if (usedM)  text = text.replace(usedM[0], '').trim();
+      const linkLines = text.split('\n').filter(l => /^Link:\s*.*\|/.test(l.trim()));
+      if (linkLines.length) text = text.split('\n').filter(l => !/^Link:\s*.*\|/.test(l.trim())).join('\n').trim();
       stories.push({
         title:   titleM ? titleM[1].trim() : '',
         usedFor: usedM  ? usedM[1].trim()  : '',
-        text:    text
+        text:    text,
+        links:   linkLines.map(l => l.trim().replace(/^Link:\s*/, '')).join('\n')
       });
     }
     if (stories.length) result.storyBank = stories;
@@ -3693,37 +3698,54 @@ function _savePromptIfCustom(key, text, def){
 const _BULLET_MARK = /^\s*(?:[-•*▪●◦‣–]|\d{1,2}[.)])\s+/;
 const _LINK_LINE = /^Link:\s*(.*?)\s*\|\s*(\S*)\s*$/;
 const _blId = path => 'bl-' + path.replace(/\./g, '-');
-// "text\nLink: words | url\ntext" <-> [{ text, links: [{ words, url }] }]
-function _blParse(raw){
+// Two kinds of list:
+//  "lines" (role bullets): "text\nLink: words | url\ntext"  -> links attach to chosen words
+//  "url" (certifications, achievements): "Item | https://..." -> one link for the whole item
+// both read as [{ text, links: [{ words, url }] }]
+const _ITEM_URL = /^(.*\S)\s*\|\s*(https?:\/\/\S+)\s*$/;
+function _blParse(raw, mode){
   const items = [];
   String(raw || '').split('\n').forEach(line => {
+    if (mode === 'url') {
+      const u = line.match(_ITEM_URL);
+      items.push(u ? { text: u[1], links: [{ words: '', url: u[2] }] } : { text: line, links: [] });
+      return;
+    }
     const m = items.length && line.match(_LINK_LINE);
     if (m) items[items.length - 1].links.push({ words: m[1], url: m[2] });
     else items.push({ text: line, links: [] });
   });
   return items.length ? items : [{ text: '', links: [] }];
 }
-const _blJoin = items => items.flatMap(it => [it.text, ...it.links
+const _blJoin = (items, mode) => mode === 'url'
+  ? items.map(it => { const u = (it.links[0]?.url || '').trim(); return u ? `${it.text.trim()} | ${u}` : it.text; }).join('\n')
+  : items.flatMap(it => [it.text, ...it.links
   .filter(l => l.words.trim() || l.url.trim())
   .map(l => `Link: ${l.words.trim().replace(/\s*\|\s*/g, ' ')} | ${l.url.trim()}`)]).join('\n');
-function bulletsHTML(path, placeholder){
-  const items = _blParse(getPath(P, path));
-  if (SAMPLE_MODE) return `<ul class="bl-sample">${items.filter(it => it.text).map(it => `<li>${esc(it.text)}${it.links.map(l => `<span class="bl-sample-link">&#x1F517; ${esc(l.words)}</span>`).join('')}</li>`).join('')}</ul>`;
-  return `<div class="bl-list" id="${_blId(path)}" data-bl="${path}" data-ph="${esc(placeholder || '')}">${_blItems(items, placeholder)}</div>
-    <button type="button" class="btn btn-outline btn-sm" onclick="blAdd('${path}')">+ Add bullet</button>`;
+function bulletsHTML(path, placeholder, mode, addLabel){
+  mode = mode || 'lines';
+  const items = _blParse(getPath(P, path), mode);
+  if (SAMPLE_MODE) return `<ul class="bl-sample">${items.filter(it => it.text).map(it => `<li>${esc(it.text)}${it.links.map(l => `<span class="bl-sample-link">&#x1F517; ${esc(l.words || l.url)}</span>`).join('')}</li>`).join('')}</ul>`;
+  return `<div class="bl-list" id="${_blId(path)}" data-bl="${path}" data-mode="${mode}" data-ph="${esc(placeholder || '')}">${_blItems(items, placeholder, mode)}</div>
+    <button type="button" class="btn btn-outline btn-sm" onclick="blAdd('${path}')">${addLabel || '+ Add bullet'}</button>`;
 }
-function _blLinkRow(l){
+function _blLinkRow(l, mode){
+  if (mode === 'url') return `<div class="bl-link bl-link-url"><span class="bl-link-icon" aria-hidden="true">&#x1F517;</span>
+    <input type="hidden" value="">
+    <input class="field-input" type="url" value="${esc(l.url)}" placeholder="https:// link for this item" aria-label="Link for this item" oninput="blLinkInput(this)">
+    <button type="button" class="chip-x" onclick="blLinkRemove(this)" aria-label="Remove link">&times;</button>
+    <div class="bl-link-warn" hidden></div></div>`;
   return `<div class="bl-link"><span class="bl-link-icon" aria-hidden="true">&#x1F517;</span>
     <input class="field-input" type="text" value="${esc(l.words)}" placeholder="Words to link, e.g. pilot registration" aria-label="Words to link" oninput="blLinkInput(this)">
     <input class="field-input" type="url" value="${esc(l.url)}" placeholder="https://" aria-label="Link URL" oninput="blLinkInput(this)">
     <button type="button" class="chip-x" onclick="blLinkRemove(this)" aria-label="Remove link">&times;</button>
     <div class="bl-link-warn" hidden>These words are not in the bullet above, so the link has nothing to attach to.</div></div>`;
 }
-function _blItems(items, placeholder){
+function _blItems(items, placeholder, mode){
   return items.map((it, i) => `<div class="bl-item"><span class="bl-dot" aria-hidden="true"></span>
-    <div class="bl-body"><textarea class="field-input bl-input" rows="1" aria-label="Bullet ${i + 1}" placeholder="${i === 0 ? esc(placeholder || '') : ''}"
+    <div class="bl-body"><textarea class="field-input bl-input" rows="1" aria-label="${mode === 'url' ? 'Item' : 'Bullet'} ${i + 1}" placeholder="${i === 0 ? esc(placeholder || '') : ''}"
       oninput="blInput(this)" onkeydown="blKey(event, this)" onpaste="blPaste(event, this)">${esc(it.text)}</textarea>
-      <div class="bl-links">${it.links.map(_blLinkRow).join('')}</div>
+      <div class="bl-links">${it.links.map(l => _blLinkRow(l, mode)).join('')}</div>
       <div class="bl-tools"><button type="button" class="bl-tool" onclick="blLinkAdd(this)">+ Link</button><button type="button" class="bl-tool bl-move" onclick="blMoveLinks(this)" hidden></button></div></div>
     <button type="button" class="chip-x" tabindex="-1" onclick="blRemove(this)" aria-label="Remove bullet ${i + 1}">&times;</button></div>`).join('');
 }
@@ -3755,20 +3777,20 @@ function _blCheck(item){
     const w = r.querySelector('input').value.trim().toLowerCase();
     r.querySelector('.bl-link-warn').hidden = !w || text.includes(w);
   });
-  const n = _blInlineLinks(item.querySelector('.bl-input').value).length, mv = item.querySelector('.bl-move');
+  const n = _blWrap(item).dataset.mode === 'url' ? 0 : _blInlineLinks(item.querySelector('.bl-input').value).length, mv = item.querySelector('.bl-move');
   mv.hidden = !n;
   mv.textContent = n === 1 ? 'Move 1 link out of the text' : `Move ${n} links out of the text`;
 }
 function _blSave(wrap){
-  setPath(P, wrap.dataset.bl, _blJoin(_blRead(wrap)));
+  setPath(P, wrap.dataset.bl, _blJoin(_blRead(wrap), wrap.dataset.mode));
   debouncedSave();
 }
 // Rebuild one list from items, then put the caret back
 function _blSet(wrap, items, focusIdx, caret){
   if (!items.length) items = [{ text: '', links: [] }];
-  setPath(P, wrap.dataset.bl, _blJoin(items));
+  setPath(P, wrap.dataset.bl, _blJoin(items, wrap.dataset.mode));
   debouncedSave();
-  wrap.innerHTML = _blItems(items, wrap.dataset.ph);
+  wrap.innerHTML = _blItems(items, wrap.dataset.ph, wrap.dataset.mode);
   const inputs = _blInputs(wrap);
   inputs.forEach(_blFit);
   wrap.querySelectorAll('.bl-item').forEach(_blCheck);
@@ -3780,7 +3802,7 @@ function blInput(el){
   if (el.value.includes('\n')) {               // e.g. text dropped in: split it into bullets
     const items = _blRead(wrap), i = _blInputs(wrap).indexOf(el);
     const parts = el.value.split('\n');
-    items.splice(i, 1, { text: parts[0], links: items[i].links }, ...parts.slice(1).map(text => ({ text, links: [] })));
+    items.splice(i, 1, { text: parts[0], links: items[i].links }, ...parts.slice(1).map(t => _blParse(t, wrap.dataset.mode)[0]));
     return _blSet(wrap, items, i + parts.length - 1);
   }
   _blFit(el); _blCheck(_blItemOf(el)); _blSave(wrap);
@@ -3818,7 +3840,7 @@ function blPaste(e, el){
   parts[0] = head + parts[0];
   const last = parts.length - 1, caret = parts[last].length;
   parts[last] += tail;
-  items.splice(i, 1, ...parts.map((t, k) => ({ text: t, links: k === 0 ? items[i].links : [] })));
+  items.splice(i, 1, ...parts.map((t, k) => { const it = _blParse(t, wrap.dataset.mode)[0]; if (k === 0 && !it.links.length) it.links = items[i].links; return it; }));
   _blSet(wrap, items, i + last, caret);
 }
 function blRemove(btn){
@@ -3833,11 +3855,12 @@ function blAdd(path){
 }
 // ─── links under a bullet ───
 function blLinkAdd(btn){
-  const item = _blItemOf(btn), box = item.querySelector('.bl-links');
+  const item = _blItemOf(btn), box = item.querySelector('.bl-links'), mode = _blWrap(btn).dataset.mode;
+  if (mode === 'url' && box.querySelector('.bl-link')) { box.querySelector('input[type=url]').focus(); return; }
   const ta = item.querySelector('.bl-input'), picked = ta.value.slice(ta.selectionStart, ta.selectionEnd).trim();
-  box.insertAdjacentHTML('beforeend', _blLinkRow({ words: picked, url: '' }));
+  box.insertAdjacentHTML('beforeend', _blLinkRow({ words: picked, url: '' }, mode));
   const row = box.lastElementChild;
-  row.querySelectorAll('input')[picked ? 1 : 0].focus();
+  row.querySelectorAll('input')[picked || mode === 'url' ? 1 : 0].focus();
   _blCheck(item);
 }
 function blLinkInput(el){ const item = _blItemOf(el); _blCheck(item); _blSave(_blWrap(el)); }
@@ -4102,8 +4125,40 @@ function chipRemove(path, i){ const list = _chipList(path); list.splice(i, 1); _
   setH();
 })();
 
+// ─── Links under a story: same rows as role bullets, saved one per line as "words | url" ───
+function storyLinksHTML(i){
+  const path = `storyBank.${i}.links`;
+  const rows = String(getPath(P, path) || '').split('\n').filter(Boolean).map(l => { const m = l.match(/^(.*?)\s*\|\s*(\S*)$/); return m ? { words: m[1], url: m[2] } : { words: l, url: '' }; });
+  if (SAMPLE_MODE) return rows.map(l => `<span class="bl-sample-link">&#x1F517; ${esc(l.words)}</span>`).join('');
+  return `<div class="story-links" data-path="${path}" data-story="${i}">${rows.map(l => _blLinkRow(l)).join('')}</div>
+    <button type="button" class="bl-tool story-link-add" onclick="storyLinkAdd(this)">+ Link</button>`;
+}
+function _storySave(box){
+  const rows = [...box.querySelectorAll('.bl-link')].map(r => { const [w, u] = r.querySelectorAll('input'); return { words: w.value.trim().replace(/\s*\|\s*/g, ' '), url: u.value.trim() }; })
+    .filter(l => l.words || l.url).map(l => `${l.words} | ${l.url}`.trim());
+  setPath(P, box.dataset.path, rows.join('\n')); debouncedSave();
+  const text = String(getPath(P, `storyBank.${box.dataset.story}.text`) || '').toLowerCase();
+  box.querySelectorAll('.bl-link').forEach(r => { const w = r.querySelector('input').value.trim().toLowerCase(); const warn = r.querySelector('.bl-link-warn'); warn.textContent = 'These words are not in the story, so the link has nothing to attach to.'; warn.hidden = !w || text.includes(w); });
+}
+function storyLinkAdd(btn){
+  const box = btn.previousElementSibling;
+  box.insertAdjacentHTML('beforeend', _blLinkRow({ words: '', url: '' }));
+  box.lastElementChild.querySelector('input').focus();
+}
+// Story link rows reuse the bullet row markup; route their events here
+document.getElementById('profile-form').addEventListener('input', e => {
+  const box = e.target.closest('.story-links');
+  if (box) { e.stopImmediatePropagation(); _storySave(box); }
+}, true);
+document.getElementById('profile-form').addEventListener('click', e => {
+  const x = e.target.closest('.story-links .chip-x');
+  if (!x) return;
+  e.stopImmediatePropagation(); e.preventDefault();
+  const box = x.closest('.story-links'); x.closest('.bl-link').remove(); _storySave(box);
+}, true);
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261024d"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261024e"></script>
 </body>
 </html>
