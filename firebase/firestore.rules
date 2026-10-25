@@ -14,7 +14,7 @@ service cloud.firestore {
       allow create, update: if isOwner(uid)
         && key in ['gethired_profile_v1', 'cv_content_bank', 'cl_prompt', 'cv_prompt', 'gethired_jd',
                    'gethired_export_draft', 'gethired_export_style', 'gethired_signature',
-                   'gethired_polish_snapshot']
+                   'gethired_polish_snapshot', 'gethired_headshot']
         && request.resource.data.keys().hasOnly(['value', 'updatedAt'])
         && request.resource.data.value is string
         && request.resource.data.value.size() <= 900000

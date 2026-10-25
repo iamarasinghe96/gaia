@@ -227,9 +227,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025f">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261025f">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261025f">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025g">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261025g">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261025g">
 </head>
 <body>
 
@@ -874,6 +874,7 @@ function personalBodyHTML() {
   delete P.personal.locationNote;
   return `
     <div class="section-tip">Fields marked <span class="req">*</span> are used to personalise the Cover Letter LaTeX output. Others appear in the CV Bank for Claude to reference.</div>
+    ${headshotHTML()}
     ${fg(2,
       fi('Full Name <span class="req">*</span>', inp(`${p}.fullName`, 'e.g. Jane Smith')),
       fi('Date of Birth <span class="opt">optional</span>', inp(`${p}.dob`, 'e.g. 15th March 1990'))
@@ -4157,10 +4158,87 @@ document.getElementById('profile-form').addEventListener('click', e => {
   const box = x.closest('.story-links'); x.closest('.bl-link').remove(); _storySave(box);
 }, true);
 
+// ═══════════════════════════════════════════════════════════════
+// HEADSHOT: stored like the signature (this browser + the account), shrunk to at most
+// 800 px so it fits the account's size limit. Not part of the CV Bank text.
+// ═══════════════════════════════════════════════════════════════
+const HEADSHOT_KEY = 'gethired_headshot';
+function _loadHeadshot(){ try { const s = localStorage.getItem(HEADSHOT_KEY); const h = s && JSON.parse(s); return h && /^data:image\/jpeg;base64,/.test(h.dataUrl) ? h : null; } catch (e) { return null; } }
+function headshotHTML(){
+  if (SAMPLE_MODE) return '';
+  const h = _loadHeadshot();
+  return `<div class="headshot" id="headshot-slot">
+    <div class="headshot-pic">${h ? `<img src="${h.dataUrl}" alt="Your headshot">` : '<span aria-hidden="true">&#x1F464;</span>'}</div>
+    <div class="headshot-body">
+      <div class="headshot-title">Headshot <span class="opt">optional</span></div>
+      <p class="field-hint">Want a cleaner, professional photo? Copy the prompt, paste it into ChatGPT with your photo, then upload the result here. The prompt asks ChatGPT not to change your face; check the result looks like you before using it.</p>
+      <div class="headshot-actions">
+        <label class="btn btn-outline btn-sm" tabindex="0">${h ? 'Replace photo' : '&#x2191; Upload photo'}<input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden onchange="uploadHeadshot(this)"></label>
+        <button type="button" class="btn btn-outline btn-sm" onclick="copyHeadshotPrompt(this)">&#x1F4CB; Copy ChatGPT headshot prompt</button>
+        ${h ? '<button type="button" class="btn btn-outline btn-sm headshot-remove" onclick="removeHeadshot()">Remove</button>' : ''}
+      </div>
+    </div>
+  </div>`;
+}
+function _renderHeadshot(){ const el = document.getElementById('headshot-slot'); if (el) el.outerHTML = headshotHTML(); }
+async function uploadHeadshot(input){
+  const file = input.files && input.files[0]; input.value = '';
+  if (!file) return;
+  if (!/^image\//.test(file.type) && !/\.(jpe?g|png|webp|heic|heif)$/i.test(file.name)) { toast('Choose a photo (JPG, PNG or WebP).', 'error'); return; }
+  if (file.size > 20 * 1024 * 1024) { toast('That photo is over 20 MB. Try a smaller one.', 'error'); return; }
+  let img;
+  try { img = await createImageBitmap(file); }
+  catch (e) {
+    img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(file); }).catch(() => null);
+  }
+  if (!img) { toast("Couldn't open that photo. Try a JPG or PNG.", 'error'); return; }
+  const max = 800, scale = Math.min(1, max / Math.max(img.width, img.height));
+  const w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); ctx.drawImage(img, 0, 0, w, h);
+  let q = 0.88, dataUrl = c.toDataURL('image/jpeg', q);
+  while (dataUrl.length > 600000 && q > 0.5) { q -= 0.08; dataUrl = c.toDataURL('image/jpeg', q); }
+  try { localStorage.setItem(HEADSHOT_KEY, JSON.stringify({ dataUrl, w, h })); }
+  catch (e) { toast("Couldn't save the photo: this browser's storage is full.", 'error'); return; }
+  _renderHeadshot();
+  toast('Headshot saved ✔', 'success');
+}
+function removeHeadshot(){
+  if (!confirm('Remove your headshot from this browser and your account?')) return;
+  localStorage.removeItem(HEADSHOT_KEY); _renderHeadshot(); toast('Headshot removed', 'info');
+}
+// The prompt: face locked first, then only small, named changes. Lipstick only when the
+// person has set Sex to Female in their profile (never guessed from the photo).
+function headshotPrompt(){
+  const female = String((P.personal && P.personal.sex) || '').toLowerCase() === 'female';
+  return [
+    'Edit the attached photo into a professional headshot for a CV and LinkedIn profile.',
+    '',
+    'Enable strict facial consistency mode. Do not change the face shape, eyes, eyebrows, nose, lips, skin tone, skin texture, facial features, facial hair, age, expression or natural appearance. Preserve my true facial structure and identity from the reference image. Do not beautify, slim, smooth, whiten or retouch my skin, and do not make me look younger, older or different in any way.',
+    '',
+    'Only make these small changes:',
+    '- Background: replace it with a plain, softly blurred, neutral studio background (light grey or soft blue-grey).',
+    '- Lighting: even, soft, natural light on the face, with no harsh shadows.',
+    '- Hair: tidy it only slightly, such as smoothing a few flyaway strands. Keep the same hairstyle, length, colour and hairline.',
+    female ? '- Lips: add a very subtle, natural lipstick close to my natural lip colour.' : null,
+    '- Keep my clothing, glasses and accessories exactly as they are.',
+    '- Framing: head and shoulders, centred, facing the camera with eyes level, high resolution.',
+    '',
+    'The result must look exactly like me, as if it were an untouched photo taken in a studio. Do not change my face, facial features, expression or skin tone.',
+  ].filter(x => x !== null).join('\n');
+}
+async function copyHeadshotPrompt(btn){
+  const text = headshotPrompt();
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+  toast('Prompt copied ✔ Paste it into ChatGPT together with your photo.', 'success');
+  const old = btn.innerHTML; btn.innerHTML = '&#x2713; Copied'; setTimeout(() => { btn.innerHTML = old; }, 1800);
+}
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261025f"></script>
-<script src="../js/section-rail.js?v=20261025f" defer></script>
-<script src="../js/nice-select.js?v=20261025f" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261025g"></script>
+<script src="../js/section-rail.js?v=20261025g" defer></script>
+<script src="../js/nice-select.js?v=20261025g" defer></script>
 </body>
 </html>
