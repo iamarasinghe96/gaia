@@ -227,9 +227,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025h">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261025h">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261025h">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025i">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261025i">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261025i">
 </head>
 <body>
 
@@ -4161,7 +4161,7 @@ function headshotHTML(){
     <div class="headshot-pic">${h ? `<img src="${h.dataUrl}" alt="Your headshot">` : '<span aria-hidden="true">&#x1F464;</span>'}</div>
     <div class="headshot-body">
       <div class="headshot-title">Headshot <span class="opt">optional</span></div>
-      <p class="field-hint">Want a cleaner, professional photo? Copy the prompt, paste it into ChatGPT with your photo, then upload the result here. The prompt asks ChatGPT not to change your face; check the result looks like you before using it.</p>
+      <p class="field-hint">Want a cleaner, professional photo? Copy the prompt, paste it into ChatGPT with your clearest front-facing photo, then upload the result here. The prompt asks ChatGPT not to change your face or posture; check it still looks like you. If it changes your face, reply: “That changed my face. Start again from my original photo and change only the clothing and background.”</p>
       <div class="headshot-actions">
         <label class="btn btn-outline btn-sm" tabindex="0">${h ? 'Replace photo' : '&#x2191; Upload photo'}<input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden onchange="uploadHeadshot(this)"></label>
         <button type="button" class="btn btn-outline btn-sm" onclick="copyHeadshotPrompt(this)">&#x1F4CB; Copy ChatGPT headshot prompt</button>
@@ -4197,24 +4197,35 @@ function removeHeadshot(){
   if (!confirm('Remove your headshot from this browser and your account?')) return;
   localStorage.removeItem(HEADSHOT_KEY); _renderHeadshot(); toast('Headshot removed', 'info');
 }
-// The prompt: face locked first, then only small, named changes. Lipstick only when the
-// person has set Sex to Female in their profile (never guessed from the photo).
+// The prompt, following image-editing guidance: say what must stay the same first, list only
+// the changes, then repeat what must stay the same (this limits drift). Lipstick and the cut of
+// the suit follow the profile's Sex field; nothing is guessed from the photo.
 function headshotPrompt(){
-  const female = String((P.personal && P.personal.sex) || '').toLowerCase() === 'female';
+  const sex = String((P.personal && P.personal.sex) || '').toLowerCase();
+  const female = sex === 'female', male = sex === 'male';
+  const suit = female ? 'a well-fitted, tailored dark navy or charcoal suit jacket over a plain white or light top'
+    : male ? 'a well-fitted dark navy or charcoal business suit with a plain white or light shirt and a plain, understated tie'
+    : 'a well-fitted dark navy or charcoal business suit jacket over a plain white or light shirt or top';
   return [
-    'Edit the attached photo into a professional headshot for a CV and LinkedIn profile.',
+    'Edit the attached photo into one realistic, professional headshot for a CV and LinkedIn profile.',
     '',
-    'Enable strict facial consistency mode. Do not change the face shape, eyes, eyebrows, nose, lips, skin tone, skin texture, facial features, facial hair, age, expression or natural appearance. Preserve my true facial structure and identity from the reference image. Do not beautify, slim, smooth, whiten or retouch my skin, and do not make me look younger, older or different in any way.',
+    'KEEP EXACTLY THE SAME (strict facial consistency):',
+    '- My face: face shape, eyes, eyebrows, nose, lips, teeth, ears, skin tone, skin texture, freckles, moles, facial hair, age and expression. Preserve my true facial structure and identity from the reference image.',
+    '- My body language: posture, head tilt, shoulder angle, arm position, body shape and size, and where I am looking.',
+    '- My glasses, and any religious or cultural head covering or clothing, exactly as they are.',
+    '- Do not beautify, slim, smooth, whiten or retouch my skin, and do not make me look younger, older or different.',
     '',
-    'Only make these small changes:',
-    '- Background: replace it with a plain, softly blurred, neutral studio background (light grey or soft blue-grey).',
-    '- Lighting: even, soft, natural light on the face, with no harsh shadows.',
-    '- Hair: tidy it only slightly, such as smoothing a few flyaway strands. Keep the same hairstyle, length, colour and hairline.',
-    female ? '- Lips: add a very subtle, natural lipstick close to my natural lip colour.' : null,
-    '- Keep my clothing, glasses and accessories exactly as they are.',
-    '- Framing: head and shoulders, centred, facing the camera with eyes level, high resolution.',
+    'CHANGE ONLY THESE THINGS:',
+    '1. Clothing: if I am already wearing a suit or blazer, keep it and only make it look neat and pressed. If not, ignore what I am wearing and replace only my clothing with ' + suit + '. Fit the clothing naturally to my existing posture; do not move or reshape my body.',
+    '2. Remove distractions: flowers or buttonholes, lapel pins, badges, name tags, lanyards, stickers, anything I am holding, and any other people or parts of people at the edges of the photo.',
+    '3. Background: a plain, softly blurred, neutral studio background (light grey or soft blue-grey).',
+    '4. Lighting: even, soft, natural studio light on the face, with no harsh shadows.',
+    '5. Hair: tidy it only slightly, such as smoothing a few flyaway strands. Keep the same hairstyle, length, colour and hairline.',
+    female ? '6. Lips: a very subtle, natural lipstick close to my natural lip colour.' : null,
     '',
-    'The result must look exactly like me, as if it were an untouched photo taken in a studio. Do not change my face, facial features, expression or skin tone.',
+    'FRAMING: chest-up portrait, centred, with the whole head and hair inside the frame and a little space above the head. Never crop the top of the head, the chin or the face. High resolution, photorealistic, no text or watermark.',
+    '',
+    'Before finishing, check again: my face, expression, skin tone and posture must be exactly the same as in the original photo. Someone who knows me must instantly recognise it as me.',
   ].filter(x => x !== null).join('\n');
 }
 async function copyHeadshotPrompt(btn){
@@ -4254,8 +4265,8 @@ function openSignature(){
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261025h"></script>
-<script src="../js/section-rail.js?v=20261025h" defer></script>
-<script src="../js/nice-select.js?v=20261025h" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261025i"></script>
+<script src="../js/section-rail.js?v=20261025i" defer></script>
+<script src="../js/nice-select.js?v=20261025i" defer></script>
 </body>
 </html>
