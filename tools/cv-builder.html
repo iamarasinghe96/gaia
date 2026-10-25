@@ -227,9 +227,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025i">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261025i">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261025i">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025j">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261025j">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261025j">
 </head>
 <body>
 
@@ -452,6 +452,7 @@
             <div class="swatches" id="exp-swatches"></div>
             <label class="style-label" for="exp-font">Font</label>
             <select id="exp-font" class="field-input" onchange="setExportStyle({font:this.value})"></select>
+            <label class="style-check" id="exp-headshot-row" hidden><input type="checkbox" id="exp-headshot" onchange="setExportStyle({headshot:this.checked})"><span><strong>Include my headshot</strong><small id="exp-headshot-hint"></small></span></label>
             <p class="style-note">&#x270D; Cover letter signature: <a href="#" onclick="openSignature();return false">add or change it in Personal Information</a></p>
           </div>
         </div>
@@ -862,7 +863,6 @@ function personalBodyHTML() {
   _ensureAddressParts(P.personal);
   delete P.personal.locationNote;
   return `
-    <div class="section-tip">Fields marked <span class="req">*</span> are used to personalise the Cover Letter LaTeX output. Others appear in the CV Bank for Claude to reference.</div>
     ${headshotHTML()}
     ${signatureHTML()}
     ${fg(2,
@@ -2679,6 +2679,8 @@ async function downloadExportDocx(){
     let sigDrawing = null;
     if(exportType==='cl') sigDrawing = await _embedSignature(zip);
     let body = exportType==='cl' ? buildCLBody(exportData, sigDrawing) : buildCVBody(exportData);
+    const withPhoto = exportType==='cv' && _exportStyle().headshot && !!_loadHeadshot();
+    if(withPhoto){ const photoRun = await _embedHeadshot(zip); if(photoRun) body = '<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="20" w:lineRule="exact"/></w:pPr>'+photoRun+'</w:p>'+body; }
     // resolve inline hyperlinks: register external relationships, swap __LNK<i>__ tokens for rIds
     if(_linkReg.length){
       let rels = await zip.file('word/_rels/document.xml.rels').async('string');
@@ -2731,6 +2733,7 @@ async function downloadExportDocx(){
         const relName = name.replace(/^word\//, 'word/_rels/') + '.rels';
         const rels = zip.file(relName) ? await zip.file(relName).async('string') : '';
         h = _pruneLetterhead(h, rels, has);
+        if(withPhoto && h.indexOf('[YOUR_FULL_NAME]')>=0) h = h.split('<w:jc w:val="center"/>').join('<w:ind w:right="1600"/><w:jc w:val="left"/>');
         for(const k in htext) h = h.split(k).join(xesc(htext[k]));
         zip.file(name, h);
       } else if(/^word\/_rels\/header\d*\.xml\.rels$/.test(name)){
@@ -2960,7 +2963,7 @@ function _exportStyle(){
   try { s = JSON.parse(localStorage.getItem('gethired_export_style') || '{}') || {}; } catch(e) {}
   const accent = /^[0-9A-Fa-f]{6}$/.test(s.accent || '') ? s.accent.toUpperCase() : '156082';
   const font = EXPORT_FONTS.some(f => f.id === s.font) ? s.font : 'default';
-  return { accent, font };
+  return { accent, font, headshot: s.headshot === true };
 }
 function setExportStyle(patch){
   const s = Object.assign(_exportStyle(), patch);
@@ -3083,10 +3086,13 @@ function _letterhead(){
   const bits = [p.phone, p.email, p.location].filter(v => String(v || '').trim());
   const links = [p.linkedin && 'LinkedIn', p.portfolio && 'Portfolio', p.seekUrl && 'SEEK', p.rtwUrl && 'Right to Work'].filter(Boolean);
   lh.appendChild(_el('div', 'doc-contact', bits.concat(links).join('  |  ')));
+  const photo = exportType === 'cv' && _exportStyle().headshot && _loadHeadshot();
+  if (photo) { lh.classList.add('has-photo'); const im = _el('img', 'doc-photo'); im.src = photo.dataUrl; im.alt = 'Headshot'; lh.appendChild(im); }
   return lh;
 }
 
 function renderExportPreview(){
+  _syncHeadshotOption();
   const el = document.getElementById('exp-preview');
   const empty = document.getElementById('exp-empty');
   if (!el) return;
@@ -4263,10 +4269,59 @@ function openSignature(){
   setTimeout(() => { const el = document.getElementById('exp-sig-row'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 250);
 }
 
+// ─── CV headshot in Export to Word ───
+function _syncHeadshotOption(){
+  const row = document.getElementById('exp-headshot-row'), box = document.getElementById('exp-headshot');
+  if (!row || !box) return;
+  const has = !!_loadHeadshot();
+  row.hidden = exportType !== 'cv';
+  box.disabled = !has;
+  box.checked = has && _exportStyle().headshot;
+  const hint = document.getElementById('exp-headshot-hint');
+  if (hint) hint.innerHTML = has ? 'Round photo at the top right of page 1' : 'Add a headshot in <a href="#" onclick="openSignature();return false">Personal Information</a> first';
+}
+// Square crop for the round photo (centred, a little above the middle where the face usually is)
+function _squareHeadshot(h){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const side = Math.min(img.width, img.height), size = Math.min(600, side);
+      const sx = (img.width - side) / 2, sy = img.height > img.width ? Math.min((img.height - side) * 0.15, img.height - side) : 0;
+      const c = document.createElement('canvas'); c.width = size; c.height = size;
+      const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+      resolve(c.toDataURL('image/jpeg', 0.9));
+    };
+    img.onerror = () => reject(new Error('could not read headshot'));
+    img.src = h.dataUrl;
+  });
+}
+// Adds the photo to the package; returns a run with a round picture anchored to the top right of page 1
+async function _embedHeadshot(zip){
+  const h = _loadHeadshot(); if (!h) return null;
+  const dataUrl = await _squareHeadshot(h);
+  let rels = await zip.file('word/_rels/document.xml.rels').async('string');
+  let max = 0; (rels.match(/Id="rId(\d+)"/g) || []).forEach(m => { const n = +m.match(/\d+/)[0]; if (n > max) max = n; });
+  const rid = 'rId' + (max + 1);
+  zip.file('word/media/gethired_headshot.jpeg', dataUrl.split(',')[1], { base64: true });
+  rels = rels.replace('</Relationships>', '<Relationship Id="' + rid + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/gethired_headshot.jpeg"/></Relationships>');
+  zip.file('word/_rels/document.xml.rels', rels);
+  let ct = await zip.file('[Content_Types].xml').async('string');
+  if (!/Extension="jpeg"/i.test(ct)) { ct = ct.replace('</Types>', '<Default Extension="jpeg" ContentType="image/jpeg"/></Types>'); zip.file('[Content_Types].xml', ct); }
+  const S = 658368;                                     // 0.72 inch: sits within the letterhead, above its rule
+  const A = 'http://schemas.openxmlformats.org/drawingml/2006/main', PIC = 'http://schemas.openxmlformats.org/drawingml/2006/picture';
+  return '<w:r><w:rPr><w:noProof/></w:rPr><w:drawing><wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0" relativeHeight="251660288" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1">'
+    + '<wp:simplePos x="0" y="0"/><wp:positionH relativeFrom="margin"><wp:align>right</wp:align></wp:positionH><wp:positionV relativeFrom="page"><wp:posOffset>201168</wp:posOffset></wp:positionV>'
+    + '<wp:extent cx="' + S + '" cy="' + S + '"/><wp:effectExtent l="0" t="0" r="0" b="0"/><wp:wrapNone/><wp:docPr id="202" name="Headshot" descr="Headshot"/>'
+    + '<wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a="' + A + '" noChangeAspect="1"/></wp:cNvGraphicFramePr>'
+    + '<a:graphic xmlns:a="' + A + '"><a:graphicData uri="' + PIC + '"><pic:pic xmlns:pic="' + PIC + '"><pic:nvPicPr><pic:cNvPr id="202" name="Headshot"/><pic:cNvPicPr/></pic:nvPicPr>'
+    + '<pic:blipFill><a:blip r:embed="' + rid + '"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>'
+    + '<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="' + S + '" cy="' + S + '"/></a:xfrm><a:prstGeom prst="ellipse"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:anchor></w:drawing></w:r>';
+}
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261025i"></script>
-<script src="../js/section-rail.js?v=20261025i" defer></script>
-<script src="../js/nice-select.js?v=20261025i" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261025j"></script>
+<script src="../js/section-rail.js?v=20261025j" defer></script>
+<script src="../js/nice-select.js?v=20261025j" defer></script>
 </body>
 </html>

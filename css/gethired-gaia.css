@@ -460,3 +460,11 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
 @media (max-width: 520px) { .headshot { flex-direction: column; align-items: center; text-align: center; } .headshot-actions { justify-content: center; } }
 .sig-slot .sig-preview { flex: none; width: 150px; height: 84px; }
 @media (max-width: 520px) { .sig-slot .sig-preview { width: 100%; max-width: 260px; } }
+/* Export: "Include my headshot" option and the photo in the CV preview */
+.style-check { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-size: 13px; }
+.style-check[hidden] { display: none; }
+.style-check input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--navy); flex: none; }
+.style-check small { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+.style-check input:disabled + span { opacity: .65; }
+.doc-letterhead.has-photo { position: relative; text-align: left; padding-right: 96px; min-height: 84px; }
+.doc-photo { position: absolute; right: 0; top: 0; width: 78px; height: 78px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; }
