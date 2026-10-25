@@ -6,6 +6,12 @@
     },
     "api/import.js": {
       "maxDuration": 60
+    },
+    "api/keywords.js": {
+      "maxDuration": 60
+    },
+    "api/jobs.js": {
+      "maxDuration": 60
     }
   },
   "headers": [

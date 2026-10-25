@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261024f">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025a">
 </head>
 <body>
 
@@ -2205,6 +2205,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load prompt builder fields
   restoreJD();
   loadPromptBuilder();
+  if (location.hash === '#prompt') {
+    history.replaceState(null, '', location.pathname + location.search);
+    switchView('prompt');
+  }
 
   // Event delegation: profile form input changes
   document.getElementById('profile-form').addEventListener('input', e => {
@@ -4159,6 +4163,6 @@ document.getElementById('profile-form').addEventListener('click', e => {
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261024f"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261025a"></script>
 </body>
 </html>

@@ -227,6 +227,29 @@ async function start() {
     }
   };
 
+  // Job Search Assistant: call /api/keywords or /api/jobs with this user's sign-in token
+  window.gethiredCall = async (path, payload) => {
+    if (!['/api/keywords', '/api/jobs'].includes(path)) return { ok: false, error: 'bad_request' };
+    if (!a.currentUser) return { ok: false, error: 'signin' };
+    let idToken;
+    try { idToken = await a.currentUser.getIdToken(); } catch { return { ok: false, error: 'auth' }; }
+    try {
+      const res = await fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => null);
+      return data || { ok: false, error: res.status === 404 ? 'not_configured' : 'busy' };
+    } catch (err) {
+      console.error('Request failed', path, err);
+      return { ok: false, error: 'network' };
+    }
+  };
+  window.gethiredSignedIn = () => !!a.currentUser;
+  // Finish any pending cloud saves now (used before opening another page)
+  window.gethiredFlush = () => flush().catch(() => {});
+
   // Delete everything this account has saved, then the sign-in record itself
   window.gethiredDeleteAll = async () => {
     const user = a.currentUser;

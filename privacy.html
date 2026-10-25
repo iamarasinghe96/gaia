@@ -58,7 +58,7 @@
             <button class="menu-trigger" type="button" aria-expanded="false" aria-controls="tools-menu">Tools <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
             <ul class="dropdown" id="tools-menu">
               <li><a href="tools/cv-builder.html"><strong>CV Prompt Builder</strong><span class="live">Tailored CV prompts · Live</span></a></li>
-              <li><a href="tools/job-search.html"><strong>Job Search Assistant</strong><span>Find and track roles · Coming soon</span></a></li>
+              <li><a href="tools/job-search.html"><strong>Job Search Assistant</strong><span class="live">Visa sponsor job matches · Live</span></a></li>
               <li><a href="https://lushnote.com.au" target="_blank" rel="noopener"><strong>LushNote</strong><span class="live">AI clinical notes · Live</span></a></li>
             </ul>
           </li>
@@ -85,7 +85,7 @@
       <div class="container">
         <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">Privacy Policy</li></ol></nav>
         <h1 id="page-title" class="reveal">Your data is <span class="grad">yours.</span></h1>
-        <p class="reveal" style="--d:.08s">How Gaia Symbiosis collects, uses, stores and protects your personal information. Last updated 23 October 2026.</p>
+        <p class="reveal" style="--d:.08s">How Gaia Symbiosis collects, uses, stores and protects your personal information. Last updated 25 October 2026.</p>
       </div>
     </section>
 
@@ -115,6 +115,15 @@
         </ul>
         <h3>Spelling and grammar check</h3>
         <p>When you use "Check spelling &amp; use in Prompt Builder", the text of your CV profile is sent over an encrypted connection to <a href="https://groq.com/privacy-policy/" target="_blank" rel="noopener">Groq</a>, an AI provider, to be proofread, and the corrected text is sent back to you. We don't keep a copy. To prevent misuse we record how many checks each account makes in an hour, with no content, and these counters expire automatically.</p>
+        <h3>Import from CV</h3>
+        <p>When you import a CV (in the CV Prompt Builder or the Job Search Assistant), the file's text is sent over an encrypted connection to Groq, which reads the details into your profile. We don't keep a copy of the file. The filled-in profile is saved like the rest of your CV Prompt Builder profile.</p>
+        <h3>Job Search Assistant</h3>
+        <ul>
+          <li>What you write about your work, or a short summary of your imported CV, is sent to Groq to suggest job titles and keywords.</li>
+          <li>Your job titles, keywords, categories, location and date range are sent to <a href="https://www.adzuna.com.au/privacy-policy" target="_blank" rel="noopener">Adzuna</a>, a job search service, to find live ads. Nothing that identifies you is sent to Adzuna.</li>
+          <li>Your search settings and latest results are kept in your own browser. When you choose "Build my CV for this job", that job is saved to your CV Prompt Builder.</li>
+          <li>As with the spelling check, we count searches per account per hour, with no content, to prevent misuse.</li>
+        </ul>
         <h3>Waitlists</h3>
         <p>If you join a tool waitlist, your email app sends us a message with your email address. We use it only to tell you when that tool launches.</p>
         <h3>Website visits</h3>
@@ -125,7 +134,8 @@
         <ul>
           <li><strong>Google</strong> (Firebase sign-in and database, Google Sheets, Gmail, Google Fonts)</li>
           <li><strong>Vercel</strong> (website hosting)</li>
-          <li><strong>Groq</strong> (spelling and grammar check, only when you use it)</li>
+          <li><strong>Groq</strong> (AI for the spelling check, CV import and job keyword matching, only when you use them)</li>
+          <li><strong>Adzuna</strong> (live job ads for the Job Search Assistant, only your search terms)</li>
         </ul>
         <p>Some of these providers may store or process data outside Australia, for example in the United States. Each is bound by its own privacy and security commitments. We may also disclose information if the law requires it.</p>
 
