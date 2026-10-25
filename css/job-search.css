@@ -150,3 +150,21 @@
 @media (prefers-reduced-motion: reduce) {
   .ticker-open::before, .chip-card, .js-skeleton { animation: none; }
 }
+
+/* Account in the top bar, like the CV Builder */
+.nav-account { display: flex; align-items: center; gap: .5rem; flex: none; }
+.nav-inner:has(.nav-account) > nav { margin-left: auto; }
+.nav-inner:has(.nav-account) .brand span { white-space: nowrap; }
+.nav-account .gh-sync { font-size: 0; gap: 0; padding: 0 .35rem; }
+.nav-account .gh-sync::before { width: 9px; height: 9px; }
+.nav-account .gh-google { padding: .5rem .9rem; font-size: .82rem; }
+#gh-sign-out { display: inline-flex; align-items: center; gap: .35rem; }
+#gh-sign-out svg { width: 15px; height: 15px; }
+.page-hero .js-account-hint { margin-top: .6rem; font-size: .88rem; color: rgba(255, 255, 255, .5); }
+@media (max-width: 640px) {
+  .nav-account .hd-label, .nav-account .gh-user-name, .nav-account .gh-sync { display: none; }
+  .nav-inner:has(.nav-account) { gap: .6rem; }
+  .nav-inner:has(.nav-account) .brand { margin-right: auto; min-width: 0; }
+  .nav-account .gh-google { width: 38px; height: 38px; padding: 0; justify-content: center; }
+  #gh-sign-out { border: 0; padding: .35rem; }
+}

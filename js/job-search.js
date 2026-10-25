@@ -24,7 +24,7 @@
   window.toast = window.toast || toast;
 
   const ERRORS = {
-    signin: 'Please sign in with Google first (in the search box).',
+    signin: 'Please sign in with Google first (top right).',
     loading: 'Sign-in is still loading. Please try again in a moment.',
     auth: 'Your sign-in has expired. Sign out, sign back in, then try again.',
     busy: 'The service is busy right now. Please try again in a minute.',
@@ -170,7 +170,7 @@
     return fn();
   }
   function needSignIn(error) {
-    if (error === 'signin') { document.querySelector('.js-account').scrollIntoView({ behavior: 'smooth', block: 'center' }); $('gh-sign-in').focus({ preventScroll: true }); }
+    if (error === 'signin') { scrollTo({ top: 0, behavior: 'smooth' }); $('gh-sign-in').focus({ preventScroll: true }); }
     toast(ERRORS[error] || ERRORS.busy, 'error');
   }
   function applyKeywords(res) {
@@ -278,7 +278,7 @@
   }
   new MutationObserver(() => {
     $('js-account-note').textContent = $('gh-user').hidden
-      ? 'Sign in with Google to search. Your CV and searches stay private to your account.'
+      ? 'Sign in with Google (top right) to search. Your CV and searches stay private to your account.'
       : 'Signed in. Your CV and searches stay private to your account.';
   }).observe($('gh-user'), { attributes: true, attributeFilter: ['hidden'] });
 
