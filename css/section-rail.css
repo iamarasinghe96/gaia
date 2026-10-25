@@ -1,10 +1,10 @@
 /* Section rail: a visible scroll position with a mark at each section (tap to jump,
    drag to scrub on phones). Overlays the page edge, takes no layout space. */
-.srail { position: fixed; z-index: 80; right: 2px; top: calc(var(--hdr-h, 64px) + 10px); bottom: 10px; width: 18px; touch-action: none; user-select: none; -webkit-user-select: none;
+.srail { position: fixed; z-index: 120; right: 2px; top: calc(var(--hdr-h, var(--nav-h, 64px)) + 10px); bottom: 10px; width: 18px; touch-action: none; user-select: none; -webkit-user-select: none;
   opacity: .5; transition: opacity .35s ease; }
 .srail.is-on, .srail:hover, .srail:focus-within { opacity: 1; }
 .srail[hidden] { display: none; }
-.srail-track { position: absolute; top: 0; bottom: 0; right: 6px; width: 3px; border-radius: 3px; background: rgba(11, 16, 32, .12); }
+.srail-track { position: absolute; top: 0; bottom: 0; right: 6px; width: 3px; border-radius: 3px; background: rgba(148, 163, 184, .35); }
 .srail-thumb { position: absolute; right: 5px; width: 5px; min-height: 28px; border-radius: 5px; background: #2563eb; box-shadow: 0 0 0 1px rgba(255, 255, 255, .7); transition: width .2s, right .2s; }
 .srail.is-on .srail-thumb { width: 6px; right: 4.5px; }
 .srail-mark { position: absolute; right: 2px; width: 11px; height: 3px; margin-top: -1.5px; border: 0; padding: 0; border-radius: 2px; background: #fb923c; cursor: pointer; transition: width .2s, background .2s; }
@@ -14,7 +14,11 @@
 .srail-label { position: absolute; right: 24px; transform: translateY(-50%); white-space: nowrap; pointer-events: none; padding: 5px 10px; border-radius: 999px; font: 600 12px/1.2 Inter, system-ui, sans-serif;
   color: #fff; background: rgba(11, 16, 32, .88); box-shadow: 0 6px 18px rgba(0, 0, 0, .2); opacity: 0; transition: opacity .15s; max-width: 70vw; overflow: hidden; text-overflow: ellipsis; }
 .srail-label.is-shown { opacity: 1; }
-/* Make the browser's own scrollbar easier to see on desktop */
-html { scrollbar-width: thin; scrollbar-color: #94a3b8 transparent; }
+/* The rail replaces the browser's own page scrollbar (only once the rail is running) */
+html.has-srail { scrollbar-width: none; }
+html.has-srail::-webkit-scrollbar { width: 0; height: 0; }
+.srail-thumb { cursor: grab; }
+.srail.is-dragging .srail-thumb { cursor: grabbing; width: 7px; right: 4px; }
+.srail { cursor: pointer; }
 @media (hover: none) { .srail { width: 22px; } }
 @media (prefers-reduced-motion: reduce) { .srail, .srail * { transition: none !important; } }
