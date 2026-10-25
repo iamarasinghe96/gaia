@@ -227,9 +227,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025g">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261025g">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261025g">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025h">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261025h">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261025h">
 </head>
 <body>
 
@@ -452,7 +452,7 @@
             <div class="swatches" id="exp-swatches"></div>
             <label class="style-label" for="exp-font">Font</label>
             <select id="exp-font" class="field-input" onchange="setExportStyle({font:this.value})"></select>
-            <p class="style-note">&#x270D; Cover letter signature: <a href="#" onclick="switchView('help');return false">add or change it in How it works &#x203A; 11</a></p>
+            <p class="style-note">&#x270D; Cover letter signature: <a href="#" onclick="openSignature();return false">add or change it in Personal Information</a></p>
           </div>
         </div>
       </div>
@@ -527,25 +527,14 @@
       </ol>
       <h3>Signature</h3>
       <ul>
-        <li>Upload a photo or scan of your signature in <strong>11 · Usage Notes &amp; signature</strong> below. Any background works: white, grey or textured paper.</li>
+        <li>Upload a photo or scan of your signature in <strong>Profile Builder › Personal Information</strong>, next to your headshot. Any background works: white, grey or textured paper.</li>
         <li>The tool removes the background, cleans up specks and crops it tightly, so only your ink appears on the letter.</li>
       </ul>
     </section>
     <section class="panel help-card" id="help-11">
-      <h2><span class="help-num">11</span> Usage Notes &amp; signature</h2>
-      <p class="help-lead">Optional extras. Usage Notes tell Claude which stories to use for each type of role. Your signature is added to exported cover letters.</p>
+      <h2><span class="help-num">11</span> Usage Notes</h2>
+      <p class="help-lead">Optional. Usage Notes tell Claude which stories to use for each type of role.</p>
       <div class="help-usage builder-section-body" id="help-usage"></div>
-      <div id="exp-sig-row" class="help-sig">
-        <div class="style-label">Signature <em>(cover letters)</em></div>
-        <div class="sig-box">
-          <div class="sig-preview" id="exp-sig-wrap"><img id="exp-sig-preview" alt="Your signature" style="display:none"><span id="exp-sig-empty">No signature yet</span></div>
-          <div class="sig-actions">
-            <label class="btn btn-outline" style="cursor:pointer"><span id="exp-sig-label">Upload signature photo</span><input type="file" accept="image/*" style="display:none" onchange="handleSignatureUpload(this)"></label>
-            <button class="btn btn-danger" id="exp-sig-remove" style="display:none" onclick="removeSignature()">&#x2715; Remove</button>
-          </div>
-          <p class="help-fine">Any background works: white, grey or textured paper. The background is removed and only your ink is kept.</p>
-        </div>
-      </div>
     </section>
     <section class="panel help-card" id="help-data">
       <h2>&#x1F512; Your data</h2>
@@ -875,6 +864,7 @@ function personalBodyHTML() {
   return `
     <div class="section-tip">Fields marked <span class="req">*</span> are used to personalise the Cover Letter LaTeX output. Others appear in the CV Bank for Claude to reference.</div>
     ${headshotHTML()}
+    ${signatureHTML()}
     ${fg(2,
       fi('Full Name <span class="req">*</span>', inp(`${p}.fullName`, 'e.g. Jane Smith')),
       fi('Date of Birth <span class="opt">optional</span>', inp(`${p}.dob`, 'e.g. 15th March 1990'))
@@ -4235,10 +4225,37 @@ async function copyHeadshotPrompt(btn){
   const old = btn.innerHTML; btn.innerHTML = '&#x2713; Copied'; setTimeout(() => { btn.innerHTML = old; }, 1800);
 }
 
+// ═══════════════════════════════════════════════════════════════
+// SIGNATURE in Personal Information (same upload, cleanup and storage as before;
+// renderSignatureState fills it in by id)
+// ═══════════════════════════════════════════════════════════════
+function signatureHTML(){
+  if (SAMPLE_MODE) return '';
+  setTimeout(renderSignatureState, 0);
+  return `<div class="headshot sig-slot" id="exp-sig-row">
+    <div class="sig-preview" id="exp-sig-wrap"><img id="exp-sig-preview" alt="Your signature" style="display:none"><span id="exp-sig-empty">No signature yet</span></div>
+    <div class="headshot-body">
+      <div class="headshot-title">Signature <span class="opt">optional · added to exported cover letters</span></div>
+      <p class="field-hint">Upload a photo or scan of your signature. Any background works: white, grey or textured paper. The background is removed and only your ink is kept.</p>
+      <div class="headshot-actions">
+        <label class="btn btn-outline btn-sm" tabindex="0"><span id="exp-sig-label">Upload signature photo</span><input type="file" accept="image/*" hidden onchange="handleSignatureUpload(this)"></label>
+        <button type="button" class="btn btn-outline btn-sm headshot-remove" id="exp-sig-remove" style="display:none" onclick="removeSignature()">Remove</button>
+      </div>
+    </div>
+  </div>`;
+}
+// From Export to Word: jump to the signature in Personal Information
+function openSignature(){
+  switchView('profile');
+  const body = document.getElementById('bsb-personal');
+  if (body && body.classList.contains('collapsed')) toggleBuilderSection('personal');
+  setTimeout(() => { const el = document.getElementById('exp-sig-row'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 250);
+}
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261025g"></script>
-<script src="../js/section-rail.js?v=20261025g" defer></script>
-<script src="../js/nice-select.js?v=20261025g" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261025h"></script>
+<script src="../js/section-rail.js?v=20261025h" defer></script>
+<script src="../js/nice-select.js?v=20261025h" defer></script>
 </body>
 </html>
