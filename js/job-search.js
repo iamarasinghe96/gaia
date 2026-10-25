@@ -322,13 +322,14 @@
       const list = data.groups[key] || [];
       if (!list.length) return '';
       const cards = `<div class="js-jobs">${list.map(jobCard).join('')}</div>`;
-      return `<section class="js-group"><div class="js-group-head"><h3>${esc(title)}</h3><span class="js-count">${list.length}</span></div><p class="js-group-sub">${esc(sub)}</p>
+      return `<section class="js-group"><div class="js-group-head"><h3 data-ctx>${esc(title)}</h3><span class="js-count">${list.length}</span></div><p class="js-group-sub">${esc(sub)}</p>
         ${key === 'closed' ? `<details><summary>Show ${list.length} ${list.length === 1 ? 'ad' : 'ads'}</summary><div style="margin-top:1rem">${cards}</div></details>` : cards}</section>`;
     }).join('');
     $('js-groups').innerHTML = html || '<div class="js-empty"><strong>No matches this time.</strong><br>Try fewer or broader keywords, another category, all of Australia, or 30 days.</div>';
     const top = GROUPS.map(([k]) => (data.groups[k] || [])[0]).find(Boolean);
     if (top) document.querySelectorAll('[data-role]').forEach(el => { el.textContent = top.title; });
     $('results').hidden = false;
+    if (window.appShellRefresh) window.appShellRefresh();
   }
   function skeleton() {
     $('results').hidden = false;

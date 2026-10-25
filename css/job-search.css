@@ -42,22 +42,6 @@
 .js-search { max-width: 920px; margin: 0 auto; }
 .js-account { display: flex; align-items: center; justify-content: space-between; gap: .75rem 1rem; flex-wrap: wrap; padding: .85rem 1rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--bg-alt); border: 1px solid var(--border); font-size: .88rem; color: var(--muted); }
 .js-account p { flex: 1 1 260px; }
-.gh-google { display: inline-flex; align-items: center; gap: .55rem; padding: .6rem 1rem; border-radius: 999px; border: 1.5px solid var(--border); background: #fff; font-weight: 600; font-size: .86rem; color: var(--text); transition: border-color .2s, box-shadow .2s; }
-.gh-google:hover { border-color: var(--text); box-shadow: var(--shadow); }
-.gh-google svg { width: 17px; height: 17px; }
-.gh-user { display: inline-flex; align-items: center; gap: .55rem; padding: .25rem .3rem .25rem .25rem; border-radius: 999px; background: #fff; border: 1px solid var(--border); }
-.gh-user[hidden], .gh-google[hidden] { display: none !important; }
-#gh-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; font-size: .8rem; font-weight: 700; overflow: hidden; }
-#gh-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.gh-user-name { font-size: .84rem; font-weight: 600; color: var(--text); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-#gh-sign-out { font-size: .78rem; font-weight: 600; color: var(--muted); padding: .35rem .7rem; border-radius: 999px; border: 1px solid var(--border); }
-#gh-sign-out:hover { color: var(--text); border-color: var(--text); }
-.gh-sync { font-size: .78rem; color: var(--muted); display: inline-flex; align-items: center; gap: .4rem; }
-.gh-sync:empty { display: none; }
-.gh-sync::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-.gh-sync[data-state="saving"]::before, .gh-sync[data-state="loading"]::before { background: #f59e0b; }
-.gh-sync[data-state="error"]::before, .gh-sync[data-state="offline"]::before { background: #dc2626; }
-.gh-sync[data-state="local"]::before { background: var(--faint); }
 
 .js-start { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, .62fr); gap: 1.25rem; align-items: stretch; }
 .js-or { align-self: center; font-size: .78rem; font-weight: 600; color: var(--faint); text-transform: uppercase; letter-spacing: .1em; }
@@ -151,20 +135,14 @@
   .ticker-open::before, .chip-card, .js-skeleton { animation: none; }
 }
 
-/* Account in the top bar, like the CV Builder */
-.nav-account { display: flex; align-items: center; gap: .5rem; flex: none; }
-.nav-inner:has(.nav-account) > nav { margin-left: auto; }
-.nav-inner:has(.nav-account) .brand span { white-space: nowrap; }
-.nav-account .gh-sync { font-size: 0; gap: 0; padding: 0 .35rem; }
-.nav-account .gh-sync::before { width: 9px; height: 9px; }
-.nav-account .gh-google { padding: .5rem .9rem; font-size: .82rem; }
-#gh-sign-out { display: inline-flex; align-items: center; gap: .35rem; }
-#gh-sign-out svg { width: 15px; height: 15px; }
 .page-hero .js-account-hint { margin-top: .6rem; font-size: .88rem; color: rgba(255, 255, 255, .5); }
-@media (max-width: 640px) {
-  .nav-account .hd-label, .nav-account .gh-user-name, .nav-account .gh-sync { display: none; }
-  .nav-inner:has(.nav-account) { gap: .6rem; }
-  .nav-inner:has(.nav-account) .brand { margin-right: auto; min-width: 0; }
-  .nav-account .gh-google { width: 38px; height: 38px; padding: 0; justify-content: center; }
-  #gh-sign-out { border: 0; padding: .35rem; }
-}
+
+/* Inside the app frame (find-jobs.html) */
+.app-shell .js-intro { max-width: 920px; margin: 0 auto; padding: 2.25rem 1.5rem .5rem; }
+.app-shell .js-intro h1 { font-size: clamp(1.85rem, 3.4vw, 2.6rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: .5rem; }
+.app-shell .js-intro p { color: var(--muted); font-size: 1rem; }
+.app-shell .js-intro .js-account-hint { margin-top: .35rem; font-size: .85rem; color: var(--faint); }
+.app-shell main .section { padding: 1.25rem 0 2.75rem; background: transparent; }
+.app-shell main .js-results { padding-top: 1rem; }
+.app-shell main .container { max-width: 1040px; }
+@media (max-width: 640px) { .app-shell .js-intro { padding: 1.5rem 1rem .25rem; } }
