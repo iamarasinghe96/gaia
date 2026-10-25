@@ -292,6 +292,17 @@
   ];
   let lastJobs = new Map();
   const fmtDate = d => { const t = Date.parse(d); return t ? new Date(t).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' }) : ''; };
+  // SEEK has no public link to a single ad, so search SEEK for this title at this employer
+  // and place: the same ad is usually first. Suburb or city only, e.g. "Hamilton, Brisbane" -> "Brisbane".
+  function seekUrl(j) {
+    const parts = String(j.location || '').split(',').map(x => x.trim()).filter(Boolean)
+      .filter((x, i, all) => !(all.length > 1 && /^(nsw|vic|qld|wa|sa|tas|act|nt|australia)$/i.test(x)));
+    const where = parts.pop() || '';
+    const keywords = [j.title, j.employer].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim().slice(0, 120);
+    const q = new URLSearchParams({ keywords });
+    if (where && !/^australia$/i.test(where)) q.set('where', where);
+    return `https://www.seek.com.au/jobs?${q}`;
+  }
   function jobCard(j) {
     lastJobs.set(j.id, j);
     const badges = [
@@ -309,6 +320,7 @@
       ${j.hits && j.hits.length ? `<div class="tags">${j.hits.map(h => `<span>${esc(h)}</span>`).join('')}</div>` : ''}
       <div class="job-actions">
         ${j.url ? `<a class="btn btn-outline" href="${esc(j.url)}" target="_blank" rel="noopener noreferrer">View ad &#x2197;</a>` : ''}
+        <a class="btn btn-outline btn-seek" href="${esc(seekUrl(j))}" target="_blank" rel="noopener noreferrer" title="Search SEEK for this job">Find on SEEK &#x2197;</a>
         <button type="button" class="btn btn-primary" data-build="${esc(j.id)}">Build my CV for this job &#x2192;</button>
       </div>
     </article>`;
