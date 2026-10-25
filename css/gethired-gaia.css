@@ -466,5 +466,5 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
 .style-check input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--navy); flex: none; }
 .style-check small { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
 .style-check input:disabled + span { opacity: .65; }
-.doc-letterhead.has-photo { position: relative; text-align: left; padding-right: 96px; min-height: 84px; }
-.doc-photo { position: absolute; right: 0; top: 0; width: 78px; height: 78px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; }
+.doc-letterhead.has-photo { position: relative; text-align: left; padding-right: 108px; min-height: 86px; }
+.doc-photo { position: absolute; right: 0; top: -6px; width: 92px; height: 92px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; }
