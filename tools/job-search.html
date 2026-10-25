@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://apis.google.com https://www.gstatic.com; frame-src 'self' https://gaia-symbiosis.firebaseapp.com https://accounts.google.com https://apis.google.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Job Search Assistant: Find Jobs with Visa Sponsor Employers in Australia | Gaia Symbiosis</title>
   <meta name="description" content="Find Australian jobs with employers who sponsor visas. Describe what you do or import your CV, and we match job ads against 3,579 Standard Business Sponsors. Then build a tailored CV for the role." />
@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="../css/styles.css?v=20261024a" />
-  <link rel="stylesheet" href="../css/job-search.css?v=20261025a" />
+  <link rel="stylesheet" href="../css/job-search.css?v=20261025b" />
   <script>document.documentElement.classList.add('js')</script>
   <script type="application/ld+json">
   {
@@ -98,8 +98,8 @@
           <h1 id="page-title" class="reveal" style="--d:.08s">Find jobs with employers who <span class="grad">sponsor visas.</span></h1>
           <p class="reveal" style="--d:.16s">Tell us what you do, or import your CV. We search Australian job ads and check every employer against <strong style="color:#fff" data-sponsor-count>3,579</strong> Standard Business Sponsors, so you can spend your time on roles that can lead to a visa.</p>
           <div class="hero-actions reveal" style="--d:.24s">
-            <a href="#search" class="btn btn-primary">Start my search <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <button type="button" class="btn btn-ghost-light" data-open-import>Import my CV</button>
+            <a href="find-jobs.html" class="btn btn-primary">Start my search <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a href="find-jobs.html#import" class="btn btn-ghost-light">Import my CV</a>
           </div>
           <p class="js-hero-note reveal" style="--d:.3s">Free. Your CV stays private to your Google account.</p>
         </div>
@@ -140,90 +140,14 @@
       </div>
     </section>
 
-    <section class="section section--alt" id="search" aria-labelledby="search-title">
-      <div class="container">
-        <div class="section-head section-head--center reveal">
-          <p class="eyebrow">Your search</p>
-          <h2 id="search-title">What do you do?</h2>
-          <p>Write it the way you would explain it to a friend. You can change everything AI suggests.</p>
-        </div>
-
-        <div class="form-card js-search reveal">
-          <div class="js-account">
-            <p id="js-account-note">Sign in with Google to search. Your CV and searches stay private to your account.</p>
-            <span class="gh-sync" id="gh-sync" role="status" aria-live="polite"></span>
-            <button class="gh-google" id="gh-sign-in" type="button" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Sign in with Google</button>
-            <div class="gh-user" id="gh-user" hidden><span id="gh-avatar"></span><span class="gh-user-name" id="gh-name"></span><button id="gh-sign-out" type="button">Sign out</button></div>
-          </div>
-
-          <div class="js-start">
-            <div class="form-group">
-              <label for="js-what">What you do <span>(any field: nursing, trades, IT, hospitality, farming…)</span></label>
-              <textarea id="js-what" maxlength="2000" placeholder="e.g. I install and service CCTV, access control and alarm systems. 5 years with Hikvision and Bosch, and I hold a cabling licence."></textarea>
-              <div class="js-actions-row"><button type="button" class="btn btn-outline btn-sm" id="js-match">&#x2728; Match my keywords with AI</button></div>
-            </div>
-            <span class="js-or" aria-hidden="true">or</span>
-            <div class="js-import">
-              <strong>Import your CV</strong>
-              <span>PDF, Word or text. AI reads it, matches jobs, and fills in your CV Builder profile.</span>
-              <label class="btn btn-primary btn-sm" id="js-import-btn">Import CV<input type="file" id="js-import" accept=".pdf,.docx,.txt,.md,application/pdf,text/plain" hidden></label>
-            </div>
-          </div>
-          <p class="js-summary" id="js-summary" hidden></p>
-
-          <div class="js-divider"></div>
-
-          <div class="js-filters">
-            <div class="form-group js-wide">
-              <label for="js-kw-input">Job titles &amp; keywords <span>(type and press Enter, or pick a suggestion)</span></label>
-              <div class="chips-field" id="js-kw"></div>
-            </div>
-            <div class="form-group js-wide">
-              <label for="js-cat-input">Categories <span>(optional, up to 3)</span></label>
-              <div class="chips-field" id="js-cat"></div>
-            </div>
-            <div class="form-group">
-              <label for="js-where">Location</label>
-              <select id="js-where">
-                <option value="">All of Australia</option>
-                <option value="NSW">New South Wales</option><option value="VIC">Victoria</option><option value="QLD">Queensland</option>
-                <option value="WA">Western Australia</option><option value="SA">South Australia</option><option value="TAS">Tasmania</option>
-                <option value="ACT">Australian Capital Territory</option><option value="NT">Northern Territory</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="js-days">Posted within</label>
-              <select id="js-days"><option value="7">7 days</option><option value="14">14 days</option><option value="30" selected>30 days</option></select>
-            </div>
-          </div>
-          <button type="button" class="btn btn-primary btn-block" id="js-search">Find sponsor jobs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-          <p class="js-hint">Searches live Australian ads through Adzuna. Takes about 10 seconds.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section js-results" id="results" aria-labelledby="results-title" hidden>
-      <div class="container">
-        <div class="js-results-head">
-          <div>
-            <p class="eyebrow">Your matches</p>
-            <h2 id="results-title">Jobs for you, sponsors first.</h2>
-          </div>
-          <p class="js-results-meta" id="js-results-meta" role="status" aria-live="polite"></p>
-        </div>
-        <div id="js-groups"></div>
-        <p class="js-note">Being on the sponsor list means a business has been approved to sponsor workers. It doesn't mean they will sponsor this role, and if the advertiser is a recruitment agency, the agency may not be the employer. Ad text is a short preview, so always read the full ad and confirm with the employer. This is not migration advice: for visa advice, speak to a registered migration agent.</p>
-      </div>
-    </section>
-
     <section class="section section--alt" aria-labelledby="cta-title">
       <div class="container">
         <div class="cta-band reveal">
           <h2 id="cta-title">Next: your tailor-made CV for “<span data-role>Job Position</span>”.</h2>
           <p>Every match has a "Build my CV for this job" button. It opens the CV Prompt Builder with the job ready and your profile filled in.</p>
           <div class="hero-actions">
-            <a href="cv-builder.html" class="btn btn-primary">Open CV Prompt Builder</a>
-            <a href="#search" class="btn btn-ghost-light">Back to my search</a>
+            <a href="find-jobs.html" class="btn btn-primary">Start my search</a>
+            <a href="cv-builder.html" class="btn btn-ghost-light">Open CV Prompt Builder</a>
           </div>
         </div>
       </div>
@@ -269,10 +193,7 @@
     </div>
   </footer>
 
-  <div class="js-toast" id="js-toast" role="status" aria-live="polite"></div>
   <script src="../js/main.js?v=20261018e" defer></script>
-  <script src="../js/vendor/jszip-3.10.1.min.js" defer></script>
-  <script src="../js/job-search.js?v=20261025a" defer></script>
-  <script type="module" src="../js/gethired-sync.js?v=20261025a"></script>
+  <script src="../js/job-search.js?v=20261025b" defer></script>
 </body>
 </html>

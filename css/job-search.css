@@ -20,6 +20,17 @@
 @keyframes tkPulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, .55); } 80%, 100% { box-shadow: 0 0 0 7px rgba(239, 68, 68, 0); } }
 .page-hero .ticker-foot { margin-top: .6rem; padding: 0 .35rem; font-size: .74rem; color: rgba(255, 255, 255, .42); }
 
+/* Less space above the hero text (the nav sits over the top of the hero) */
+.js-hero { padding: calc(var(--nav-h) + 2.75rem) 0 4.5rem; }
+/* Tool page: a short dark header, then straight into the search */
+.js-app-hero { padding: calc(var(--nav-h) + 2rem) 0 2.25rem; }
+.js-app-hero h1 { font-size: clamp(2rem, 4.2vw, 3rem); margin-bottom: .6rem; }
+.js-app-hero .breadcrumb { margin-bottom: 1rem; }
+.js-app { padding: 2.5rem 0 3.5rem; }
+.js-app + .js-results { padding-top: 3.5rem; }
+.js-import.is-highlight { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-glow); }
+.js-error small { display: block; margin-top: .75rem; font-size: .76rem; color: var(--faint); }
+
 /* ─── How it works ─── */
 .js-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
 .js-steps .card { padding: 1.75rem; }
@@ -127,6 +138,9 @@
   .js-jobs { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 720px) {
+  .js-hero { padding: calc(var(--nav-h) + 1.25rem) 0 3.5rem; }
+  .js-app-hero { padding: calc(var(--nav-h) + 1rem) 0 1.75rem; }
+  .js-app { padding: 1.5rem 0 2.75rem; }
   .js-start { grid-template-columns: minmax(0, 1fr); }
   .js-or { justify-self: center; }
   .js-filters { grid-template-columns: minmax(0, 1fr); }

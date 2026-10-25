@@ -34,7 +34,14 @@
     too_long: 'That is too long. Please shorten it and try again.',
     unreadable: "Couldn't read enough from that. Add a little more detail and try again.",
     bad_request: 'Add at least one job title, keyword or category first.',
+    adzuna_auth: "The job ads service didn't accept our access key, so no ads could be searched.",
+    adzuna_limit: 'The job ads service has reached its limit for now. Please try again later.',
+    adzuna_down: "The job ads service didn't respond. Please try again in a minute.",
+    server: 'The server had a problem with that request. Please try again.',
   };
+
+  // The introduction page only has the sponsor ticker
+  if (!$('js-kw')) { ticker(); return; }
 
   // ─── Categories (same tags as the server) ───
   const CATEGORIES = {
@@ -183,7 +190,7 @@
     const btn = $('js-match'); busy(btn, true);
     try {
       const res = await call(() => window.gethiredCall('/api/keywords', { text }));
-      if (!res.ok) { needSignIn(res.error); return false; }
+      if (!res.ok) { needSignIn(res.error); if (!['signin', 'loading'].includes(res.error)) showSummary(`AI keyword match didn't finish (reason: ${res.error}${res.detail ? `, ${res.detail}` : ''}). You can still type keywords below and search.`); return false; }
       applyKeywords(res);
       toast('Keywords matched ✔ Change anything you like, then search.', 'success');
       return true;
@@ -263,10 +270,17 @@
     } finally { busy(btn, false); }
   }
   $('js-import').addEventListener('change', e => importCV(e.target));
-  document.querySelectorAll('[data-open-import]').forEach(b => b.addEventListener('click', () => {
-    $('search').scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => $('js-import').click(), 350);
-  }));
+  $('js-import-btn').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('js-import').click(); } });
+  if (location.hash === '#import') {
+    const box = document.querySelector('.js-import');
+    box.classList.add('is-highlight');
+    setTimeout(() => { box.scrollIntoView({ behavior: 'smooth', block: 'center' }); $('js-import-btn').focus({ preventScroll: true }); }, 200);
+  }
+  new MutationObserver(() => {
+    $('js-account-note').textContent = $('gh-user').hidden
+      ? 'Sign in with Google to search. Your CV and searches stay private to your account.'
+      : 'Signed in. Your CV and searches stay private to your account.';
+  }).observe($('gh-user'), { attributes: true, attributeFilter: ['hidden'] });
 
   // ─── Step 2: search ───
   const GROUPS = [
@@ -333,8 +347,15 @@
     try {
       const res = await call(() => window.gethiredCall('/api/jobs', { keywords: kw.get().map(k => ({ term: k.term, weight: k.weight })), categories: cats.get(), where: $('js-where').value, maxDays: Number($('js-days').value) }));
       if (!res.ok) {
-        $('js-groups').innerHTML = prev; $('js-results-meta').textContent = prevMeta; $('results').hidden = wasHidden;
-        needSignIn(res.error);
+        if (['signin', 'loading', 'bad_request'].includes(res.error)) {
+          $('js-groups').innerHTML = prev; $('js-results-meta').textContent = prevMeta; $('results').hidden = wasHidden;
+          needSignIn(res.error);
+          return;
+        }
+        $('js-results-meta').textContent = 'The search did not finish.';
+        $('js-groups').innerHTML = `<div class="js-empty js-error" role="alert"><strong>${esc(ERRORS[res.error] || ERRORS.busy)}</strong>
+          <br><button type="button" class="btn btn-outline btn-sm" data-retry style="margin-top:1rem">Try again</button>
+          <small>Reason: ${esc(res.error || 'unknown')}${res.detail ? ` · ${esc(res.detail)}` : ''}</small></div>`;
         return;
       }
       const data = { groups: res.groups, total: res.total, sponsors: res.sponsors, at: Date.now() };
@@ -343,6 +364,7 @@
     } finally { busy(btn, false); }
   }
   $('js-search').addEventListener('click', search);
+  $('js-groups').addEventListener('click', e => { if (e.target.closest('[data-retry]')) search(); });
 
   // ─── Step 3: send a job to the CV Prompt Builder ───
   function jobAd(j) {
@@ -376,6 +398,7 @@
   // ─── Sponsor ticker: a slow wheel of company names, fading and blurring at the edges ───
   async function ticker() {
     const win = $('ticker-window'), track = $('ticker-track');
+    if (!win) return;
     let data;
     try { data = await (await fetch('../data/sponsor-preview.json', { cache: 'force-cache' })).json(); } catch { return; }
     const names = (data.names || []).filter(n => typeof n === 'string');

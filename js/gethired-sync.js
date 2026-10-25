@@ -240,7 +240,7 @@ async function start() {
         body: JSON.stringify(payload),
       });
       const data = await res.json().catch(() => null);
-      return data || { ok: false, error: res.status === 404 ? 'not_configured' : 'busy' };
+      return data || { ok: false, error: res.status === 404 ? 'not_configured' : 'server', detail: `HTTP ${res.status}` };
     } catch (err) {
       console.error('Request failed', path, err);
       return { ok: false, error: 'network' };

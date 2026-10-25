@@ -90,8 +90,12 @@ test('classify uses the sponsor list', () => {
 test('searchJobs errors: bad keys, rate limit, category retry', async () => {
   const s = readSearch({ keywords: ['cctv'] });
   await assert.rejects(searchJobs(s, { appId: '', appKey: '' }), e => e.code === 'not_configured');
-  await assert.rejects(searchJobs(s, { appId: 'a', appKey: 'b', fetchImpl: async () => ({ status: 401 }) }), e => e.code === 'not_configured');
-  await assert.rejects(searchJobs(s, { appId: 'a', appKey: 'b', fetchImpl: async () => ({ status: 429 }) }), e => e.code === 'busy');
+  await assert.rejects(searchJobs(s, { appId: 'a', appKey: 'b', fetchImpl: async () => ({ status: 401 }) }), e => e.code === 'adzuna_auth' && e.detail === 'HTTP 401');
+  await assert.rejects(searchJobs(s, { appId: 'a', appKey: 'b', fetchImpl: async () => ({ status: 400, json: async () => ({ exception: 'AUTH_FAIL', display: 'x' }) }) }), e => e.code === 'adzuna_auth' && e.detail === 'HTTP 400 AUTH_FAIL');
+  await assert.rejects(searchJobs(s, { appId: 'a', appKey: 'b', fetchImpl: async () => ({ status: 429 }) }), e => e.code === 'adzuna_limit');
+  await assert.rejects(searchJobs(s, { appId: 'a', appKey: 'b', fetchImpl: async () => { throw new TypeError('fetch failed'); } }), e => e.code === 'adzuna_down' && e.detail === 'network');
+  await assert.rejects(searchJobs(s, { appId: 'a', appKey: 'b', fetchImpl: async () => { const e = new Error('t'); e.name = 'TimeoutError'; throw e; } }), e => e.code === 'adzuna_down' && e.detail === 'timeout');
+  await assert.rejects(searchJobs(s, { appId: 'a', appKey: 'b', fetchImpl: async () => ({ status: 500, json: async () => { throw new Error('html'); } }) }), e => e.code === 'adzuna_down' && e.detail === 'HTTP 500');
   const urls = [];
   const fetchImpl = async url => { urls.push(url); return /category=/.test(url) ? { status: 400 } : { status: 200, json: async () => ({ results: [AD(9, 'IT Support', 'X')] }) }; };
   const out = await searchJobs(readSearch({ categories: ['it-jobs'] }), { appId: 'a', appKey: 'b', fetchImpl });
@@ -133,6 +137,11 @@ test('jobs handler: origin, sign-in, limits, validation and cache', async () => 
   r = mockRes(); await makeJobsHandler(okDeps({ appId: '', appKey: '' }))(req({ keywords: ['cctv'] }), r); assert.equal(r.code, 500); assert.equal(r.body.error, 'not_configured');
   r = mockRes(); await makeJobsHandler(okDeps({ appId: 'a', appKey: 'b', fetchImpl, allow: async () => false }))(req({ keywords: ['nurse'] }), r); assert.equal(r.code, 429);
   r = mockRes(); await h({ ...req({}), method: 'GET' }, r); assert.equal(r.code, 405);
+  // The rate-limit store being down doesn't block searches (counted in memory instead)
+  r = mockRes(); await makeJobsHandler(okDeps({ appId: 'a', appKey: 'b', fetchImpl, allow: async () => { throw new Error('firestore down'); } }))(req({ keywords: ['welder'] }), r); assert.equal(r.code, 200);
+  // Adzuna errors reach the page with a reason
+  r = mockRes(); await makeJobsHandler(okDeps({ appId: 'a', appKey: 'b', fetchImpl: async () => ({ status: 401 }) }))(req({ keywords: ['chef'] }), r);
+  assert.equal(r.code, 502); assert.deepEqual(r.body, { ok: false, error: 'adzuna_auth', detail: 'HTTP 401' });
 });
 
 test('keywords handler: checks input and sign-in', async () => {
