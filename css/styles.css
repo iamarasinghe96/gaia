@@ -336,6 +336,8 @@ html:not(.js) .show-slide:not(:first-child) { display: none; }
 
 /* Cards */
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1180px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
 .card {
   position: relative; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg);
   padding: 2rem; display: flex; flex-direction: column; overflow: hidden;
