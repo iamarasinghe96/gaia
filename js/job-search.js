@@ -380,30 +380,69 @@
   $('js-groups').addEventListener('click', e => { if (e.target.closest('[data-retry]')) search(); });
 
   // ─── Step 3: send a job to the CV Prompt Builder ───
-  function jobAd(j) {
+  // The job details, then the ad text (the full ad once we have it)
+  function jobAd(j, body) {
     return [
       `Job title: ${j.title}`,
       j.employer && `Employer: ${j.employer}${j.sponsor ? ` (on the Standard Business Sponsor list as ${j.sponsor})` : ''}`,
       j.location && `Location: ${j.location}`,
       j.salary && `Salary: ${j.salary}`,
       j.created && `Advertised: ${j.created}`,
-      j.url && `Full ad: ${j.url}`,
+      j.url && `Ad link: ${j.url.split('?')[0]}`,
       '',
-      j.description,
+      body,
     ].filter(x => x !== false && x !== undefined && x !== null).join('\n').trim();
   }
+  // "Build my CV for this job": get the full ad (the search only returns a preview), let the
+  // person check it or paste it, then send it to the CV Prompt Builder.
+  const FULL = 600;                                   // shorter than this is almost certainly a preview
+  let adJob = null;
+  const adCount = () => {
+    const n = $('js-ad-text').value.trim().length;
+    $('js-ad-count').textContent = n ? `${n.toLocaleString('en-AU')} characters${n < FULL ? ' · this looks like only part of the ad' : ''}` : '';
+    $('js-ad-count').classList.toggle('is-short', n > 0 && n < FULL);
+  };
+  $('js-ad-text').addEventListener('input', adCount);
   $('js-groups').addEventListener('click', async e => {
     const btn = e.target.closest('[data-build]');
     if (!btn) return;
     const j = lastJobs.get(btn.dataset.build);
     if (!j) return;
-    const text = jobAd(j);
+    adJob = j;
+    const dlg = $('js-ad');
+    $('js-ad-title').textContent = `${j.title}${j.employer ? ` · ${j.employer}` : ''}`;
+    $('js-ad-open').hidden = !j.url; if (j.url) $('js-ad-open').href = j.url;
+    $('js-ad-seek').href = seekUrl(j);
+    $('js-ad-text').value = '';
+    $('js-ad-status').textContent = 'Getting the full ad…';
+    $('js-ad').classList.add('is-loading');
+    adCount();
+    dlg.showModal();
+    const res = j.url && typeof window.gethiredCall === 'function' ? await window.gethiredCall('/api/jobad', { url: j.url }) : { ok: false };
+    if (adJob !== j) return;
+    $('js-ad').classList.remove('is-loading');
+    if (res.ok && res.text && res.text.length > (j.description || '').length) {
+      $('js-ad-text').value = res.text;
+      $('js-ad-status').textContent = 'Here is the full ad. Check it, then send it to the CV Builder.';
+    } else {
+      $('js-ad-text').value = '';
+      $('js-ad-status').textContent = "We couldn't load the full ad automatically. Open the ad, copy all of it, and paste it below.";
+      $('js-ad-text').focus();
+    }
+    adCount();
+  });
+  $('js-ad-use').addEventListener('click', async () => {
+    const j = adJob, body = $('js-ad-text').value.trim();
+    if (!j) return;
+    if (body.length < 80) { toast('Paste the job ad first.', 'error'); $('js-ad-text').focus(); return; }
+    if (body.length < FULL && !confirm('This looks like only part of the ad, so the CV may miss requirements.\n\nUse it anyway?')) return;
+    const text = jobAd(j, body);
     let current = '';
     try { current = localStorage.getItem('gethired_jd') || ''; } catch { /* blocked */ }
     if (current.trim() && current.trim() !== text && !confirm(`Replace the job ad in the CV Prompt Builder with “${j.title}”?`)) return;
     try { localStorage.setItem('gethired_jd', text); } catch { toast("Couldn't save the job. Please try again.", 'error'); return; }
-    busy(btn, true);
-    toast('Opening the CV Prompt Builder… Paste the full ad from the link for the best result.', 'success');
+    busy($('js-ad-use'), true);
+    toast('Opening the CV Prompt Builder…', 'success');
     if (typeof window.gethiredFlush === 'function') await window.gethiredFlush();
     location.href = 'cv-builder.html#prompt';
   });

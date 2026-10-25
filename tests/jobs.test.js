@@ -152,3 +152,33 @@ test('keywords handler: checks input and sign-in', async () => {
   r = mockRes(); await h(req({ nope: 1 }), r); assert.equal(r.code, 400);
   r = mockRes(); await h(req({ text: 'chef' }, { authorization: '' }), r); assert.equal(r.code, 401);
 });
+
+import { adPageUrl, extractAd, htmlToText } from '../lib/jobad.js';
+import { makeJobAdHandler } from '../lib/search-handlers.js';
+
+test('job ad: only Adzuna ad pages are fetched', () => {
+  assert.equal(adPageUrl('https://www.adzuna.com.au/details/5939917985?utm_medium=api&utm_source=abc'), 'https://www.adzuna.com.au/details/5939917985');
+  assert.equal(adPageUrl('http://www.adzuna.com.au/details/123456'), null);
+  assert.equal(adPageUrl('https://evil.example/details/123456'), null);
+  assert.equal(adPageUrl('https://www.adzuna.com.au.evil.example/details/123456'), null);
+  assert.equal(adPageUrl('https://www.adzuna.com.au/land/ad/123456'), null);
+  assert.equal(adPageUrl('javascript:alert(1)'), null);
+});
+
+test('job ad: reads the full description from structured data or the ad body', () => {
+  const ld = `<html><script type="application/ld+json">${JSON.stringify({ '@type': 'JobPosting', title: 'Accountant', description: '<p>Your Opportunity &amp; more</p><ul><li>Month-end close</li><li>BAS</li></ul>' })}</script></html>`;
+  assert.equal(extractAd(ld), 'Your Opportunity & more\n\n- Month-end close\n- BAS');
+  assert.equal(extractAd('<section class="adp-body mb-4"><p>Line one</p><p>Line two</p></section>'), 'Line one\nLine two');
+  assert.equal(extractAd('<html>nothing here</html>'), '');
+  assert.equal(htmlToText('<script>x</script>A<br>B'), 'A\nB');
+});
+
+test('job ad handler: sign-in, URL check and fallback', async () => {
+  const long = 'Full ad text. '.repeat(40);
+  const fetchImpl = async url => { assert.equal(url, 'https://www.adzuna.com.au/details/123456'); return { status: 200, text: async () => `<section class="adp-body"><p>${long}</p></section>` }; };
+  const h = makeJobAdHandler(okDeps({ fetchImpl }));
+  let r = mockRes(); await h(req({ url: 'https://www.adzuna.com.au/details/123456?utm_source=x' }), r); assert.equal(r.code, 200); assert.ok(r.body.text.startsWith('Full ad text.'));
+  r = mockRes(); await h(req({ url: 'https://evil.example/details/123456' }), r); assert.equal(r.code, 400);
+  r = mockRes(); await h(req({ url: 'https://www.adzuna.com.au/details/123456' }, { authorization: '' }), r); assert.equal(r.code, 401);
+  r = mockRes(); await makeJobAdHandler(okDeps({ fetchImpl: async () => ({ status: 403, text: async () => '' }) }))(req({ url: 'https://www.adzuna.com.au/details/123456' }), r); assert.equal(r.code, 422);
+});

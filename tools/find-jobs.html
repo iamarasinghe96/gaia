@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="../css/styles.css?v=20261024a" />
-  <link rel="stylesheet" href="../css/job-search.css?v=20261025f" />
+  <link rel="stylesheet" href="../css/job-search.css?v=20261025g" />
   <link rel="stylesheet" href="../css/app-shell.css?v=20261025a" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -140,10 +140,22 @@
 
   <footer class="gh-footer">© <span data-year>2026</span> <a href="../index.html">Gaia Symbiosis</a> · <a href="../services.html#tools">More tools</a> · <a href="../privacy.html">Privacy Policy</a></footer>
 
+  <dialog class="js-ad" id="js-ad" aria-labelledby="js-ad-title">
+    <form method="dialog" class="js-ad-inner">
+      <p class="eyebrow">Full job ad</p>
+      <h3 id="js-ad-title"></h3>
+      <p class="js-ad-status" id="js-ad-status" role="status" aria-live="polite"></p>
+      <div class="js-ad-links"><a class="btn btn-outline btn-sm" id="js-ad-open" target="_blank" rel="noopener noreferrer">Open the ad &#x2197;</a><a class="btn btn-outline btn-sm" id="js-ad-seek" target="_blank" rel="noopener noreferrer">Find on SEEK &#x2197;</a></div>
+      <label class="sr-only" for="js-ad-text">Full job ad text</label>
+      <textarea id="js-ad-text" rows="12" placeholder="Paste the whole job ad here: duties, requirements, everything."></textarea>
+      <p class="js-ad-count" id="js-ad-count"></p>
+      <div class="js-ad-actions"><button type="submit" value="cancel" class="btn btn-outline btn-sm">Cancel</button><button type="button" class="btn btn-primary btn-sm" id="js-ad-use">Use this ad in the CV Builder &#x2192;</button></div>
+    </form>
+  </dialog>
   <div class="js-toast" id="js-toast" role="status" aria-live="polite"></div>
   <script src="../js/app-shell.js?v=20261025a" defer></script>
   <script src="../js/vendor/jszip-3.10.1.min.js" defer></script>
-  <script src="../js/job-search.js?v=20261025f" defer></script>
-  <script type="module" src="../js/gethired-sync.js?v=20261025b"></script>
+  <script src="../js/job-search.js?v=20261025g" defer></script>
+  <script type="module" src="../js/gethired-sync.js?v=20261025c"></script>
 </body>
 </html>

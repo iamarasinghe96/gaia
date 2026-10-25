@@ -12,6 +12,9 @@
     },
     "api/jobs.js": {
       "maxDuration": 60
+    },
+    "api/jobad.js": {
+      "maxDuration": 30
     }
   },
   "headers": [
