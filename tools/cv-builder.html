@@ -227,8 +227,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025d">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261025d">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025e">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261025e">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261025e">
 </head>
 <body>
 
@@ -899,7 +900,7 @@ function personalBodyHTML() {
     )}
     ${fg(2,
       fi('LinkedIn URL <span class="req">*</span>', inp(`${p}.linkedin`, 'e.g. https://linkedin.com/in/yourname')),
-      fi('Portfolio / GitHub URL <span class="opt">optional</span>', inp(`${p}.portfolio`, 'e.g. https://yourname.github.io'))
+      fi('Portfolio URL <span class="opt">optional</span>', inp(`${p}.portfolio`, 'e.g. https://yourname.com'))
     )}
     ${fg(1, fi('SEEK Profile URL <span class="opt">optional</span>', inp(`${p}.seekUrl`, 'e.g. https://www.seek.com.au/profiles/... — leave blank and the SEEK icon is left out of your letterhead')))}
     ${fg(1, fi('Other Links <span class="opt">optional</span>', otherLinksHTML()))}
@@ -3671,7 +3672,7 @@ document.getElementById('profile-form').addEventListener('input', e => {
 document.body.insertAdjacentHTML('beforeend',
   '<datalist id="gh-states">' + ['ACT','NSW','NT','QLD','SA','TAS','VIC','WA'].map(v => `<option value="${v}">`).join('') + '</datalist>' +
   '<datalist id="gh-countries">' + ['Australia','New Zealand','Sri Lanka','India','United Kingdom','United States','Canada','Singapore','Malaysia','Philippines','China','Nepal','Pakistan','Bangladesh','Vietnam','Indonesia','South Africa','Ireland'].map(v => `<option value="${v}">`).join('') + '</datalist>' +
-  '<datalist id="gh-link-names">' + ['Facebook','Instagram','X (Twitter)','YouTube','TikTok','Behance','Dribbble','Medium','Substack','Stack Overflow','GitLab','Google Scholar','ResearchGate','ORCID','Personal website','Blog'].map(v => `<option value="${v.replace(/[()]/g, '')}">`).join('') + '</datalist>');
+  '<datalist id="gh-link-names">' + ['GitHub','Facebook','Instagram','X (Twitter)','YouTube','TikTok','Behance','Dribbble','Medium','Substack','Stack Overflow','GitLab','Google Scholar','ResearchGate','ORCID','Personal website','Blog'].map(v => `<option value="${v.replace(/[()]/g, '')}">`).join('') + '</datalist>');
 
 // ─── Prompt copies ───
 const _OLD_PROMPT_HASHES = {"cl_prompt": ["b923b977"], "cv_prompt": ["c4bd1cd5"]};
@@ -4164,7 +4165,8 @@ document.getElementById('profile-form').addEventListener('click', e => {
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261025d"></script>
-<script src="../js/section-rail.js?v=20261025d" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261025e"></script>
+<script src="../js/section-rail.js?v=20261025e" defer></script>
+<script src="../js/nice-select.js?v=20261025e" defer></script>
 </body>
 </html>
