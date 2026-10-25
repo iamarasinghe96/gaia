@@ -227,7 +227,7 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025a">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261025b">
 </head>
 <body>
 
@@ -1002,7 +1002,7 @@ function certificationsBodyHTML() {
     `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('certifications',{category:'',items:''})">+ Add Category</button></div>` +
     `<div style="margin-top:16px">` +
     fg(1, fi('Academic Publications (one per line)', ta('publications.academic', 'Title — Institution (Degree)\n...', 4))) +
-    fg(1, fi('Awards (one per line)', ta('publications.awards', 'Award name — Organisation (Year)\n...', 4))) +
+    fg(1, fi('Awards <span class="opt">one per row, each with its own link</span>', bulletsHTML('publications.awards', 'e.g. Operations Excellence Award — Organisation (2023)', 'url', '+ Add award'))) +
     `</div>`;
 }
 
@@ -4163,6 +4163,6 @@ document.getElementById('profile-form').addEventListener('click', e => {
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261025a"></script>
+<script type="module" src="../js/gethired-sync.js?v=20261025b"></script>
 </body>
 </html>

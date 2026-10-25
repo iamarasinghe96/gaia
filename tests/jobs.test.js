@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { makeSponsorIndex, normaliseCompany, adSignals, readSearch, buildQueries, searchJobs, classify, shapeJob, SPONSORS, MAX_CALLS, JobsError } from '../lib/jobs.js';
+import { makeSponsorIndex, normaliseCompany, adSignals, readSearch, buildQueries, searchJobs, classify, shapeJob, getSponsors, MAX_CALLS, JobsError } from '../lib/jobs.js';
+import { sponsorNames, previewPool } from '../lib/sponsors.js';
+import { readFileSync } from 'node:fs';
 import { normaliseKeywords, extractKeywords, SYSTEM_PROMPT } from '../lib/keywords.js';
 import { makeJobsHandler, makeKeywordsHandler } from '../lib/search-handlers.js';
 
@@ -20,7 +22,6 @@ test('sponsor matching never matches on generic words alone', () => {
   assert.equal(idx.match('Health Services'), 'Health Services Australia Pty Ltd');
   assert.equal(idx.match('Murray Health Services Group'), null);
   assert.equal(idx.match(''), null);
-  assert.ok(SPONSORS.size > 3000);
 });
 
 test('ad signals: sponsorship hints and citizen-only roles', () => {
@@ -181,4 +182,19 @@ test('job ad handler: sign-in, URL check and fallback', async () => {
   r = mockRes(); await h(req({ url: 'https://evil.example/details/123456' }), r); assert.equal(r.code, 400);
   r = mockRes(); await h(req({ url: 'https://www.adzuna.com.au/details/123456' }, { authorization: '' }), r); assert.equal(r.code, 401);
   r = mockRes(); await makeJobAdHandler(okDeps({ fetchImpl: async () => ({ status: 403, text: async () => '' }) }))(req({ url: 'https://www.adzuna.com.au/details/123456' }), r); assert.equal(r.code, 422);
+});
+
+test('sponsor list is stored encrypted and only the right key opens it', () => {
+  const enc = readFileSync(new URL('../lib/sponsors.enc.js', import.meta.url), 'utf8');
+  for (const name of ['Woodside', 'TELSTRA', 'Lendlease', 'Pty Ltd', 'PTY LTD']) assert.equal(enc.includes(name), false, name);
+  assert.deepEqual(sponsorNames(Buffer.alloc(32, 7).toString('base64')), []);
+  assert.deepEqual(sponsorNames('not-a-key'), []);
+  if (process.env.SPONSOR_LIST_KEY) {
+    const all = sponsorNames();
+    assert.ok(all.length > 3000);
+    assert.ok(getSponsors().size > 3000);
+    const pool = previewPool(all);
+    assert.equal(pool.length, 30);
+    assert.deepEqual(previewPool(all), pool);
+  }
 });

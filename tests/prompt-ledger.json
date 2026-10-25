@@ -33,6 +33,11 @@
           "why": "New Majors field on education: tells the AI how to show majored subjects.",
           "before": "- [EDUCATION]: for each qualification, a header line \"### <Degree> | <Years>\", then a line with the institution, optionally followed by \" | [Credentials](url)\". Reverse chronological.\n",
           "after": "- [EDUCATION]: for each qualification, a header line \"### <Degree> | <Years>\", then a line with the institution, optionally followed by \" | [Credentials](url)\". Reverse chronological.\n- In the content bank, a qualification's \"Majors:\" line lists its majored subjects, separated by \";\". Name the ones relevant to the JD in brackets after the degree in its header line, e.g. \"### Master of Business Administration (Majors: Finance, Strategy) | 2020 - 2022\". If none are relevant, leave the majors out.\n"
+        },
+        {
+          "why": "Awards now have their own link per item, like certifications.",
+          "before": "  \"Item | https://...\" in certifications\n   or achievements                          ->",
+          "after": "  \"Item | https://...\" in certifications,\n   achievements or awards                   ->"
         }
       ]
     },

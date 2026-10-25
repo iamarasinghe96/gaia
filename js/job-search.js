@@ -452,11 +452,9 @@
     const win = $('ticker-window'), track = $('ticker-track');
     if (!win) return;
     let data;
-    try { data = await (await fetch('../data/sponsor-preview.json', { cache: 'force-cache' })).json(); } catch { return; }
-    // 10 companies picked at random from the list on every visit
-    const pool = (data.names || []).filter(n => typeof n === 'string');
-    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
-    const names = pool.slice(0, 10);
+    try { data = await (await fetch('/api/sponsor-preview', { cache: 'no-store' })).json(); } catch { return; }
+    // 10 companies from the server (the list itself never reaches the browser)
+    const names = (data.names || []).filter(n => typeof n === 'string').slice(0, 10);
     if (data.count) document.querySelectorAll('[data-sponsor-count]').forEach(el => { el.textContent = Number(data.count).toLocaleString('en-AU'); });
     if (!names.length) return;
     const row = n => `<div class="ticker-row"><span class="ticker-name">${esc(n)}</span><span class="ticker-open">Opportunity</span></div>`;

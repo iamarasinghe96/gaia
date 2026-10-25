@@ -35,8 +35,8 @@ The content bank marks links with these exact labels. Map them as follows:
   "Project URL:" under a project            ->  wrap the project's name as a link
                                                 wherever you mention it in the summary,
                                                 experience bullets or achievements
-  "Item | https://..." in certifications
-   or achievements                          ->  wrap that item: "- [Item](url)"
+  "Item | https://..." in certifications,
+   achievements or awards                   ->  wrap that item: "- [Item](url)"
                                                 (achievements may instead take a
                                                 trailing " [View](url)")
   "Other URL (<Name>):" in personal details ->  link it only where it genuinely supports
