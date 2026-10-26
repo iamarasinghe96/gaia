@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com; connect-src 'self' https: ; frame-src 'self' https://gaia-symbiosis.firebaseapp.com https://accounts.google.com https://apis.google.com; worker-src 'self'; manifest-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>SubSync: subtitles on a second screen | Gaia Symbiosis</title>
+  <meta name="description" content="The film plays on your TV, Netflix or a projector, and your iPad or phone shows the captions in sync beside it, with optional English or Sinhala translation. Free, works offline." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#05070d" />
+  <link rel="canonical" href="https://gaiasymbiosis.com/tools/subsync/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gaia Symbiosis" />
+  <meta property="og:url" content="https://gaiasymbiosis.com/tools/subsync/" />
+  <meta property="og:title" content="SubSync: subtitles on a second screen | Gaia Symbiosis" />
+  <meta property="og:description" content="Synced captions beside the film, with optional English or Sinhala translation." />
+  <meta property="og:image" content="https://gaiasymbiosis.com/assets/logo-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" sizes="96x96" href="../../assets/favicon-white-96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/favicon-white-192.png" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="SubSync" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="../../css/styles.css?v=20261025a" />
+  <link rel="stylesheet" href="../../css/app-shell.css?v=20261026b" />
+  <link rel="stylesheet" href="./css/subsync.css?v=20261026b" />
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body class="app-shell">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+<header>
+  <div class="header-brand">
+    <a class="header-logo" href="../../index.html" aria-label="Gaia Symbiosis home"><img src="../../assets/logo-96.png" alt="" width="32" height="32"></a>
+    <div>
+      <div class="header-title">SubSync · Subtitle companion</div>
+      <div class="gh-ctx" id="gh-ctx" aria-hidden="true"></div>
+      <div class="header-sub">by <a href="../../index.html">Gaia Symbiosis</a> · Synced subtitles on a second screen</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <a class="gh-privacy" href="../../privacy.html" title="How your data is protected"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span class="hd-label">Private &amp; secure</span></a>
+    <button class="hbtn gh-google" id="gh-sign-in" type="button" hidden aria-label="Sign in with Google"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span class="hd-label">Sign in with Google</span></button>
+    <div class="gh-user" id="gh-user" hidden><span id="gh-avatar"></span><span class="gh-user-name" id="gh-name"></span><button class="hbtn" id="gh-sign-out" type="button" aria-label="Sign out"><svg class="hd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><span class="hd-label">Sign out</span></button></div>
+  </div>
+</header>
+
+<nav class="main-nav" aria-label="Steps">
+  <a class="main-nav-tab active" href="#get" aria-current="step"><span class="step-n">1</span><span class="step-t">Get subtitles<small>Listen, search or load</small></span></a>
+  <a class="main-nav-tab" href="#watch"><span class="step-n">2</span><span class="step-t">Watch in sync<small>Tap to sync, translate</small></span></a>
+  <a class="main-nav-tab nav-help" href="#how"><span class="step-n">?</span><span class="step-t">How it works</span></a>
+</nav>
+
+  <main id="main">
+  <!-- ============ SETUP ============ -->
+  <div id="setup">
+    <section class="ss-intro" id="get" aria-labelledby="page-title">
+      <h1 id="page-title" data-ctx="Get subtitles">Sub<span class="grad-blue">Sync</span></h1>
+      <p>Your subtitles, in step with the film. The film plays wherever you already watch it, and this screen shows the captions beside it, with optional English or Sinhala translation.</p>
+      <p class="ss-account-hint">Sign in with Google (top right) to find subtitles automatically or by name. Loading a .srt yourself needs no account.</p>
+    </section>
+
+    <div class="ss-wrap">
+      <section class="form-card ss-card">
+        <div class="ss-block">
+          <p class="eyebrow">Find it automatically</p>
+          <button id="autoFindBtn" type="button" class="btn btn-primary ss-big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>Listen &amp; find subtitles</button>
+          <p id="autoStatus" class="ss-status" role="status"></p>
+          <p class="ss-hint">Start the film, then tap. Listens for about 15 seconds, works out which film it is, downloads the subtitles and lines them up.</p>
+        </div>
+
+        <div class="ss-divider"></div>
+
+        <div class="ss-block">
+          <p class="eyebrow">Or search by name</p>
+          <div class="form-group ss-search-row">
+            <label class="sr-only" for="searchInput">Film name</label>
+            <input id="searchInput" type="search" enterkeyhint="search" placeholder="Film name, e.g. Disclosure Day" />
+            <button id="searchBtn" type="button" class="btn btn-outline btn-sm">Search</button>
+          </div>
+          <p id="searchStatus" class="ss-status" role="status"></p>
+        </div>
+
+        <div class="ss-divider"></div>
+
+        <div class="ss-block">
+          <p class="eyebrow">Or load a .srt yourself</p>
+          <div class="ss-load">
+            <label class="btn btn-outline btn-sm ss-file">
+              <!-- No accept filter: iOS maps accept to UTIs, and .srt has none,
+                   so any filter grays out every .srt file in the Files picker. -->
+              <input type="file" id="srtFile" hidden />
+              Choose a .srt file
+            </label>
+            <div class="form-group">
+              <label for="srtPaste">Paste .srt text</label>
+              <textarea id="srtPaste" rows="3" placeholder="1&#10;00:00:01,000 --> 00:00:03,000&#10;First line…"></textarea>
+              <button id="loadPasteBtn" type="button" class="btn btn-outline btn-sm">Load pasted text</button>
+            </div>
+            <div class="form-group">
+              <label for="srtUrl">Or a link to a .srt</label>
+              <input id="srtUrl" type="url" inputmode="url" placeholder="https://…/subtitles.srt" />
+              <button id="loadUrlBtn" type="button" class="btn btn-outline btn-sm">Fetch link</button>
+            </div>
+          </div>
+
+          <div id="srtListRow" class="form-group ss-list" hidden>
+            <label for="srtList">Active subtitles</label>
+            <select id="srtList"></select>
+          </div>
+
+          <p id="warnings" class="ss-warnings" role="status"></p>
+        </div>
+      </section>
+
+      <section class="ss-start" id="watch" aria-label="Watch in sync">
+        <h2 class="sr-only" data-ctx="Watch in sync">Watch in sync</h2>
+        <button id="startBtn" type="button" class="btn btn-primary ss-start-btn" disabled>Start</button>
+        <p id="startHint" class="ss-start-hint" role="status"></p>
+        <p class="ss-fineprint">Free · works offline once loaded · the film itself never leaves your TV.</p>
+      </section>
+
+      <section class="ss-how" id="how" aria-labelledby="how-title">
+        <h2 id="how-title" data-ctx="How it works">How it works</h2>
+        <div class="ss-how-grid">
+          <article class="card">
+            <h3>Three ways to get subtitles</h3>
+            <p><strong>Listen &amp; find</strong> hears the film through the microphone for about 15 seconds, works out which film it is, and asks you to confirm before downloading. <strong>Search by name</strong> lets you pick the release that matches your copy. Or load a .srt file, pasted text or a link yourself, with no account.</p>
+          </article>
+          <article class="card">
+            <h3>Syncing</h3>
+            <p>When the captions open, tap anywhere the moment you hear the line shown and they lock on. Nudge by ±0.1s or ±1s (or the ← → keys). If the film slowly drifts, use <strong>Fix drift</strong>: tap A on an early line and B on a late one. Alignment is remembered per file.</p>
+          </article>
+          <article class="card">
+            <h3>Translation</h3>
+            <p>Optional, to English or Sinhala. <strong>Groq AI</strong> (sign in) translates about 40 lines at a time, so a film takes a couple of minutes. <strong>MyMemory</strong> needs no account but has a small daily quota. Every translated line is saved on this device for offline use. Machine translation is approximate, Sinhala especially.</p>
+          </article>
+          <article class="card">
+            <h3>On an iPad or phone</h3>
+            <p>Open this page in Safari, then Share → <strong>Add to Home Screen</strong> to launch it full-screen. The caption screen is pure black, so an OLED screen barely lights up. A browser can't hear Netflix or other apps directly, so Tap to sync is the dependable way to line up.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+  </main>
+
+  <footer class="gh-footer">© <span data-year>2026</span> <a href="../../index.html">Gaia Symbiosis</a> · <a href="../../services.html#tools">More tools</a> · <a href="../../privacy.html">Privacy Policy</a></footer>
+
+  <!-- ============ STAGE ============ -->
+  <div id="stage" hidden>
+    <div class="topbar">
+      <button id="backBtn" class="icon-btn" aria-label="Back">‹</button>
+      <button id="gearBtn" class="icon-btn" aria-label="Controls">⚙</button>
+    </div>
+
+    <div id="captionWrap" class="caption-wrap">
+      <div id="captionTranslated" class="caption caption-translated"></div>
+      <div id="captionOriginal" class="caption caption-original"></div>
+    </div>
+
+    <!-- First-line sync, on the stage rather than buried in the drawer: the
+         whole screen is the button, so it can be hit without looking away
+         from the film. Disappears for good once tapped. -->
+    <button id="tapPrompt" class="tap-prompt" hidden>
+      <span class="tap-prompt-lead">Tap the moment you hear</span>
+      <span id="tapPromptLine" class="tap-prompt-line"></span>
+      <span class="tap-prompt-foot">…and the subtitles lock on</span>
+    </button>
+
+    <!-- Tapping outside the drawer closes it; the gear that opened it is
+         underneath the drawer on a phone-width screen. -->
+    <div id="controlsScrim" class="controls-scrim" hidden></div>
+
+    <!-- Controls drawer -->
+    <aside id="controls">
+      <div class="drawer-head">
+        <h2 class="drawer-title">Controls</h2>
+        <button id="closeControlsBtn" class="icon-btn" aria-label="Close controls">×</button>
+      </div>
+
+      <div id="transportRow" class="row transport">
+        <button id="clockToggle" class="primary">Play</button>
+        <span id="clockTime" class="clock">00:00:00.000</span>
+        <span class="hint">Start this when the movie starts, then tap-sync.</span>
+      </div>
+
+      <section class="group">
+        <h3>Sync</h3>
+        <p class="hint">Drifted? This puts the tap target back on screen so you
+          can line it up on the next line you hear.</p>
+        <button id="reSyncBtn" class="primary big">Re-sync</button>
+      </section>
+
+      <section class="group">
+        <h3>Fine adjust</h3>
+        <div class="nudge-row">
+          <button id="nudgeMinus1">−1s</button>
+          <button id="nudgeMinusS">−0.1</button>
+          <button id="nudgePlusS">+0.1</button>
+          <button id="nudgePlus1">+1s</button>
+        </div>
+        <div class="readout" id="offsetReadout">offset 00:00:00.000 · scale 1.0000</div>
+        <button id="resetSyncBtn" class="ghost small">Reset sync</button>
+      </section>
+
+      <section class="group">
+        <h3>Fix drift (two-point)</h3>
+        <p class="hint">Tap A on an early line, B on a late line, then apply — fixes gradual desync.</p>
+        <div class="nudge-row">
+          <button id="ptABtn">Set A</button>
+          <button id="ptBBtn">Set B</button>
+          <button id="applyTwoPt" class="primary">Apply</button>
+        </div>
+        <div class="readout" id="twoPtInfo"></div>
+      </section>
+
+      <section class="group">
+        <h3>Language</h3>
+        <div class="field">
+          <label for="sourceLang">The .srt is in</label>
+          <select id="sourceLang">
+            <option value="en">English</option>
+            <option value="si">Sinhala</option>
+            <option value="hi">Hindi</option>
+            <option value="ta">Tamil</option>
+            <option value="te">Telugu</option>
+            <option value="zh">Chinese</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="targetLang">Translate to</label>
+          <select id="targetLang">
+            <option value="off">Don't translate</option>
+            <option value="en">English</option>
+            <option value="si">Sinhala</option>
+          </select>
+        </div>
+        <label class="check"><input type="checkbox" id="showBoth" /> Show original + translation</label>
+        <button id="translateBtn" class="primary">Translate subtitles</button>
+        <div id="translateProgress" class="progress" hidden>
+          <div class="bar"><div id="translateBar"></div></div>
+          <span id="translateCount"></span>
+        </div>
+        <div class="field">
+          <label for="endpoint">Translated by</label>
+          <select id="endpoint">
+            <option value="groq">Groq AI (sign in)</option>
+            <option value="mymemory">MyMemory (free)</option>
+          </select>
+        </div>
+        <p id="translateHint" class="hint"></p>
+        <p class="hint">Machine translation is approximate — Sinhala especially,
+          since it has far less training data than English. Expect to reread the
+          odd line.</p>
+      </section>
+
+      <section class="group">
+        <h3>Display</h3>
+        <div class="field"><label for="fontScale">Caption size</label>
+          <input type="range" id="fontScale" min="0.7" max="2.2" step="0.05" /></div>
+        <div class="field"><label for="bgOpacity">Backing</label>
+          <input type="range" id="bgOpacity" min="0" max="0.9" step="0.05" /></div>
+        <div class="field"><label for="capBright">Brightness</label>
+          <input type="range" id="capBright" min="0.15" max="1" step="0.05" /></div>
+        <p class="hint">The stage is pure black so an OLED screen barely draws
+          power. Turn brightness down in a dark room — it dims the captions
+          without touching the system slider.</p>
+      </section>
+
+      <section class="group">
+        <h3>Auto-sync</h3>
+        <button id="autoSyncBtn" class="ghost" hidden>Auto-sync (experimental)</button>
+        <p class="hint">Listens to the movie through the mic and guesses the offset. Often fails on iPad — Tap to sync is the reliable one.</p>
+      </section>
+    </aside>
+
+    <!-- Language pop-up on start -->
+    <div id="langPrompt" class="overlay" hidden>
+      <div class="overlay-card">
+        <h2>Subtitles in…</h2>
+        <div class="lang-btns">
+          <button data-lang="off">Original</button>
+          <button data-lang="en">English</button>
+          <button data-lang="si">Sinhala</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared chooser: film guesses from auto-find, releases from search.
+       Outside the stage so it also shows over the setup screen. -->
+  <div id="pickPrompt" class="overlay" hidden>
+    <div class="overlay-card" role="dialog" aria-modal="true" aria-labelledby="pickTitle">
+      <h2 id="pickTitle"></h2>
+      <p id="pickNote" class="pick-note"></p>
+      <div id="pickChoices" class="lang-btns"></div>
+      <button id="pickCancelBtn" class="ghost"></button>
+    </div>
+  </div>
+
+  <script src="../../js/app-shell.js?v=20261025a" defer></script>
+  <script type="module" src="./js/app.js?v=20261026a"></script>
+  <script type="module" src="../../js/gethired-sync.js?v=20261026a"></script>
+</body>
+</html>

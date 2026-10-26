@@ -1,0 +1,198 @@
+/* SubSync inside the Gaia Symbiosis tool frame (css/styles.css + css/app-shell.css).
+   The setup screen uses the site's light cards; the caption stage keeps SubSync's
+   pitch-black projection-booth look. Stage rules are scoped to #stage and the
+   overlays so they never touch the rest of the page. */
+
+[hidden] { display: none !important; }
+/* Caption settings, set on the root by js/app.js */
+:root { --cap-scale: 1; --cap-bg: 0; --cap-bright: 1; }
+
+/* ---------- SETUP (site styles) ---------- */
+.ss-intro { max-width: 920px; margin: 0 auto; padding: 2.25rem 1.5rem .5rem; }
+.ss-intro h1 { font-size: clamp(1.85rem, 3.4vw, 2.6rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: .5rem; }
+.ss-intro p { color: var(--muted); font-size: 1rem; max-width: 680px; }
+.ss-intro .ss-account-hint { margin-top: .35rem; font-size: .85rem; color: var(--faint); }
+.ss-wrap { max-width: 920px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
+.ss-card { padding: 2rem; }
+.ss-card .eyebrow { display: flex; font-size: .8rem; letter-spacing: .14em; margin-bottom: .85rem; }
+.ss-divider { height: 1px; background: var(--border); margin: 1.6rem 0 1.4rem; }
+.ss-big { display: inline-flex; align-items: center; gap: .6rem; padding: 1rem 1.5rem; font-size: 1rem; }
+.ss-big svg { width: 20px; height: 20px; }
+.ss-big:disabled { opacity: .65; cursor: progress; }
+.ss-status { color: var(--blue-dark); font-size: .9rem; font-weight: 500; min-height: 1.2em; margin-top: .75rem; line-height: 1.45; }
+.ss-status:empty { display: none; }
+.ss-hint { color: var(--muted); font-size: .85rem; margin-top: .65rem; line-height: 1.5; }
+.ss-search-row { display: flex; gap: .65rem; margin-bottom: 0; }
+.ss-search-row input { flex: 1; min-width: 0; }
+.ss-search-row .btn { flex: none; }
+.ss-load { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 1rem 1.25rem; align-items: start; }
+.ss-load .form-group { margin-bottom: 0; display: grid; gap: .5rem; }
+.ss-load .form-group label { margin-bottom: 0; }
+.ss-load textarea { min-height: 84px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82rem; }
+.ss-load .form-group .btn { justify-self: start; }
+.ss-file { cursor: pointer; margin-top: 1.55rem; }
+.ss-list { margin: 1.25rem 0 0; }
+/* A long release name would otherwise size the select to its widest option */
+.ss-list select { min-width: 0; max-width: 100%; text-overflow: ellipsis; }
+.ss-warnings { color: var(--muted); font-size: .86rem; min-height: 1.2em; margin-top: 1rem; line-height: 1.45; }
+.ss-warnings:empty { display: none; }
+
+.ss-start { margin-top: 1.5rem; text-align: center; scroll-margin-top: 100px; }
+.ss-start-btn { width: 100%; justify-content: center; padding: 1.1rem; font-size: 1.1rem; font-weight: 700; border-radius: 14px; }
+.ss-start-btn:disabled { background: #e2e8f0; color: #94a3b8; box-shadow: none; cursor: not-allowed; transform: none; }
+.ss-start-hint { color: #c2410c; font-size: .86rem; margin-top: .6rem; }
+.ss-start-hint:empty { display: none; }
+.ss-fineprint { color: var(--faint); font-size: .8rem; margin-top: .75rem; }
+
+.ss-how { margin-top: 3rem; scroll-margin-top: 90px; }
+.ss-how h2 { font-size: 1.4rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 1rem; }
+.ss-how-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.ss-how .card { padding: 1.4rem 1.5rem; }
+.ss-how .card h3 { font-size: 1rem; margin-bottom: .5rem; }
+.ss-how .card p { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+#get { scroll-margin-top: 90px; }
+
+@media (max-width: 900px) {
+  .ss-load { grid-template-columns: minmax(0, 1fr); }
+  .ss-file { margin-top: 0; justify-self: start; }
+}
+@media (max-width: 640px) {
+  .ss-intro { padding: 1.5rem 1rem .25rem; }
+  .ss-wrap { padding: 1.1rem 1rem 2.5rem; }
+  .ss-card { padding: 1.35rem; }
+  .ss-big { width: 100%; justify-content: center; }
+  .ss-how-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* While the captions are up, the stage is the whole screen */
+body.ss-staging { overflow: hidden; }
+body.ss-staging > header, body.ss-staging > .main-nav, body.ss-staging > main, body.ss-staging > .gh-footer, body.ss-staging > .skip-link { display: none !important; }
+
+/* ---------- STAGE (SubSync's own look) ---------- */
+#stage, .overlay {
+  --ss-ink: #0d0f14; --ss-ink-2: #141824; --ss-ink-3: #1c2130; --ss-line: #2a3040;
+  --ss-text: #eef1f7; --ss-muted: #8b93a7; --ss-amber: #f3b13b;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+#stage *, .overlay * { box-sizing: border-box; }
+#stage h2, #stage h3, .overlay h2 { margin: 0; font-weight: 650; letter-spacing: -0.01em; }
+#stage button, #stage select, #stage input, .overlay button { font: inherit; color: inherit; }
+#stage button, .overlay button { cursor: pointer; border: none; }
+
+/* Pitch black: on an OLED panel a #000 pixel is switched off, so the stage
+   draws almost no power. Nothing here paints a non-black pixel except the
+   captions and the two topbar buttons. */
+#stage { position: fixed; inset: 0; z-index: 500; background: #000; color: var(--ss-text); -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
+
+#stage .topbar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: max(10px, env(safe-area-inset-top)) 14px 10px;
+}
+#stage .icon-btn {
+  width: 44px; height: 44px; border-radius: 50%; background: #ffffff0f; color: #7d8496;
+  font-size: 1.4rem; line-height: 1; display: grid; place-items: center;
+}
+/* Back is a rare action — keep it findable but barely lit. The gear stays
+   brighter because it is the one control needed mid-film. */
+#backBtn { background: none; color: #4a5061; }
+#gearBtn { color: #aab2c4; }
+
+/* The tap target is the whole caption area — hittable in the dark without
+   looking away from the film. */
+#stage .tap-prompt {
+  /* Below the topbar (5) so the gear stays reachable while the prompt is up. */
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; padding: 0 8%; text-align: center;
+  background: none; color: var(--ss-text);
+}
+#stage .tap-prompt-lead, #stage .tap-prompt-foot { color: var(--ss-muted); font-size: .9rem; letter-spacing: .02em; }
+#stage .tap-prompt-line {
+  font-size: calc(1.9rem * var(--cap-scale)); font-weight: 640; line-height: 1.3;
+  max-width: 22ch; text-wrap: balance; color: var(--ss-amber);
+}
+#stage .tap-prompt:active .tap-prompt-line { transform: scale(.99); }
+@media (prefers-reduced-motion: no-preference) {
+  #stage .tap-prompt-foot { animation: ssPulse 2.4s ease-in-out infinite; }
+}
+@keyframes ssPulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+
+#stage .caption-wrap {
+  position: absolute; left: 0; right: 0; bottom: 8%; z-index: 4;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 0 5%; pointer-events: none; text-align: center;
+}
+body.mode-companion #stage .caption-wrap { top: 0; bottom: 0; justify-content: center; }
+#stage .caption {
+  max-width: 24ch; line-height: 1.25; text-wrap: balance;
+  padding: .18em .5em; border-radius: 8px;
+  background: rgba(0,0,0,var(--cap-bg));
+  white-space: pre-line;
+  opacity: var(--cap-bright);
+}
+#stage .caption-translated { font-size: calc(2.1rem * var(--cap-scale)); font-weight: 640; }
+#stage .caption-original { font-size: calc(1.5rem * var(--cap-scale)); font-weight: 500; color: #d7dbe6; }
+#stage .caption-wrap.live .caption-translated:empty { display: none; }
+#stage .caption:empty { display: none; }
+body.mode-companion #stage .caption-translated { font-size: calc(3rem * var(--cap-scale)); }
+body.mode-companion #stage .caption-original { font-size: calc(2rem * var(--cap-scale)); }
+
+/* ---------- CONTROLS DRAWER ---------- */
+#controls {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(400px, 88vw); z-index: 8;
+  background: var(--ss-ink-2); border-left: 1px solid var(--ss-line);
+  padding: max(16px, env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));
+  overflow-y: auto; transform: translateX(100%); transition: transform .25s ease;
+  -webkit-overflow-scrolling: touch;
+}
+#controls.open { transform: translateX(0); box-shadow: -20px 0 60px #000a; }
+@media (prefers-reduced-motion: reduce) { #controls { transition: none; } }
+#stage .controls-scrim { position: absolute; inset: 0; z-index: 7; background: #0007; }
+#stage .drawer-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+#stage .drawer-title { font-size: 1.1rem; }
+
+#stage .group { border-top: 1px solid var(--ss-line); padding: 16px 0 4px; }
+#stage .group h3 { font-size: .95rem; margin-bottom: 8px; }
+#stage .hint { color: var(--ss-muted); font-size: .8rem; line-height: 1.4; margin: 4px 0 10px; }
+
+#stage .transport { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 8px; }
+#stage .transport .hint { flex-basis: 100%; margin: 2px 0 0; }
+#stage .clock { font-variant-numeric: tabular-nums; color: var(--ss-amber); font-size: 1rem; }
+
+#stage .primary { background: var(--ss-amber); color: #241a05; font-weight: 700; border-radius: 10px; padding: 11px 14px; }
+#stage .primary.big { width: 100%; padding: 15px; font-size: 1.05rem; }
+#stage .primary:disabled { opacity: .6; }
+
+#stage .nudge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+#stage .nudge-row button { flex: 1; min-width: 60px; background: var(--ss-ink-3); border: 1px solid var(--ss-line); border-radius: 10px; padding: 12px 6px; }
+#stage .nudge-row button.primary { background: var(--ss-amber); border-color: var(--ss-amber); }
+#stage .readout { font-variant-numeric: tabular-nums; color: var(--ss-muted); font-size: .82rem; margin: 10px 0; min-height: 1.2em; line-height: 1.4; }
+
+#stage .field { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 10px 0; }
+#stage .field label { color: var(--ss-muted); font-size: .88rem; }
+#stage .field select { flex: 1; max-width: 60%; min-width: 0; background: var(--ss-ink-3); border: 1.5px solid var(--ss-line); border-radius: 10px; padding: 11px; color: var(--ss-text); }
+#stage .field input[type="range"] { flex: 1; max-width: 60%; accent-color: var(--ss-amber); }
+#stage select:focus, #stage input:focus, #stage button:focus-visible, .overlay button:focus-visible { outline: 2px solid var(--ss-amber); outline-offset: 2px; }
+
+#stage .ghost, .overlay .ghost { background: transparent; border: 1.5px solid var(--ss-line); border-radius: 10px; padding: 10px 14px; color: var(--ss-text); }
+#stage .ghost.small { padding: 7px 12px; font-size: .85rem; }
+#stage .check { display: flex; align-items: center; gap: 8px; color: var(--ss-muted); font-size: .88rem; margin: 8px 0; }
+#stage .check input { accent-color: var(--ss-amber); width: 18px; height: 18px; }
+
+#stage .progress { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+#stage .progress .bar { flex: 1; height: 8px; background: var(--ss-ink-3); border-radius: 99px; overflow: hidden; }
+#stage .progress .bar > div { height: 100%; width: 0; background: var(--ss-amber); transition: width .2s; }
+#translateCount { color: var(--ss-muted); font-size: .78rem; font-variant-numeric: tabular-nums; }
+
+/* ---------- OVERLAYS ---------- */
+.overlay { position: fixed; inset: 0; z-index: 600; display: grid; place-items: center; background: #000b; backdrop-filter: blur(4px); color: var(--ss-text); }
+.overlay-card { background: var(--ss-ink-2); border: 1px solid var(--ss-line); border-radius: 18px; padding: 28px; text-align: center; width: min(420px, 86vw); max-height: 86vh; overflow-y: auto; }
+.overlay-card h2 { margin-bottom: 18px; font-size: 1.45rem; line-height: 1.25; color: var(--ss-text); }
+.overlay .lang-btns { display: grid; gap: 10px; }
+.overlay .lang-btns button { background: var(--ss-ink-3); border: 1.5px solid var(--ss-line); border-radius: 12px; padding: 16px; font-size: 1.05rem; font-weight: 600; color: var(--ss-text); }
+.overlay .lang-btns button:active { border-color: var(--ss-amber); }
+.overlay .lang-btns + .ghost { margin-top: 10px; width: 100%; }
+.overlay .pick-note { color: var(--ss-muted); font-size: .82rem; font-style: italic; margin: -8px 0 16px; line-height: 1.4; }
+.overlay .pick-choice { display: grid; gap: 3px; text-align: left; }
+.overlay .pick-choice .pick-sub { color: var(--ss-muted); font-size: .78rem; font-weight: 400; font-style: italic; }

@@ -227,9 +227,9 @@ async function start() {
     }
   };
 
-  // Job Search Assistant: call /api/keywords or /api/jobs with this user's sign-in token
+  // Job Search Assistant and SubSync: call their APIs with this user's sign-in token
   window.gethiredCall = async (path, payload) => {
-    if (!['/api/keywords', '/api/jobs', '/api/jobad'].includes(path)) return { ok: false, error: 'bad_request' };
+    if (!['/api/keywords', '/api/jobs', '/api/jobad', '/api/subsync'].includes(path)) return { ok: false, error: 'bad_request' };
     if (!a.currentUser) return { ok: false, error: 'signin' };
     let idToken;
     try { idToken = await a.currentUser.getIdToken(); } catch { return { ok: false, error: 'auth' }; }

@@ -23,7 +23,8 @@
   <meta name="twitter:description" content="How Gaia Symbiosis protects your personal information." />
   <meta name="twitter:image" content="https://gaiasymbiosis.com/assets/logo-512.png" />
 
-  <link rel="icon" type="image/png" sizes="96x96" href="assets/logo-96.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-white-96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-white-192.png" />
   <link rel="apple-touch-icon" href="assets/logo-512.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -60,7 +61,7 @@
               <li><a href="tools/cv-builder.html"><strong>CV Prompt Builder</strong><span class="live">Tailored CV prompts · Live</span></a></li>
               <li><a href="tools/job-search.html"><strong>Job Search Assistant</strong><span class="live">Visa sponsor job matches · Live</span></a></li>
               <li><a href="https://lushnote.com.au" target="_blank" rel="noopener"><strong>LushNote</strong><span class="live">AI clinical notes · Live</span></a></li>
-              <li><a href="https://iamarasinghe96.github.io/subtitle/" target="_blank" rel="noopener"><strong>SubSync</strong><span class="live">Synced subtitles on a second screen · Live</span></a></li>
+              <li><a href="tools/subsync/"><strong>SubSync</strong><span class="live">Synced subtitles on a second screen · Live</span></a></li>
             </ul>
           </li>
           <li><a href="index.html#about">About</a></li>
@@ -76,7 +77,7 @@
     <a class="mobile-sub" href="tools/cv-builder.html">CV Prompt Builder</a>
     <a class="mobile-sub" href="tools/job-search.html">Job Search Assistant</a>
     <a class="mobile-sub" href="https://lushnote.com.au" target="_blank" rel="noopener">LushNote</a>
-    <a class="mobile-sub" href="https://iamarasinghe96.github.io/subtitle/" target="_blank" rel="noopener">SubSync</a>
+    <a class="mobile-sub" href="tools/subsync/">SubSync</a>
     <a href="index.html#about">About</a>
     <a href="index.html#contact" class="btn btn-primary">Book a call</a>
   </div>
@@ -87,7 +88,7 @@
       <div class="container">
         <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">Privacy Policy</li></ol></nav>
         <h1 id="page-title" class="reveal">Your data is <span class="grad">yours.</span></h1>
-        <p class="reveal" style="--d:.08s">How Gaia Symbiosis collects, uses, stores and protects your personal information. Last updated 25 October 2026.</p>
+        <p class="reveal" style="--d:.08s">How Gaia Symbiosis collects, uses, stores and protects your personal information. Last updated 26 October 2026.</p>
       </div>
     </section>
 
@@ -127,6 +128,14 @@
           <li>Your search settings and latest results are kept in your own browser. When you choose "Build my CV for this job", that job is saved to your CV Prompt Builder.</li>
           <li>As with the spelling check, we count searches per account per hour, with no content, to prevent misuse.</li>
         </ul>
+        <h3>SubSync</h3>
+        <ul>
+          <li>Subtitle files you load, your sync settings and translated lines are kept only in your own browser.</li>
+          <li>"Listen &amp; find subtitles" uses your browser's speech recognition to hear about 15 seconds of the film. Your browser may use its maker's speech service for this (for example Google in Chrome, Apple in Safari). The words it heard are sent to Groq to work out which film it is. We don't keep a copy.</li>
+          <li>Film names you search for, and the subtitle file you pick, are sent to <a href="https://www.opensubtitles.com/en/privacy" target="_blank" rel="noopener">OpenSubtitles</a> to find and download subtitles. Nothing that identifies you is sent to OpenSubtitles.</li>
+          <li>If you translate with Groq AI, the subtitle lines are sent to Groq and the translations come back to you. If you choose MyMemory, the lines go from your browser straight to <a href="https://mymemory.translated.net/doc/en/tos.php" target="_blank" rel="noopener">MyMemory</a>.</li>
+          <li>As with our other tools, we count requests per account, with no content, to prevent misuse.</li>
+        </ul>
         <h3>Waitlists</h3>
         <p>If you join a tool waitlist, your email app sends us a message with your email address. We use it only to tell you when that tool launches.</p>
         <h3>Website visits</h3>
@@ -137,8 +146,10 @@
         <ul>
           <li><strong>Google</strong> (Firebase sign-in and database, Google Sheets, Gmail, Google Fonts)</li>
           <li><strong>Vercel</strong> (website hosting)</li>
-          <li><strong>Groq</strong> (AI for the spelling check, CV import and job keyword matching, only when you use them)</li>
+          <li><strong>Groq</strong> (AI for the spelling check, CV import, job keyword matching, and SubSync film identification and translation, only when you use them)</li>
           <li><strong>Adzuna</strong> (live job ads for the Job Search Assistant, only your search terms)</li>
+          <li><strong>OpenSubtitles</strong> (subtitle search and download for SubSync, only the film name and chosen file)</li>
+          <li><strong>MyMemory</strong> (free subtitle translation in SubSync, only if you choose it)</li>
         </ul>
         <p>Some of these providers may store or process data outside Australia, for example in the United States. Each is bound by its own privacy and security commitments. We may also disclose information if the law requires it.</p>
 
@@ -192,7 +203,7 @@
             <li><a href="tools/cv-builder.html">CV Builder</a></li>
             <li><a href="tools/job-search.html">Job Search</a></li>
             <li><a href="https://lushnote.com.au" target="_blank" rel="noopener">LushNote</a></li>
-            <li><a href="https://iamarasinghe96.github.io/subtitle/" target="_blank" rel="noopener">SubSync</a></li>
+            <li><a href="tools/subsync/">SubSync</a></li>
           </ul>
         </div>
         <div>
