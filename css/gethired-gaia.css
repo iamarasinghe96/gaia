@@ -69,6 +69,8 @@ body > .gh-footer { grid-column: 2; }
 .main-nav-tab:first-child { margin-top: 0; padding-top: 14px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), 50% 100%, 0 calc(100% - 16px)); border-radius: 14px 14px 0 0; }
 .main-nav-tab:nth-child(2) { --c1: #3b82f6; --c2: #2563eb; --tx: #fff; --sub: rgba(255, 255, 255, .75); }
 .main-nav-tab:nth-child(3) { --c1: #1e40af; --c2: #172f7a; --tx: #fff; --sub: rgba(255, 255, 255, .7); }
+.main-nav-tab:nth-child(4) { --c1: #172f7a; --c2: #0f1f52; --tx: #fff; --sub: rgba(255, 255, 255, .68); }
+a.main-nav-tab, a.main-nav-tab:hover { text-decoration: none; }
 .main-nav-tab:hover { filter: brightness(1.05) saturate(1.05); background: linear-gradient(160deg, var(--c1), var(--c2)); color: var(--tx); }
 .main-nav-tab.active {
   --c1: #fb923c; --c2: #ea580c; --tx: #fff; --sub: rgba(255, 255, 255, .85);
@@ -468,3 +470,14 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
 .style-check input:disabled + span { opacity: .65; }
 .doc-letterhead.has-photo { position: relative; text-align: left; padding-right: 108px; min-height: 86px; }
 .doc-photo { position: absolute; right: 0; top: -6px; width: 92px; height: 92px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; }
+
+/* Profile Builder tools: expand/collapse all, voice guide, clear all, banner */
+.import-bar[hidden] { display: none; }
+.profile-tools { display: flex; justify-content: flex-end; margin: 0 0 10px; }
+.voice-btn { display: inline-grid; place-items: center; width: 28px; height: 28px; margin-left: 8px; vertical-align: middle; border-radius: 50%; border: 1px solid #dbe5f7; background: #fff; color: var(--navy); cursor: pointer; transition: background .2s, color .2s, box-shadow .2s; }
+.voice-btn svg { width: 15px; height: 15px; }
+.voice-btn:hover, .voice-btn:focus-visible { background: var(--navy-pale); }
+.voice-btn.is-speaking { background: var(--navy); color: #fff; box-shadow: 0 0 0 0 rgba(37, 99, 235, .45); animation: voicePulse 1.4s ease-out infinite; }
+@keyframes voicePulse { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, .45); } 80%, 100% { box-shadow: 0 0 0 9px rgba(37, 99, 235, 0); } }
+.clear-all-btn { color: var(--red) !important; margin-right: auto; }
+.clear-all-btn:hover { border-color: var(--red) !important; }

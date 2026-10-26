@@ -64,6 +64,7 @@ body.app-shell {
 .app-shell .main-nav-tab:first-child { margin-top: 0; padding-top: 14px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), 50% 100%, 0 calc(100% - 16px)); border-radius: 14px 14px 0 0; }
 .app-shell .main-nav-tab:nth-child(2) { --c1: #3b82f6; --c2: #2563eb; --tx: #fff; --sub: rgba(255, 255, 255, .75); }
 .app-shell .main-nav-tab:nth-child(3) { --c1: #1e40af; --c2: #172f7a; --tx: #fff; --sub: rgba(255, 255, 255, .7); }
+.app-shell .main-nav-tab:nth-child(4) { --c1: #172f7a; --c2: #0f1f52; --tx: #fff; --sub: rgba(255, 255, 255, .68); }
 .app-shell .main-nav-tab:hover { filter: brightness(1.05) saturate(1.05); }
 .app-shell .main-nav-tab.active { --c1: #fb923c; --c2: #ea580c; --tx: #fff; --sub: rgba(255, 255, 255, .85); z-index: 2; filter: drop-shadow(0 8px 14px rgba(234, 88, 12, .28)); }
 .app-shell .main-nav-tab:not(.nav-help) + .main-nav-tab:not(.nav-help) { padding-top: 28px; }
