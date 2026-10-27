@@ -480,3 +480,41 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
 @keyframes voicePulse { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, .45); } 80%, 100% { box-shadow: 0 0 0 9px rgba(37, 99, 235, 0); } }
 .clear-all-btn { color: var(--red) !important; margin-right: auto; }
 .clear-all-btn:hover { border-color: var(--red) !important; }
+
+/* Paste Claude's reply in the Prompt Builder */
+.reply-stage { margin: 26px auto 0; max-width: 980px; padding: 18px 20px 16px; background: #fff; border: 1.5px dashed #c7d6f5; border-radius: var(--radius); }
+.reply-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+.reply-title { display: block; font-size: 15px; font-weight: 700; color: var(--ink); }
+.reply-sub { font-size: 12.5px; color: var(--slate); margin-top: 3px; max-width: 560px; line-height: 1.45; }
+.reply-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.reply-chip { font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px; background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; white-space: nowrap; }
+.reply-chip.done { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+.reply-input { width: 100%; min-height: 96px; resize: vertical; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font: inherit; font-size: 14px; background: var(--surface); }
+.reply-input:focus { outline: none; border-color: var(--navy); background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, .1); }
+.reply-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.reply-msg { font-size: 13px; color: var(--slate); line-height: 1.45; flex: 1 1 260px; }
+.reply-msg[data-kind="ok"] { color: #047857; font-weight: 600; }
+.reply-msg[data-kind="error"] { color: #b91c1c; }
+
+/* Export: Cover Letter / CV switch and Save to a folder */
+.doc-switch-row { padding: 10px 18px 0; }
+.doc-switch { display: inline-flex; padding: 4px; gap: 4px; background: #f1f5f9; border-radius: 999px; }
+.doc-switch button { border: 0; background: transparent; padding: 8px 16px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 600; color: var(--slate); cursor: pointer; }
+.doc-switch button.on { background: #fff; color: var(--navy); box-shadow: 0 1px 4px rgba(15, 23, 42, .12); }
+.doc-switch button.has::after { content: ' ✓'; color: #059669; }
+.save-body .field-input { width: 100%; margin-bottom: 10px; }
+.save-where { font-size: 12.5px; color: var(--slate); line-height: 1.45; margin: 2px 0 10px; word-break: break-word; }
+.save-where strong { color: var(--ink); }
+.save-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.save-dlg { border: 0; border-radius: 18px; padding: 26px 26px 20px; max-width: 460px; width: calc(100% - 32px); box-shadow: 0 30px 80px rgba(0, 0, 0, .3); }
+.save-dlg::backdrop { background: rgba(5, 7, 13, .45); }
+.save-dlg h3 { font-size: 18px; margin: 0 0 10px; }
+.save-dlg p { font-size: 14px; color: var(--slate); line-height: 1.55; margin: 0 0 10px; }
+.save-dlg .save-dlg-note { font-size: 12.5px; color: #64748b; }
+.save-dlg-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.export-grid > * { min-width: 0; }
+@media (max-width: 640px) {
+  .export-main .panel-header { flex-wrap: wrap; gap: 10px; }
+  .export-main .panel-badges { width: 100%; }
+  .export-main .panel-badges .btn { flex: 1 1 0; justify-content: center; }
+}

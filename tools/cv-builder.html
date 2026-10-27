@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261027b">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261027b">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261027b">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261027c">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261027c">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261027c">
 </head>
 <body>
 
@@ -323,6 +323,24 @@
         </div>
       </div>
 
+      <div class="reply-stage" id="reply-stage">
+        <div class="reply-head">
+          <div>
+            <label class="reply-title" for="reply-input">Paste Claude's reply here</label>
+            <div class="reply-sub">Copy Claude's whole reply and paste it below. Cover letter or CV, the tool tells them apart. Once both are in, Export to Word opens.</div>
+          </div>
+          <div class="reply-chips">
+            <span class="reply-chip" id="reply-chip-cl">&#x2709; Cover letter</span>
+            <span class="reply-chip" id="reply-chip-cv">&#x1F4C4; CV</span>
+          </div>
+        </div>
+        <textarea id="reply-input" class="reply-input" rows="4" placeholder="Paste Claude's full reply here (it has tags like [SALUTATION] or [SUMMARY])"></textarea>
+        <div class="reply-foot">
+          <span class="reply-msg" id="reply-msg" role="status" aria-live="polite"></span>
+          <button type="button" class="btn btn-outline" id="reply-go" onclick="switchView('export')" hidden>Open Export to Word &#x2192;</button>
+        </div>
+      </div>
+
       <!-- Built prompts are assembled here behind the scenes for copying -->
       <div hidden>
         <div class="output-panel" id="out-cover-letter"><div class="output-content" id="out-cl-content"></div></div>
@@ -407,45 +425,6 @@
             <div class="panel-label">
               <div class="panel-number">1</div>
               <div class="panel-meta">
-                <div class="panel-title">Choose document type</div>
-                <div class="panel-desc">Match this to whichever prompt you ran</div>
-              </div>
-            </div>
-          </div>
-          <div style="padding:14px 16px;display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn-outline" id="exp-type-cl" onclick="setExportType('cl')" style="flex:1;min-width:140px">&#x2709; Cover Letter</button>
-            <button class="btn btn-outline" id="exp-type-cv" onclick="setExportType('cv')" style="flex:1;min-width:140px">&#x1F4C4; CV / Resume</button>
-          </div>
-        </div>
-
-        <div class="panel" style="padding:0">
-          <div class="panel-header">
-            <div class="panel-label">
-              <div class="panel-number">2</div>
-              <div class="panel-meta">
-                <div class="panel-title">Bring in the AI content</div>
-                <div class="panel-desc">Copy Claude's full reply, then read it from your clipboard</div>
-              </div>
-            </div>
-          </div>
-          <div style="padding:14px 16px">
-            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-              <button class="btn btn-green btn-lg" onclick="readClipboardForExport()">&#x1F4CB; Read from clipboard</button>
-              <button class="btn btn-ghost" onclick="toggleExportPaste()">or paste manually</button>
-              <span id="exp-parse-status" class="panel-desc" style="margin-left:auto"></span>
-            </div>
-            <div id="exp-paste-wrap" style="display:none;margin-top:12px">
-              <textarea id="exp-paste" class="prompt-area" placeholder="Paste the AI's full reply here (including the [SALUTATION]/[SUMMARY] tags), then click Parse pasted text." style="min-height:160px;border:1px solid var(--border);border-radius:10px"></textarea>
-              <div style="margin-top:8px"><button class="btn btn-primary" onclick="parseExportFromPaste()">Parse pasted text</button></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel" style="padding:0">
-          <div class="panel-header">
-            <div class="panel-label">
-              <div class="panel-number">3</div>
-              <div class="panel-meta">
                 <div class="panel-title">Style</div>
                 <div class="panel-desc">Colour and font for the whole document</div>
               </div>
@@ -460,24 +439,54 @@
             <p class="style-note">&#x270D; Cover letter signature: <a href="#" onclick="openSignature();return false">add or change it in Personal Information</a></p>
           </div>
         </div>
+
+        <div class="panel" style="padding:0" id="exp-save-panel">
+          <div class="panel-header">
+            <div class="panel-label">
+              <div class="panel-number">2</div>
+              <div class="panel-meta">
+                <div class="panel-title">Save to a folder</div>
+                <div class="panel-desc">Each application in Company &#x203A; Position</div>
+              </div>
+            </div>
+          </div>
+          <div class="style-body save-body">
+            <div id="exp-save-fields">
+              <label class="style-label" for="exp-company">Company</label>
+              <input id="exp-company" class="field-input" list="exp-company-list" autocomplete="off" placeholder="e.g. Genus Industrial Services">
+              <datalist id="exp-company-list"></datalist>
+              <label class="style-label" for="exp-position">Position</label>
+              <input id="exp-position" class="field-input" autocomplete="off" placeholder="e.g. Project Administrator">
+            </div>
+            <p class="save-where" id="exp-save-where"></p>
+            <div class="save-actions" id="exp-save-actions"></div>
+          </div>
+        </div>
       </div>
 
       <div class="export-main">
         <div class="panel" style="padding:0">
           <div class="panel-header">
             <div class="panel-label">
-              <div class="panel-number">4</div>
+              <div class="panel-number">3</div>
               <div class="panel-meta">
                 <div class="panel-title">Preview &amp; edit</div>
                 <div class="panel-desc">Click any text to change it before you download</div>
               </div>
             </div>
             <div class="panel-badges">
+              <button class="btn btn-outline btn-lg" id="exp-both-btn" onclick="downloadBothDocx()" hidden>&#x2B07; Both</button>
               <button class="btn btn-primary btn-lg" id="exp-download-btn" onclick="downloadExportDocx()" disabled>&#x2B07; Download .docx</button>
             </div>
           </div>
+          <div class="doc-switch-row">
+            <div class="doc-switch" role="group" aria-label="Document">
+              <button type="button" id="exp-type-cl" onclick="setExportType('cl')">&#x2709; Cover Letter</button>
+              <button type="button" id="exp-type-cv" onclick="setExportType('cv')">&#x1F4C4; CV</button>
+            </div>
+          </div>
           <div class="doc-stage">
-            <div id="exp-empty" class="output-empty"><div class="empty-icon">&#x1F4C4;</div>Read Claude's reply from your clipboard to see the document here.</div>
+            <div id="exp-empty" class="output-empty"><div class="empty-icon">&#x1F4C4;</div><span id="exp-empty-text">Paste Claude's reply in the Prompt Builder and it appears here.</span><div><button type="button" class="btn btn-outline" style="margin-top:14px" onclick="switchView('prompt')">&#x2190; Go to the Prompt Builder</button></div></div>
             <div id="exp-preview" class="doc-page" style="display:none"></div>
           </div>
         </div>
@@ -525,10 +534,11 @@
     <section class="panel help-card">
       <h2>&#x2462; Export to Word</h2>
       <ol>
-        <li>Copy Claude's <strong>entire reply</strong> (it contains tagged sections like <code>[SALUTATION]</code> or <code>[SUMMARY]</code>).</li>
-        <li>Pick the matching document type, then click <strong>Read from clipboard</strong>. If your browser blocks clipboard access, use <strong>paste manually</strong>.</li>
+        <li>Copy Claude's <strong>entire reply</strong> (it contains tagged sections like <code>[SALUTATION]</code> or <code>[SUMMARY]</code>) and paste it into <strong>Paste Claude's reply here</strong> in the Prompt Builder. The tool tells a cover letter from a CV by its tags.</li>
+        <li>Paste the cover letter reply, then copy the CV prompt, run it and paste that reply too. Once both are in, Export to Word opens. Switch between them with <strong>Cover Letter</strong> and <strong>CV</strong> above the preview.</li>
         <li>Check the <strong>preview</strong>. Click any text to edit it, add or remove bullet points and rows, and pick a colour and font. Your edits are saved.</li>
-        <li>Click <strong>Download .docx</strong>. Your name, contact details and links come from the Profile Builder.</li>
+        <li>Click <strong>Download .docx</strong>, or <strong>Both</strong> for the two documents. Your name, contact details and links come from the Profile Builder.</li>
+        <li>In Chrome or Edge on a computer, the first download offers to use a folder for your job applications. Each application is then saved in <strong>Company &#x203A; Position</strong>, read from Claude's reply, and an existing company folder is reused. Check or change both names under <strong>Save to a folder</strong>. The folder stays on your computer and is never uploaded.</li>
       </ol>
       <h3>Signature</h3>
       <ul>
@@ -2185,12 +2195,12 @@ function initExport(){ setExportType(exportType); renderStyleControls(); renderS
 function removeSignature(){ localStorage.removeItem('gethired_signature'); renderSignatureState(); toast('Signature removed','info'); }
 
 function setExportType(t){
+  if (t !== exportType) _flushExportDraft();
   exportType = t;
-  document.getElementById('exp-type-cl').className = 'btn btn-lg ' + (t==='cl'?'btn-primary':'btn-outline');
-  document.getElementById('exp-type-cv').className = 'btn btn-lg ' + (t==='cv'?'btn-primary':'btn-outline');
+  ['cl','cv'].forEach(k => { const b = document.getElementById('exp-type-' + k); if (b) { b.classList.toggle('on', k === t); b.setAttribute('aria-pressed', String(k === t)); } });
   exportData = _loadDrafts()[t] || null;
-  document.getElementById('exp-parse-status').textContent = '';
   renderExportPreview();
+  _renderExportExtras();
 }
 
 function toggleExportPaste(){
@@ -2626,8 +2636,10 @@ async function _embedSignature(zip){
   return _sigDrawing(rid, wEmu, hEmu);
 }
 
-async function downloadExportDocx(){
-  if(!exportData){ toast('Read or paste content first','error'); return; }
+async function downloadExportDocx(target){
+  if(!exportData){ toast("Paste Claude's reply in the Prompt Builder first",'error'); return; }
+  if(target === undefined) target = await _saveTarget();   // a folder, or Downloads; null = cancelled
+  if(!target) return;
   try {
     toast('Building .docx…','info');
     _linkReg = [];
@@ -2739,8 +2751,7 @@ async function downloadExportDocx(){
     // Attach the anchor and keep the blob URL alive until the browser has read it.
     // Revoking immediately after click() truncates large downloads (~1MB) and
     // produces a file Word cannot open.
-    _downloadBlob(blob, fn);
-    toast('Downloaded '+fn+' ('+Math.round(blob.size/1024)+' KB) ✔','success');
+    await _deliverDoc(blob, fn, target);
   } catch(e){ console.error(e); toast('Export failed: '+e.message,'error'); }
 }
 
@@ -2995,14 +3006,19 @@ async function _applyExportStyle(zip){
 // EXPORT DRAFTS: the parsed reply, with your edits, kept per document type
 // ═══════════════════════════════════════════════════════════════
 function _loadDrafts(){ try { return JSON.parse(localStorage.getItem('gethired_export_draft') || '{}') || {}; } catch(e) { return {}; } }
-let _draftTimer;
+let _draftTimer, _draftPending = null;
 function saveExportDraft(){
   clearTimeout(_draftTimer);
-  _draftTimer = setTimeout(() => {
-    const d = _loadDrafts();
-    d[exportType] = exportData;
-    try { localStorage.setItem('gethired_export_draft', JSON.stringify(d)); } catch(e) { toast('Could not save your edits (storage full)', 'error'); }
-  }, 600);
+  _draftPending = { t: exportType, data: exportData };   // the document being edited now, even if you switch before it saves
+  _draftTimer = setTimeout(_flushExportDraft, 600);
+}
+function _flushExportDraft(){
+  clearTimeout(_draftTimer);
+  const p = _draftPending; _draftPending = null;
+  if (!p) return;
+  const d = _loadDrafts();
+  d[p.t] = p.data;
+  try { localStorage.setItem('gethired_export_draft', JSON.stringify(d)); } catch(e) { toast('Could not save your edits (storage full)', 'error'); }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3145,6 +3161,8 @@ window.gethiredReloadFromStorage = function(){
   renderStyleControls();
   renderSignatureState();
   renderExportPreview();
+  renderReplyState();
+  _renderExportExtras();
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -4345,10 +4363,331 @@ function clearAllFields(){
   }, 700);
 }
 
+// ═══════════════════════════════════════════════════════════════
+// PASTE CLAUDE'S REPLY IN THE PROMPT BUILDER: a cover letter and a CV are told apart
+// by their tags and filed for Export to Word, which opens once both are in.
+// ═══════════════════════════════════════════════════════════════
+const _jdKey = () => _promptHash(document.getElementById('jd-input').value);
+function _replyKind(text){
+  const cl = /\[(SALUTATION|TABLE|SIGNOFF)\]/.test(text), cv = /\[(SUMMARY|COMPETENCIES|EXPERIENCE)\]/.test(text);
+  return cl && cv ? ['cl', 'cv'] : cl ? ['cl'] : cv ? ['cv'] : [];
+}
+// Ready = parsed from a reply to the job description that is in the box now
+function _replyReady(d, t){ return !!(d[t] && d.jd && d.jd[t] === _jdKey()); }
+const _DOC_NAME = { cl: 'Cover letter', cv: 'CV' };
+function _replyMsg(text, kind){
+  const el = document.getElementById('reply-msg');
+  if (!el) return;
+  el.textContent = text || '';
+  el.dataset.kind = kind || '';
+}
+function renderReplyState(){
+  const d = _loadDrafts();
+  ['cl', 'cv'].forEach(t => {
+    const chip = document.getElementById('reply-chip-' + t);
+    if (!chip) return;
+    const ok = _replyReady(d, t);
+    chip.classList.toggle('done', ok);
+    chip.textContent = (t === 'cl' ? '✉ Cover letter' : '📄 CV') + (ok ? ' ✓' : '');
+    chip.title = ok ? 'Ready in Export to Word' : 'Not pasted yet for this job';
+  });
+  const go = document.getElementById('reply-go');
+  if (go) go.hidden = !(_replyReady(d, 'cl') || _replyReady(d, 'cv'));
+}
+function handleReplyText(raw){
+  const text = _sanitize(String(raw || ''));
+  const kinds = _replyKind(text);
+  if (!kinds.length) { _replyMsg("That doesn't look like Claude's full reply: there are no [SALUTATION] or [SUMMARY] tags. Copy the whole reply and paste it again.", 'error'); return false; }
+  _flushExportDraft();
+  const d = _loadDrafts();
+  d.jd = d.jd || {};
+  const got = [];
+  kinds.forEach(t => {
+    const data = t === 'cl' ? parseCL(text) : parseCV(text);
+    const ok = t === 'cl' ? (data.table.length > 0 || !!data.intro) : (!!data.summary || data.experience.length > 0);
+    if (ok) { d[t] = data; d.jd[t] = _jdKey(); got.push(t); }
+  });
+  if (!got.length) { _replyMsg("The tags are there but nothing came through under them. Copy Claude's whole reply and paste it again.", 'error'); return false; }
+  _noteJob(d, text);
+  try { localStorage.setItem('gethired_export_draft', JSON.stringify(d)); }
+  catch (e) { _replyMsg('Could not save this reply (storage full).', 'error'); return false; }
+  exportType = got[got.length - 1];
+  exportData = d[exportType];
+  renderReplyState();
+  _renderExportExtras();
+  if (_replyReady(d, 'cl') && _replyReady(d, 'cv')) {
+    _replyMsg('Cover letter and CV are ready ✓ Opening Export to Word…', 'ok');
+    toast('Cover letter and CV ready ✔', 'success');
+    setTimeout(() => switchView('export'), 700);
+  } else {
+    const next = got[0] === 'cl' ? 'CV' : 'Cover Letter';
+    _replyMsg(`${_DOC_NAME[got[0]]} ready ✓ Next: copy the ${next} prompt, run it in Claude and paste its reply here. Or open Export now.`, 'ok');
+    toast(_DOC_NAME[got[0]] + ' ready ✔', 'success');
+  }
+  return true;
+}
+(() => {
+  const box = document.getElementById('reply-input');
+  if (!box) return;
+  let t;
+  box.addEventListener('paste', e => {
+    const text = e.clipboardData && e.clipboardData.getData('text/plain');
+    if (!text) return;
+    e.preventDefault();
+    clearTimeout(t);
+    if (handleReplyText(text)) box.value = '';
+    else box.value = text;
+  });
+  box.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(() => { if (box.value.trim().length > 40 && handleReplyText(box.value)) box.value = ''; }, 900);
+  });
+})();
+const _gaiaUpdateStatus2 = updateStatus;
+updateStatus = function(){ _gaiaUpdateStatus2(); renderReplyState(); };
+
+// ─── Company and position, read from Claude's replies (no AI) ───
+// The cover letter reply suggests a file name "<First>_<Last>_CoverLetter_<RoleTitle>_<Organisation>.docx",
+// and both replies open with a note naming "the <Job Title> at <Org>".
+const _deCamel = s => String(s || '').replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2').replace(/\s+/g, ' ').trim();
+const _nameKey = s => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+function _detectJob(text){
+  let file = null, note = null;
+  const fm = text.match(/_(?:CoverLetter|CV|Resume)_([A-Za-z0-9&]+)_([A-Za-z0-9&]+)\.docx\b/);
+  if (fm) file = { position: _deCamel(fm[1]), company: _deCamel(fm[2]) };
+  const head = text.split(/\[(?:SALUTATION|SUMMARY)\]/)[0];
+  const nm = head.match(/\b[Tt]he ([A-Z][A-Za-z0-9&'’()\/\- ]{2,80}?)(?: role| position)? at ((?:the )?[A-Z][A-Za-z0-9&'’()\/.\- ]{1,80}?)(?=\s+(?:is|caught|involves|sits|gives|felt|was|would|seems|looks|because|even)\b|[,.;:!?"”]|\s*$)/m);
+  if (nm) note = { position: nm[1].trim(), company: nm[2].replace(/^the /, '').trim() };
+  // The note keeps the real spelling (spaces, hyphens); the file name is the steadier source
+  const pick = k => (file && note && _nameKey(file[k]) === _nameKey(note[k])) ? note[k] : ((file && file[k]) || (note && note[k]) || '');
+  return { company: pick('company'), position: pick('position'), score: file ? 2 : note ? 1 : 0 };
+}
+function _noteJob(d, text){
+  const key = _jdKey();
+  if (!d.job || d.job.jd !== key) d.job = { company: '', position: '', jd: key, score: 0, edited: false };
+  if (d.job.edited) return;
+  const f = _detectJob(text);
+  if (f.score && f.score >= (d.job.score || 0)) {
+    if (f.company) d.job.company = f.company;
+    if (f.position) d.job.position = f.position;
+    d.job.score = f.score;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SAVE TO A FOLDER (Chrome and Edge on a computer): Company › Position inside a folder
+// you choose once. The folder handle stays in this browser (IndexedDB) and is never uploaded.
+// ═══════════════════════════════════════════════════════════════
+const _canPickFolder = () => typeof window.showDirectoryPicker === 'function';
+const _idb = (() => {
+  let p;
+  const open = () => p || (p = new Promise((res, rej) => {
+    const r = indexedDB.open('gethired-local', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('kv');
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  }));
+  const run = (mode, fn) => open().then(db => new Promise((res, rej) => {
+    const tx = db.transaction('kv', mode), q = fn(tx.objectStore('kv'));
+    tx.oncomplete = () => res(q.result);
+    tx.onerror = () => rej(tx.error);
+  }));
+  return { get: k => run('readonly', s => s.get(k)), set: (k, v) => run('readwrite', s => s.put(v, k)), del: k => run('readwrite', s => s.delete(k)) };
+})();
+// One folder per account on this browser (and one for signed-out use)
+const _saveKey = what => what + ':' + (localStorage.getItem('gethired_owner') || 'local');
+async function _getRoot(){ try { return (await _idb.get(_saveKey('saveDir'))) || null; } catch (e) { return null; } }
+async function _allowed(h, ask){
+  try {
+    const o = { mode: 'readwrite' };
+    if ((await h.queryPermission(o)) === 'granted') return true;
+    return ask ? (await h.requestPermission(o)) === 'granted' : false;
+  } catch (e) { return false; }
+}
+async function _pickRoot(){
+  try {
+    const h = await window.showDirectoryPicker({ id: 'gethired-applications', mode: 'readwrite', startIn: 'documents' });
+    await _idb.set(_saveKey('saveDir'), h);
+    await _idb.del(_saveKey('savePref'));
+    return h;
+  } catch (e) {
+    if (e.name !== 'AbortError') { console.error(e); toast("Couldn't use that folder. Try another one.", 'error'); }
+    return null;
+  }
+}
+const _folderName = s => String(s || '').replace(/[\\/:*?"<>|\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().replace(/[. ]+$/, '').slice(0, 80);
+// An existing folder with the same name (ignoring case, spaces and punctuation) is reused
+async function _subfolder(parent, name){
+  const want = _nameKey(name);
+  for await (const [n, h] of parent.entries()) if (h.kind === 'directory' && _nameKey(n) === want) return h;
+  return parent.getDirectoryHandle(_folderName(name) || 'Untitled', { create: true });
+}
+function _jobFields(){
+  const job = _loadDrafts().job || {};
+  return { company: _folderName(job.company), position: _folderName(job.position) };
+}
+function _askFolder(){
+  return new Promise(resolve => {
+    const dlg = document.createElement('dialog');
+    dlg.className = 'save-dlg';
+    dlg.innerHTML = '<h3>Keep your applications organised</h3>'
+      + '<p>Choose a folder for your job applications, for example <strong>Documents › Job applying</strong>, or make a new one. Every download is then saved in <strong>Company › Position</strong>. If the company already has a folder, the position goes inside it.</p>'
+      + '<p class="save-dlg-note">The folder stays on this computer. Nothing in it is uploaded.</p>'
+      + '<div class="save-dlg-actions"><button type="button" class="btn btn-ghost" data-v="download">Just download</button><button type="button" class="btn btn-primary" data-v="folder">&#x1F4C1; Choose folder</button></div>';
+    let done = false;
+    const finish = v => { if (done) return; done = true; dlg.close(); dlg.remove(); resolve(v); };
+    dlg.addEventListener('click', async e => {
+      const b = e.target.closest('[data-v]');
+      if (!b) return;
+      if (b.dataset.v === 'download') return finish('download');
+      const root = await _pickRoot();
+      if (root) finish({ root });
+    });
+    dlg.addEventListener('cancel', e => { e.preventDefault(); finish(null); });
+    document.body.appendChild(dlg);
+    dlg.showModal();
+  });
+}
+// Where this download goes: { kind:'download' } or { kind:'folder', dir, label }; null = cancelled
+async function _saveTarget(){
+  if (!_canPickFolder()) return { kind: 'download' };
+  let root = await _getRoot();
+  if (!root) {
+    let pref = null;
+    try { pref = await _idb.get(_saveKey('savePref')); } catch (e) {}
+    if (pref === 'download') return { kind: 'download' };
+    const choice = await _askFolder();
+    if (!choice) return null;
+    if (choice === 'download') {
+      _idb.set(_saveKey('savePref'), 'download').catch(() => {});
+      _renderExportExtras();
+      return { kind: 'download' };
+    }
+    root = choice.root;
+  }
+  if (!(await _allowed(root, true))) { toast("Folder access wasn't allowed, so this goes to Downloads", 'info'); return { kind: 'download' }; }
+  const job = _jobFields();
+  try {
+    if (!job.company) return { kind: 'folder', dir: root, label: root.name };
+    const c = await _subfolder(root, job.company);
+    const p = job.position ? await _subfolder(c, job.position) : c;
+    _renderExportExtras();
+    return { kind: 'folder', dir: p, label: [root.name, c.name].concat(job.position ? [p.name] : []).join(' › ') };
+  } catch (e) {
+    console.error(e);
+    toast("Couldn't open that folder, so this goes to Downloads", 'error');
+    return { kind: 'download' };
+  }
+}
+// Never overwrite: an existing file gets a numbered name
+async function _freeName(dir, fn){
+  const dot = fn.lastIndexOf('.'), base = fn.slice(0, dot), ext = fn.slice(dot);
+  for (let i = 1; i < 100; i++) {
+    const name = i === 1 ? fn : `${base} (${i})${ext}`;
+    try { await dir.getFileHandle(name); }
+    catch (e) { if (e.name === 'NotFoundError' || e.name === 'TypeMismatchError') return name; throw e; }
+  }
+  return `${base} (${Date.now()})${ext}`;
+}
+async function _deliverDoc(blob, fn, target){
+  if (target && target.kind === 'folder') {
+    try {
+      const name = await _freeName(target.dir, fn);
+      const w = await (await target.dir.getFileHandle(name, { create: true })).createWritable();
+      await w.write(blob);
+      await w.close();
+      toast('Saved ' + name + ' in ' + target.label + ' ✔', 'success');
+      return;
+    } catch (e) { console.error(e); toast("Couldn't save into the folder, so it was downloaded instead", 'error'); }
+  }
+  _downloadBlob(blob, fn);
+  toast('Downloaded ' + fn + ' (' + Math.round(blob.size / 1024) + ' KB) ✔', 'success');
+}
+async function downloadBothDocx(){
+  _flushExportDraft();
+  const d = _loadDrafts();
+  if (!d.cl || !d.cv) { toast('Paste both replies in the Prompt Builder first', 'error'); return; }
+  const target = await _saveTarget();
+  if (!target) return;
+  const keep = exportType;
+  for (const t of ['cl', 'cv']) { exportType = t; exportData = d[t]; await downloadExportDocx(target); }
+  setExportType(keep);
+}
+async function chooseSaveFolder(){ if (await _pickRoot()) { toast('Applications will be saved in that folder ✔', 'success'); _renderExportExtras(); } }
+async function stopSaveFolder(){
+  try { await _idb.del(_saveKey('saveDir')); await _idb.set(_saveKey('savePref'), 'download'); } catch (e) {}
+  toast('Downloads go to your Downloads folder again', 'info');
+  _renderExportExtras();
+}
+function _saveJobField(k, v){
+  _flushExportDraft();
+  const d = _loadDrafts();
+  d.job = Object.assign({ company: '', position: '', jd: _jdKey(), score: 0 }, d.job || {}, { [k]: v, edited: true });
+  try { localStorage.setItem('gethired_export_draft', JSON.stringify(d)); } catch (e) {}
+  _renderSaveWhere();
+}
+['company', 'position'].forEach(k => {
+  const el = document.getElementById('exp-' + k);
+  if (el) el.addEventListener('input', () => _saveJobField(k, el.value));
+});
+let _saveRenderSeq = 0;
+async function _renderSaveWhere(){
+  const where = document.getElementById('exp-save-where'), acts = document.getElementById('exp-save-actions');
+  if (!where || !acts) return;
+  const seq = ++_saveRenderSeq;
+  const root = await _getRoot();
+  if (seq !== _saveRenderSeq) return;
+  const btn = (label, fn, cls) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn ' + (cls || 'btn-ghost'); b.textContent = label; b.onclick = fn; return b; };
+  acts.replaceChildren();
+  if (!root) {
+    where.textContent = 'Not set up: files go to your Downloads folder.';
+    acts.append(btn('📁 Choose folder', chooseSaveFolder, 'btn-outline'));
+    return;
+  }
+  const job = _jobFields();
+  where.replaceChildren();
+  const strong = document.createElement('strong');
+  strong.textContent = [root.name, job.company || 'Company?', job.position || null].filter(Boolean).join(' › ');
+  where.append('Saving into ', strong);
+  acts.append(btn('Change folder', chooseSaveFolder), btn('Use Downloads instead', stopSaveFolder));
+  // Suggest the company folders already there (only once this browser may read the folder)
+  if (await _allowed(root, false)) {
+    const list = document.getElementById('exp-company-list');
+    const names = [];
+    try { for await (const [n, h] of root.entries()) { if (h.kind === 'directory') names.push(n); if (names.length >= 400) break; } } catch (e) {}
+    if (seq !== _saveRenderSeq || !list) return;
+    list.replaceChildren(...names.sort((a, b) => a.localeCompare(b)).map(n => { const o = document.createElement('option'); o.value = n; return o; }));
+  }
+}
+function _renderExportExtras(){
+  const d = _loadDrafts();
+  ['cl', 'cv'].forEach(t => { const b = document.getElementById('exp-type-' + t); if (b) b.classList.toggle('has', !!d[t]); });
+  const both = document.getElementById('exp-both-btn');
+  if (both) both.hidden = !(d.cl && d.cv);
+  const empty = document.getElementById('exp-empty-text');
+  if (empty) empty.textContent = (d.cl || d.cv)
+    ? `No ${exportType === 'cl' ? 'cover letter' : 'CV'} yet. Paste Claude's ${exportType === 'cl' ? 'cover letter' : 'CV'} reply in the Prompt Builder and it appears here.`
+    : "Paste Claude's reply in the Prompt Builder and it appears here.";
+  const panel = document.getElementById('exp-save-panel');
+  if (!panel) return;
+  const fields = document.getElementById('exp-save-fields');
+  if (!_canPickFolder()) {
+    fields.hidden = true;
+    document.getElementById('exp-save-actions').replaceChildren();
+    document.getElementById('exp-save-where').textContent = 'This browser saves to its Downloads folder. Saving straight into Company › Position folders works in Chrome or Edge on a computer.';
+    return;
+  }
+  fields.hidden = false;
+  const job = d.job || {};
+  ['company', 'position'].forEach(k => { const el = document.getElementById('exp-' + k); if (el && document.activeElement !== el) el.value = job[k] || ''; });
+  _renderSaveWhere();
+}
+renderReplyState();
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261027b"></script>
-<script src="../js/section-rail.js?v=20261027b" defer></script>
-<script src="../js/nice-select.js?v=20261027b" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261027c"></script>
+<script src="../js/section-rail.js?v=20261027c" defer></script>
+<script src="../js/nice-select.js?v=20261027c" defer></script>
 </body>
 </html>
