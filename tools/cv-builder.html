@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261027d">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261027d">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261027d">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028a">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261028a">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261028a">
 </head>
 <body>
 
@@ -4489,6 +4489,55 @@ function _noteJob(d, text){
 // you choose once. The folder handle stays in this browser (IndexedDB) and is never uploaded.
 // ═══════════════════════════════════════════════════════════════
 const _canPickFolder = () => typeof window.showDirectoryPicker === 'function';
+// Brave ships with folder access switched off; one setting turns it on
+const _isBrave = () => !!(navigator.brave && typeof navigator.brave.isBrave === 'function');
+const _BRAVE_FLAG = 'brave://flags/#file-system-access-api';
+function _noFolderHelp(){
+  const box = document.createElement('div');
+  box.className = 'save-help';
+  if (_isBrave()) {
+    const p1 = document.createElement('p');
+    p1.textContent = 'Brave turns off saving into folders. To turn it on (one time):';
+    const ol = document.createElement('ol');
+    ['Copy this address and paste it into a new tab:', 'Set “File System Access API” to Enabled.', 'Click Relaunch, then come back here.'].forEach((t, i) => {
+      const li = document.createElement('li');
+      li.textContent = t;
+      if (i === 0) {
+        const code = document.createElement('code'); code.textContent = _BRAVE_FLAG;
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-ghost save-help-copy'; b.textContent = 'Copy';
+        b.onclick = async () => { try { await navigator.clipboard.writeText(_BRAVE_FLAG); b.textContent = '✓ Copied'; } catch (e) { b.textContent = 'Select and copy it'; } };
+        li.append(' ', code, ' ', b);
+      }
+      ol.appendChild(li);
+    });
+    const p2 = document.createElement('p');
+    p2.className = 'save-help-note';
+    p2.textContent = 'Until then, files go to your Downloads folder. Chrome and Edge on a computer work straight away.';
+    box.append(p1, ol, p2);
+  } else {
+    const p = document.createElement('p');
+    p.textContent = 'This browser can’t save into folders, so files go to your Downloads folder. Saving straight into Company › Position folders works in Chrome or Edge on a computer.';
+    box.appendChild(p);
+  }
+  return box;
+}
+// Shown once, at the first download, in a browser without folder access
+function _explainNoFolder(){
+  return new Promise(resolve => {
+    const dlg = document.createElement('dialog');
+    dlg.className = 'save-dlg';
+    const h = document.createElement('h3'); h.textContent = 'Saving into Company › Position folders';
+    const acts = document.createElement('div'); acts.className = 'save-dlg-actions';
+    const ok = document.createElement('button'); ok.type = 'button'; ok.className = 'btn btn-primary'; ok.textContent = 'Download for now';
+    acts.appendChild(ok);
+    dlg.append(h, _noFolderHelp(), acts);
+    const finish = v => { dlg.close(); dlg.remove(); resolve(v); };
+    ok.onclick = () => finish(true);
+    dlg.addEventListener('cancel', e => { e.preventDefault(); finish(false); });
+    document.body.appendChild(dlg);
+    dlg.showModal();
+  });
+}
 const _idb = (() => {
   let p;
   const open = () => p || (p = new Promise((res, rej) => {
@@ -4560,7 +4609,15 @@ function _askFolder(){
 }
 // Where this download goes: { kind:'download' } or { kind:'folder', dir, label }; null = cancelled
 async function _saveTarget(){
-  if (!_canPickFolder()) return { kind: 'download' };
+  if (!_canPickFolder()) {
+    let seen = false;
+    try { seen = !!(await _idb.get(_saveKey('noFolderSeen'))); } catch (e) {}
+    if (!seen) {
+      if (!(await _explainNoFolder())) return null;
+      _idb.set(_saveKey('noFolderSeen'), 1).catch(() => {});
+    }
+    return { kind: 'download' };
+  }
   let root = await _getRoot();
   if (!root) {
     let pref = null;
@@ -4684,7 +4741,7 @@ function _renderExportExtras(){
   if (!_canPickFolder()) {
     fields.hidden = true;
     document.getElementById('exp-save-actions').replaceChildren();
-    document.getElementById('exp-save-where').textContent = 'This browser saves to its Downloads folder. Saving straight into Company › Position folders works in Chrome or Edge on a computer.';
+    document.getElementById('exp-save-where').replaceChildren(_noFolderHelp());
     return;
   }
   fields.hidden = false;
@@ -4696,8 +4753,8 @@ renderReplyState();
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261027d"></script>
-<script src="../js/section-rail.js?v=20261027d" defer></script>
-<script src="../js/nice-select.js?v=20261027d" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261028a"></script>
+<script src="../js/section-rail.js?v=20261028a" defer></script>
+<script src="../js/nice-select.js?v=20261028a" defer></script>
 </body>
 </html>
