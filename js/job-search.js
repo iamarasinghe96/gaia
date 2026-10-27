@@ -216,13 +216,12 @@
     return [p.street, p.street2, p.suburb, sp, p.country].map(x => (x || '').trim()).filter(Boolean).join(', ');
   }
   // Same shape the CV Builder saves (its "gethired_profile_v1")
-  function toBuilderProfile(profile, existing) {
+  function toBuilderProfile(profile) {
     const p = JSON.parse(JSON.stringify(profile));
     p.personal = p.personal || {};
     p.personal.address = composeAddress(p.personal) || p.personal.address || '';
     p.personal.otherLinks = (Array.isArray(p.otherLinks) ? p.otherLinks : []).filter(l => l && /^https?:\/\//i.test(String(l.url || '').trim())).map(l => ({ label: String(l.label || '').trim(), url: String(l.url).trim() }));
     delete p.otherLinks;
-    if (!p.usageNotes && existing && existing.usageNotes) p.usageNotes = existing.usageNotes;
     return p;
   }
   const hasProfile = p => !!(p && ((p.personal && (p.personal.fullName || p.personal.email)) || (Array.isArray(p.workHistory) && p.workHistory.some(j => j && (j.title || j.employer)))));
@@ -254,7 +253,7 @@
       if (!res || !res.ok || !res.profile) { needSignIn(res && res.error); return; }
       // Fill the CV Builder profile in the background (asks first if one already exists)
       const existing = store.get('gethired_profile_v1');
-      const next = toBuilderProfile(res.profile, existing);
+      const next = toBuilderProfile(res.profile);
       if (!hasProfile(existing) || confirm('Also put this CV into your CV Builder profile?\n\nOK: replace your current CV Builder profile with this CV.\nCancel: keep your current profile (the CV is still used for this search).')) {
         try { localStorage.setItem('gethired_profile_v1', JSON.stringify(next)); } catch { /* storage full */ }
       }

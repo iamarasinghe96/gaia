@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261026b">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261026b">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261026b">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261027a">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261027a">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261027a">
 </head>
 <body>
 
@@ -536,11 +536,6 @@
         <li>The tool removes the background, cleans up specks and crops it tightly, so only your ink appears on the letter.</li>
       </ul>
     </section>
-    <section class="panel help-card" id="help-11">
-      <h2><span class="help-num">11</span> Usage Notes</h2>
-      <p class="help-lead">Optional. Usage Notes tell Claude which stories to use for each type of role.</p>
-      <div class="help-usage builder-section-body" id="help-usage"></div>
-    </section>
     <section class="panel help-card" id="help-data">
       <h2>&#x1F512; Your data</h2>
       <ul>
@@ -618,8 +613,7 @@ function defaultP() {
     storyBank:    [{ title:'', usedFor:'', text:'', links:'' }],
     projects:     [{ name:'', description:'', url:'' }],
     achievements: [{ category:'', items:'' }],
-    referees:     [{ name:'', title:'', email:'', phone:'', linkedin:'' }],
-    usageNotes:   ''
+    referees:     [{ name:'', title:'', email:'', phone:'', linkedin:'' }]
   };
 }
 
@@ -656,7 +650,10 @@ function saveProfileData() {
 
 function loadProfileData() {
   const saved = localStorage.getItem('gethired_profile_v1');
-  return saved ? JSON.parse(saved) : defaultP();
+  if (!saved) return defaultP();
+  const p = JSON.parse(saved);
+  delete p.usageNotes;                            // Usage Notes field removed
+  return p;
 }
 
 let saveTimer;
@@ -728,13 +725,7 @@ const SAMPLE_P = {
   referees: [
     { name:'Ms. Laura Bennett', title:'Operations Manager, Brightwater Logistics', email:'laura.bennett@example.com', phone:'+61 400 000 001', linkedin:'https://www.linkedin.com/in/example-laura' },
     { name:'Mr. David Chen', title:'Depot Manager, Greenfield Shire Council', email:'david.chen@example.com', phone:'+61 400 000 002', linkedin:'' }
-  ],
-  usageNotes:
-    'Operations / Logistics roles: Stories 1, 2 + fleet of 45, 96% on-time delivery, rostering tool\n' +
-    'Administration / Local government: Story 2 + purchase orders, procurement procedures, records\n' +
-    'Data / Reporting roles: Story 1 + Power BI dashboard, weekly KPI reporting, PL-300\n' +
-    'WHS / Safety roles: Certificate IV WHS + 38 corrective actions closed, zero lost-time injuries\n' +
-    'Australian market — always include: full working rights, Brisbane QLD location'
+  ]
 };
 
 // Sections whose example panel is open. Not saved: examples start hidden on every visit.
@@ -790,7 +781,6 @@ function renderProfileForm() {
   document.getElementById('profile-form').innerHTML =
     sections.map(s => buildSectionShell(s.id, s.num, s.title)).join('');
   sections.forEach(s => renderSectionBody(s.id));
-  renderUsageNotes();
 }
 
 function buildSectionShell(id, num, title) {
@@ -829,8 +819,7 @@ function renderSectionBody(id) {
     skills: skillsBodyHTML, workHistory: workHistoryBodyHTML,
     education: educationBodyHTML, certifications: certificationsBodyHTML,
     storyBank: storyBankBodyHTML, projects: projectsBodyHTML,
-    achievements: achievementsBodyHTML, referees: refereesBodyHTML,
-    usageNotes: usageNotesBodyHTML
+    achievements: achievementsBodyHTML, referees: refereesBodyHTML
   };
   if (!map[id]) return;
   const split = id !== 'personal' && sampleSections.has(id);
@@ -1068,29 +1057,6 @@ function refereesBodyHTML() {
   return cards + `<div class="add-entry-row"><button class="btn btn-outline" onclick="addItem('referees',{name:'',title:'',email:'',phone:''})">+ Add Referee</button></div>`;
 }
 
-function usageNotesBodyHTML() {
-  const example = [
-    'FORMAT: One line per role type. Each line = role category : Stories to use + key proof points to lead with.',
-    '',
-    'EXAMPLE STRUCTURE:',
-    'Operations / Logistics roles: Stories 1, 2 + team size, on-time delivery rate, a tool you built',
-    'Administration / Office roles: Stories 2, 3 + systems you know, accuracy, processes you improved',
-    'Data / Reporting roles: Story 1 + dashboards, reporting tools, time or cost you saved',
-    'Customer / Sales roles: Story 4 + targets met, client feedback, accounts you managed',
-    'Health / Community roles: Story 5 + people you supported, programmes you ran',
-    '',
-    'CAREER CHANGE NOTE: If pivoting industries, flag which skills transfer directly and name the closest story.',
-  ].join('\n');
-  return `
-    <div class="section-tip" style="line-height:1.8">
-      <strong>How to structure Usage Notes:</strong> Write one line per role type, formatted as:<br>
-      <code style="background:rgba(31,78,121,0.1);padding:2px 6px;border-radius:3px;font-size:11px">Role Type: Stories X, Y + key proof points or skills to lead with</code><br><br>
-      Claude reads this section to decide which stories and achievements to prioritise for your specific role. The more specific you are, the better tailored the output.
-      <br><br>Number your stories in the Story Bank first (Story 1, Story 2…) — then reference them here by number.
-    </div>
-    ${fg(1, fi('Usage Notes', ta('usageNotes', example, 14)))}`;
-}
-
 // ═══════════════════════════════════════════════════════════════
 // ADD / REMOVE DYNAMIC ITEMS
 // ═══════════════════════════════════════════════════════════════
@@ -1297,12 +1263,6 @@ function generateCVBankText() {
     nl();
   }
 
-  // USAGE NOTES
-  if (P.usageNotes) {
-    section('USAGE NOTES \u2014 WHICH STORIES TO USE FOR WHICH ROLES');
-    push(P.usageNotes);
-    nl();
-  }
 
   return lines.join('\n').replace(/\n{4,}/g, '\n\n\n').trim();
 }
@@ -1615,10 +1575,9 @@ function parseCVBankText(text) {
     if (refs.length) result.referees = refs;
   }
 
-  // ── USAGE NOTES ──
-  if (sections['USAGE NOTES']) {
-    result.usageNotes = sections['USAGE NOTES'].trim();
-  }
+  // USAGE NOTES in an older CV Bank is still recognised as its own section, so its
+  // lines don't spill into Referees, but it is no longer loaded: Claude now works out
+  // which evidence suits each role from the whole profile.
 
   return result;
 }
@@ -2167,7 +2126,7 @@ function switchView(view) {
   if (view === 'prompt') loadPromptBuilder();
   if (view === 'export') initExport();
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (view === 'help') { renderUsageNotes(); renderSignatureState(); }
+  if (view === 'help') renderSignatureState();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3361,23 +3320,6 @@ function undoPolish(){
   toast('Original wording restored', 'info');
 }
 
-// Usage Notes are edited in How it works › 11 (same profile field, same autosave)
-function renderUsageNotes(){
-  const el = document.getElementById('help-usage');
-  if (!el) return;
-  if (el.contains(document.activeElement)) return;
-  el.innerHTML = usageNotesBodyHTML();
-  if (!el._wired) {
-    el._wired = true;
-    el.addEventListener('input', e => {
-      const path = e.target.dataset.path;
-      if (!path) return;
-      setPath(P, path, e.target.value);
-      debouncedSave();
-    });
-  }
-}
-
 // Delete all my data (How it works › Your data)
 function _syncDeleteZone(){
   const z = document.getElementById('delete-zone');
@@ -3457,7 +3399,6 @@ function _applyImportedProfile(profile){
     else if (base[k] && typeof base[k] === 'object') next[k] = Object.assign({}, base[k], v || {});
     else next[k] = typeof v === 'string' ? v : base[k];
   }
-  if (!next.usageNotes && P.usageNotes) next.usageNotes = P.usageNotes;
   next.personal.address = composeAddress(next.personal) || next.personal.address || '';
   next.personal.otherLinks = (Array.isArray(profile.otherLinks) ? profile.otherLinks : [])
     .filter(l => l && /^https?:\/\//i.test(String(l.url || '').trim()))
@@ -3671,7 +3612,7 @@ document.body.insertAdjacentHTML('beforeend',
   '<datalist id="gh-link-names">' + ['GitHub','Facebook','Instagram','X (Twitter)','YouTube','TikTok','Behance','Dribbble','Medium','Substack','Stack Overflow','GitLab','Google Scholar','ResearchGate','ORCID','Personal website','Blog'].map(v => `<option value="${v.replace(/[()]/g, '')}">`).join('') + '</datalist>');
 
 // ─── Prompt copies ───
-const _OLD_PROMPT_HASHES = {"cl_prompt": ["b923b977"], "cv_prompt": ["c4bd1cd5"]};
+const _OLD_PROMPT_HASHES = {"cl_prompt": ["70d945a1", "777ac469", "b923b977", "c135b936"], "cv_prompt": ["49674a3d", "71db5458", "74a3af7", "8193e014", "c4bd1cd5", "d4ed76b8", "df91b59c", "f656ed9f", "f92911a5"]};
 function _promptHash(text){
   const t = String(text || '').replace(/\r\n?/g, '\n').trim();
   let h = 0x811c9dc5;
@@ -4396,7 +4337,7 @@ function clearAllFields(){
   if (!confirm('Clear every field in your profile?\n\nA copy of your CV Bank (.txt) will download first, so you can bring it all back with Import from CV.\n\nYour headshot and signature are kept.')) return;
   exportCVBank();
   setTimeout(() => {
-    P = defaultP(); P.usageNotes = '';            // Usage Notes are a profile field too, so they are cleared
+    P = defaultP();
     saveProfileData();
     renderProfileForm();
     toast('Profile cleared. Your backup (.txt) was downloaded.', 'success');
@@ -4406,8 +4347,8 @@ function clearAllFields(){
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261026b"></script>
-<script src="../js/section-rail.js?v=20261026b" defer></script>
-<script src="../js/nice-select.js?v=20261026b" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261027a"></script>
+<script src="../js/section-rail.js?v=20261027a" defer></script>
+<script src="../js/nice-select.js?v=20261027a" defer></script>
 </body>
 </html>

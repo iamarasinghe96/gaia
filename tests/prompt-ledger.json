@@ -38,6 +38,16 @@
           "why": "Awards now have their own link per item, like certifications.",
           "before": "  \"Item | https://...\" in certifications\n   or achievements                          ->",
           "after": "  \"Item | https://...\" in certifications,\n   achievements or awards                   ->"
+        },
+        {
+          "why": "Usage Notes removed from the profile at the owner's request: the candidate no longer writes a role-to-story map, so the prompt tells the AI to build that mapping itself from the whole content bank against the job description.",
+          "before": "The content bank drives this selection. Each entry in its STORY BANK carries a \"Best used for:\" line, and its USAGE NOTES section maps role types to the stories that suit them. Read both before choosing. Where they cover the role you are writing for, follow them — they are the candidate's own judgement about which evidence is strongest.\n",
+          "after": "Do this mapping yourself, from the whole content bank. There is no pre-written list of which stories suit which roles, so build one for this job before you write anything:\n\n1. From the JD, list its five to eight core requirements, most important first: the tasks the person will spend most of their time on, the hardest part of the job, and the essential selection criteria.\n2. For each requirement, search the entire content bank for evidence: every role's description and bullets (not only the most recent role), every STORY BANK entry, Personal Projects, Skills, Certifications, Education, Awards and Achievements, including any links attached to an item.\n3. Rank the evidence for each requirement. Direct proof of the same task beats transferable proof. A quantified outcome beats an unquantified one. Recent beats old. Paid work beats a side project, unless the side project is the closer match. A story's \"Best used for:\" line is only the candidate's hint; the JD decides.\n4. Build the CV from the top of each ranking: the summary's proof points, the bullets you keep for each role, and the skills you list. Drop evidence that matches no requirement, and do not use the same proof point in more than two places.\n5. If a core requirement has no evidence in the content bank, never imply it is met. Leave it out, and name it as a gap in your tailoring note.\n"
+        },
+        {
+          "why": "Usage Notes removed from the profile at the owner's request: the candidate no longer writes a role-to-story map, so the prompt tells the AI to build that mapping itself from the whole content bank against the job description.",
+          "before": "Where the content bank's USAGE NOTES section names the stories to use for this role type, follow it\n",
+          "after": "Where the role mixes several of these types, apply the rule for the JD's most important requirement first\n"
         }
       ]
     },
@@ -58,6 +68,11 @@
           "why": "New per-bullet links in work history: tells the AI to bind each link to its words. Updated: stories can carry links too.",
           "before": "Write \"a [scheduling tool I built](url)\", not \"scheduling tool [link]\". ",
           "after": "Write \"a [scheduling tool I built](url)\", not \"scheduling tool [link]\". A \"Link: <words> | <url>\" line under a work-history bullet or a story links those words: when you mention that work or story, wrap the same words as [words](url). "
+        },
+        {
+          "why": "Usage Notes removed from the profile at the owner's request: the candidate no longer writes a role-to-story map, so the prompt tells the AI to build that mapping itself from the whole content bank against the job description.",
+          "before": "The content bank drives this selection. Each STORY BANK entry carries a \"Best used for:\" line, and the USAGE NOTES section maps role types to the stories that suit them. Read both before choosing rows.\n",
+          "after": "Choose the rows and their proof yourself, from the whole content bank. There is no pre-written list of which stories suit which roles. Pick the JD's 6-7 most critical requirements, then for each one search every role's description and bullets (not only the most recent role), every STORY BANK entry, Personal Projects, Skills, Certifications, Education, Awards and Achievements for the strongest evidence. Direct proof of the same task beats transferable proof, a quantified outcome beats an unquantified one, and recent beats old. A story's \"Best used for:\" line is only the candidate's hint; the requirement decides. Use different evidence in each row wherever the content bank allows. If the content bank has no evidence for a requirement, choose a different requirement rather than stretch a weak match.\n"
         }
       ]
     }

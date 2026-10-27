@@ -100,7 +100,7 @@ Rules:
 
 STORY-TO-TABLE GUIDANCE — use this to select the right proof point for each table row:
 
-The content bank drives this selection. Each STORY BANK entry carries a "Best used for:" line, and the USAGE NOTES section maps role types to the stories that suit them. Read both before choosing rows.
+Choose the rows and their proof yourself, from the whole content bank. There is no pre-written list of which stories suit which roles. Pick the JD's 6-7 most critical requirements, then for each one search every role's description and bullets (not only the most recent role), every STORY BANK entry, Personal Projects, Skills, Certifications, Education, Awards and Achievements for the strongest evidence. Direct proof of the same task beats transferable proof, a quantified outcome beats an unquantified one, and recent beats old. A story's "Best used for:" line is only the candidate's hint; the requirement decides. Use different evidence in each row wherever the content bank allows. If the content bank has no evidence for a requirement, choose a different requirement rather than stretch a weak match.
 
 Apply these rules on top:
 
