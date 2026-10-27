@@ -528,3 +528,50 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
 .save-help code { font-size: 12px; background: #f1f5f9; padding: 2px 6px; border-radius: 6px; word-break: break-all; color: var(--ink); }
 .save-help .save-help-copy { padding: 2px 10px; font-size: 12px; min-height: 0; }
 .save-help .save-help-note { font-size: 12.5px; color: #64748b; }
+
+/* Export to Word: one style bar, a file save path bar, then the page */
+.exp-wrap { max-width: 1100px; }
+.exp-bar { display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(15, 23, 42, .04); }
+.exp-toolbar { position: sticky; top: calc(var(--hdr-h, 64px) + 8px); z-index: 20; }
+.exp-toolbar .doc-switch { flex: none; }
+.exp-style { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; flex: 1 1 auto; min-width: 0; }
+.exp-style .swatches { gap: 6px; flex-wrap: nowrap; }
+.exp-style .swatch { width: 24px; height: 24px; }
+.exp-style .exp-font { width: auto; max-width: 250px; padding-top: 8px; padding-bottom: 8px; }
+.exp-style .exp-headshot { margin: 0; padding: 6px 10px; align-items: center; }
+.exp-style .exp-headshot small { display: none; }
+.exp-sig { font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; white-space: nowrap; }
+.exp-sig:hover { text-decoration: underline; }
+.exp-sig[hidden] { display: none; }
+.exp-dl { display: flex; gap: 8px; margin-left: auto; }
+.exp-pathbar { padding: 8px 14px; }
+.exp-path-label { font-size: 13px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.exp-path-fields { display: flex; align-items: center; gap: 6px; flex: 1 1 380px; min-width: 0; }
+.exp-path-fields[hidden] { display: none; }
+.exp-path-fields .field-input { flex: 1 1 0; min-width: 0; padding-top: 7px; padding-bottom: 7px; margin: 0; }
+.exp-path-root { font-size: 13px; font-weight: 600; color: var(--slate); background: #f1f5f9; border-radius: 999px; padding: 5px 11px; white-space: nowrap; max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+.exp-path-sep { color: #94a3b8; font-weight: 700; }
+.exp-pathbar .save-where { margin: 0; flex: 1 1 100%; }
+.exp-pathbar .save-where:empty { display: none; }
+.exp-pathbar .save-actions { flex: none; }
+.exp-wrap .doc-stage { border-radius: var(--radius); }
+.doc-link { color: var(--doc-accent); text-decoration: underline; text-underline-offset: 2px; cursor: text; }
+.save-dlg { margin: auto; position: fixed; inset: 0; height: fit-content; }
+@media (max-width: 900px) {
+  .exp-toolbar { position: static; }
+  .exp-dl { margin-left: 0; width: 100%; }
+  .exp-dl .btn { flex: 1 1 0; justify-content: center; }
+  .exp-style .swatches { flex-wrap: wrap; }
+  .exp-path-fields { flex-wrap: wrap; flex-basis: 100%; }
+  .exp-path-fields .field-input { flex-basis: 140px; }
+}
+.exp-style .exp-headshot input:disabled + span small { display: inline; margin-left: 6px; }
+.exp-wrap .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.exp-dl .btn[hidden] { display: none; }
+.exp-style .exp-font { max-width: 300px; }
+@media (min-width: 1100px) {
+  .exp-toolbar { flex-wrap: nowrap; }
+  .exp-style { flex: 0 1 auto; flex-wrap: nowrap; }
+  .exp-style .exp-font { flex: 0 1 290px; min-width: 130px; text-overflow: ellipsis; }
+  .exp-dl { flex: none; }
+}

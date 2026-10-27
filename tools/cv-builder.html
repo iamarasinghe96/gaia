@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028a">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261028a">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261028a">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028b">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261028b">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261028b">
 </head>
 <body>
 
@@ -409,80 +409,44 @@
 
 <!-- ══════════════════ VIEW: EXPORT TO WORD ══════════════════ -->
 <div id="view-export" class="view">
-  <div class="container">
-    <div class="export-grid">
-      <div class="export-side">
-        <div class="panel" style="padding:0">
-          <div class="panel-header">
-            <div class="panel-label">
-              <div class="panel-number">1</div>
-              <div class="panel-meta">
-                <div class="panel-title">Style</div>
-                <div class="panel-desc">Colour and font for the whole document</div>
-              </div>
-            </div>
-          </div>
-          <div class="style-body">
-            <div class="style-label">Colour</div>
-            <div class="swatches" id="exp-swatches"></div>
-            <label class="style-label" for="exp-font">Font</label>
-            <select id="exp-font" class="field-input" onchange="setExportStyle({font:this.value})"></select>
-            <label class="style-check" id="exp-headshot-row" hidden><input type="checkbox" id="exp-headshot" onchange="setExportStyle({headshot:this.checked})"><span><strong>Include my headshot</strong><small id="exp-headshot-hint"></small></span></label>
-            <p class="style-note">&#x270D; Cover letter signature: <a href="#" onclick="openSignature();return false">add or change it in Personal Information</a></p>
-          </div>
-        </div>
-
-        <div class="panel" style="padding:0" id="exp-save-panel">
-          <div class="panel-header">
-            <div class="panel-label">
-              <div class="panel-number">2</div>
-              <div class="panel-meta">
-                <div class="panel-title">Save to a folder</div>
-                <div class="panel-desc">Each application in Company &#x203A; Position</div>
-              </div>
-            </div>
-          </div>
-          <div class="style-body save-body">
-            <div id="exp-save-fields">
-              <label class="style-label" for="exp-company">Company</label>
-              <input id="exp-company" class="field-input" list="exp-company-list" autocomplete="off" placeholder="e.g. Genus Industrial Services">
-              <datalist id="exp-company-list"></datalist>
-              <label class="style-label" for="exp-position">Position</label>
-              <input id="exp-position" class="field-input" autocomplete="off" placeholder="e.g. Project Administrator">
-            </div>
-            <p class="save-where" id="exp-save-where"></p>
-            <div class="save-actions" id="exp-save-actions"></div>
-          </div>
-        </div>
+  <div class="container exp-wrap">
+    <div class="exp-bar exp-toolbar">
+      <div class="doc-switch" role="group" aria-label="Document">
+        <button type="button" id="exp-type-cl" onclick="setExportType('cl')">&#x2709; Cover Letter</button>
+        <button type="button" id="exp-type-cv" onclick="setExportType('cv')">&#x1F4C4; CV</button>
       </div>
-
-      <div class="export-main">
-        <div class="panel" style="padding:0">
-          <div class="panel-header">
-            <div class="panel-label">
-              <div class="panel-number">3</div>
-              <div class="panel-meta">
-                <div class="panel-title">Preview &amp; edit</div>
-                <div class="panel-desc">Click any text to change it before you download</div>
-              </div>
-            </div>
-            <div class="panel-badges">
-              <button class="btn btn-outline btn-lg" id="exp-both-btn" onclick="downloadBothDocx()" hidden>&#x2B07; Both</button>
-              <button class="btn btn-primary btn-lg" id="exp-download-btn" onclick="downloadExportDocx()" disabled>&#x2B07; Download .docx</button>
-            </div>
-          </div>
-          <div class="doc-switch-row">
-            <div class="doc-switch" role="group" aria-label="Document">
-              <button type="button" id="exp-type-cl" onclick="setExportType('cl')">&#x2709; Cover Letter</button>
-              <button type="button" id="exp-type-cv" onclick="setExportType('cv')">&#x1F4C4; CV</button>
-            </div>
-          </div>
-          <div class="doc-stage">
-            <div id="exp-empty" class="output-empty"><div class="empty-icon">&#x1F4C4;</div><span id="exp-empty-text">Paste Claude's reply in the Prompt Builder and it appears here.</span><div><button type="button" class="btn btn-outline" style="margin-top:14px" onclick="switchView('prompt')">&#x2190; Go to the Prompt Builder</button></div></div>
-            <div id="exp-preview" class="doc-page" style="display:none"></div>
-          </div>
-        </div>
+      <div class="exp-style" aria-label="Style">
+        <div class="swatches" id="exp-swatches"></div>
+        <label class="sr-only" for="exp-font">Font</label>
+        <select id="exp-font" class="field-input exp-font" title="Font" onchange="setExportStyle({font:this.value})"></select>
+        <label class="style-check exp-headshot" id="exp-headshot-row" hidden><input type="checkbox" id="exp-headshot" onchange="setExportStyle({headshot:this.checked})"><span><strong>Headshot</strong><small id="exp-headshot-hint"></small></span></label>
+        <a href="#" class="exp-sig" id="exp-sig-link" onclick="openSignature();return false" title="Add or change the signature on your cover letters (Personal Information)">&#x270D; Signature</a>
       </div>
+      <div class="exp-dl">
+        <button class="btn btn-outline" id="exp-both-btn" onclick="downloadBothDocx()" hidden>&#x2B07; Both</button>
+        <button class="btn btn-primary" id="exp-download-btn" onclick="downloadExportDocx()" disabled>&#x2B07; Download .docx</button>
+      </div>
+    </div>
+
+    <div class="exp-bar exp-pathbar" id="exp-save-panel">
+      <span class="exp-path-label">&#x1F4C1; File save path</span>
+      <div class="exp-path-fields" id="exp-save-fields">
+        <span class="exp-path-root" id="exp-save-root"></span>
+        <span class="exp-path-sep" aria-hidden="true">&#x203A;</span>
+        <label class="sr-only" for="exp-company">Company</label>
+        <input id="exp-company" class="field-input" list="exp-company-list" autocomplete="off" placeholder="Company">
+        <datalist id="exp-company-list"></datalist>
+        <span class="exp-path-sep" aria-hidden="true">&#x203A;</span>
+        <label class="sr-only" for="exp-position">Position</label>
+        <input id="exp-position" class="field-input" autocomplete="off" placeholder="Position">
+      </div>
+      <div class="save-where" id="exp-save-where"></div>
+      <div class="save-actions" id="exp-save-actions"></div>
+    </div>
+
+    <div class="doc-stage">
+      <div id="exp-empty" class="output-empty"><div class="empty-icon">&#x1F4C4;</div><span id="exp-empty-text">Paste Claude's reply in the Prompt Builder and it appears here.</span><div><button type="button" class="btn btn-outline" style="margin-top:14px" onclick="switchView('prompt')">&#x2190; Go to the Prompt Builder</button></div></div>
+      <div id="exp-preview" class="doc-page" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -530,7 +494,7 @@
         <li>Paste the cover letter reply, then copy the CV prompt, run it and paste that reply too. Once both are in, Export to Word opens. Switch between them with <strong>Cover Letter</strong> and <strong>CV</strong> above the preview.</li>
         <li>Check the <strong>preview</strong>. Click any text to edit it, add or remove bullet points and rows, and pick a colour and font. Your edits are saved.</li>
         <li>Click <strong>Download .docx</strong>, or <strong>Both</strong> for the two documents. Your name, contact details and links come from the Profile Builder.</li>
-        <li>In Chrome or Edge on a computer, the first download offers to use a folder for your job applications. Each application is then saved in <strong>Company &#x203A; Position</strong>, read from Claude's reply, and an existing company folder is reused. Check or change both names under <strong>Save to a folder</strong>. The folder stays on your computer and is never uploaded.</li>
+        <li>In Chrome or Edge on a computer, the first download offers to use a folder for your job applications. Each application is then saved in <strong>Company &#x203A; Position</strong>, read from Claude's reply, and an existing company folder is reused. Check or change both names in the <strong>File save path</strong> bar. The folder stays on your computer and is never uploaded.</li>
       </ol>
       <h3>Signature</h3>
       <ul>
@@ -3025,7 +2989,13 @@ function _ed(path, tag, cls, single, placeholder){
   e.spellcheck = true;
   e.dataset.path = path;
   e.dataset.ph = placeholder || 'Click to type';
-  e.textContent = _getPath(exportData, path) || '';
+  const raw = () => _getPath(exportData, path) || '';
+  // Links read as links; click the text to edit it as typed ([words](url))
+  const showLinks = () => { const parts = _linkParts(raw()); if (parts.some(p => p.url)) { e.replaceChildren(...parts.map(p => p.url ? Object.assign(document.createElement('a'), { textContent: p.text, href: p.url, title: p.url, className: 'doc-link', tabIndex: -1 }) : document.createTextNode(p.text))); e.dataset.view = 'links'; } else { e.textContent = raw(); e.dataset.view = ''; } };
+  showLinks();
+  e.addEventListener('mousedown', ev => { if (ev.target.closest('a')) ev.preventDefault(); if (e.dataset.view === 'links') { e.textContent = raw(); e.dataset.view = ''; } });
+  e.addEventListener('focus', () => { if (e.dataset.view === 'links') { e.textContent = raw(); e.dataset.view = ''; const r = document.createRange(); r.selectNodeContents(e); r.collapse(false); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); } });
+  e.addEventListener('blur', showLinks);
   if (single) e.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); e.blur(); } });
   e.addEventListener('input', () => {
     let v = e.innerText.replace(/\u00a0/g, ' ');
@@ -3035,6 +3005,13 @@ function _ed(path, tag, cls, single, placeholder){
   });
   if (!_plainOK) e.addEventListener('paste', ev => { ev.preventDefault(); document.execCommand('insertText', false, (ev.clipboardData || window.clipboardData).getData('text')); });
   return e;
+}
+function _linkParts(t){
+  const out = [], re = /\[([^\]\n]+)\]\((https?:\/\/[^)\s]+)\)/g;
+  let last = 0, m;
+  while ((m = re.exec(t))) { if (m.index > last) out.push({ text: t.slice(last, m.index) }); out.push({ text: m[1], url: m[2] }); last = re.lastIndex; }
+  if (last < t.length) out.push({ text: t.slice(last) });
+  return out;
 }
 function _rmBtn(label, fn){ const b = _el('button', 'doc-rm', '×'); b.type = 'button'; b.title = label; b.setAttribute('aria-label', label); b.onclick = fn; return b; }
 function _addBtn(label, fn){ const b = _el('button', 'doc-add', '+ ' + label); b.type = 'button'; b.onclick = fn; return b; }
@@ -4706,17 +4683,15 @@ async function _renderSaveWhere(){
   if (seq !== _saveRenderSeq) return;
   const btn = (label, fn, cls) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn ' + (cls || 'btn-ghost'); b.textContent = label; b.onclick = fn; return b; };
   acts.replaceChildren();
+  where.replaceChildren();
+  const rootEl = document.getElementById('exp-save-root');
   if (!root) {
-    where.textContent = 'Not set up: files go to your Downloads folder.';
+    if (rootEl) { rootEl.textContent = 'Downloads'; rootEl.title = 'No folder chosen yet: files go to your Downloads folder'; }
     acts.append(btn('📁 Choose folder', chooseSaveFolder, 'btn-outline'));
     return;
   }
-  const job = _jobFields();
-  where.replaceChildren();
-  const strong = document.createElement('strong');
-  strong.textContent = [root.name, job.company || 'Company?', job.position || null].filter(Boolean).join(' › ');
-  where.append('Saving into ', strong);
-  acts.append(btn('Change folder', chooseSaveFolder), btn('Use Downloads instead', stopSaveFolder));
+  if (rootEl) { rootEl.textContent = root.name; rootEl.title = 'Your job applications folder'; }
+  acts.append(btn('Change folder', chooseSaveFolder), btn('Use Downloads', stopSaveFolder));
   // Suggest the company folders already there (only once this browser may read the folder)
   if (await _allowed(root, false)) {
     const list = document.getElementById('exp-company-list');
@@ -4738,6 +4713,8 @@ function _renderExportExtras(){
   const panel = document.getElementById('exp-save-panel');
   if (!panel) return;
   const fields = document.getElementById('exp-save-fields');
+  const sig = document.getElementById('exp-sig-link');
+  if (sig) sig.hidden = exportType !== 'cl';
   if (!_canPickFolder()) {
     fields.hidden = true;
     document.getElementById('exp-save-actions').replaceChildren();
@@ -4753,8 +4730,8 @@ renderReplyState();
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261028a"></script>
-<script src="../js/section-rail.js?v=20261028a" defer></script>
-<script src="../js/nice-select.js?v=20261028a" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261028b"></script>
+<script src="../js/section-rail.js?v=20261028b" defer></script>
+<script src="../js/nice-select.js?v=20261028b" defer></script>
 </body>
 </html>
