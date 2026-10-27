@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261027c">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261027c">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261027c">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261027d">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261027d">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261027d">
 </head>
 <body>
 
@@ -320,25 +320,17 @@
         <div class="jd-copy">
           <button class="btn btn-lg copy-prompt" id="copy-cl-btn" data-which="cl" onclick="copyPrompt('cl')"><span class="cp-icon">&#x2398;</span><span class="cp-label">Copy Cover Letter Prompt</span></button>
           <button class="btn btn-lg copy-prompt" id="copy-cv-btn" data-which="cv" onclick="copyPrompt('cv')"><span class="cp-icon">&#x2398;</span><span class="cp-label">Copy CV Prompt</span></button>
+          <button class="btn btn-lg copy-prompt paste-reply" id="paste-cl-btn" type="button" onclick="pasteReply('cl')"><span class="cp-icon">&#x1F4CB;</span><span class="cp-label">Paste Cover Letter Reply</span></button>
+          <button class="btn btn-lg copy-prompt paste-reply" id="paste-cv-btn" type="button" onclick="pasteReply('cv')"><span class="cp-icon">&#x1F4CB;</span><span class="cp-label">Paste CV Reply</span></button>
         </div>
       </div>
-
-      <div class="reply-stage" id="reply-stage">
-        <div class="reply-head">
-          <div>
-            <label class="reply-title" for="reply-input">Paste Claude's reply here</label>
-            <div class="reply-sub">Copy Claude's whole reply and paste it below. Cover letter or CV, the tool tells them apart. Once both are in, Export to Word opens.</div>
-          </div>
-          <div class="reply-chips">
-            <span class="reply-chip" id="reply-chip-cl">&#x2709; Cover letter</span>
-            <span class="reply-chip" id="reply-chip-cv">&#x1F4C4; CV</span>
-          </div>
-        </div>
-        <textarea id="reply-input" class="reply-input" rows="4" placeholder="Paste Claude's full reply here (it has tags like [SALUTATION] or [SUMMARY])"></textarea>
-        <div class="reply-foot">
-          <span class="reply-msg" id="reply-msg" role="status" aria-live="polite"></span>
-          <button type="button" class="btn btn-outline" id="reply-go" onclick="switchView('export')" hidden>Open Export to Word &#x2192;</button>
-        </div>
+      <div class="reply-foot">
+        <span class="reply-msg" id="reply-msg" role="status" aria-live="polite"></span>
+        <button type="button" class="btn btn-ghost" id="reply-go" onclick="switchView('export')" hidden>Open Export to Word &#x2192;</button>
+      </div>
+      <div class="reply-manual" id="reply-manual" hidden>
+        <label class="reply-manual-label" for="reply-input">Your browser didn't let the tool read the clipboard. Paste Claude's reply here instead (Ctrl+V, or &#x2318;+V on a Mac):</label>
+        <textarea id="reply-input" class="reply-input" rows="4" placeholder="Paste Claude's full reply here"></textarea>
       </div>
 
       <!-- Built prompts are assembled here behind the scenes for copying -->
@@ -534,7 +526,7 @@
     <section class="panel help-card">
       <h2>&#x2462; Export to Word</h2>
       <ol>
-        <li>Copy Claude's <strong>entire reply</strong> (it contains tagged sections like <code>[SALUTATION]</code> or <code>[SUMMARY]</code>) and paste it into <strong>Paste Claude's reply here</strong> in the Prompt Builder. The tool tells a cover letter from a CV by its tags.</li>
+        <li>Copy Claude's <strong>entire reply</strong> (it contains tagged sections like <code>[SALUTATION]</code> or <code>[SUMMARY]</code>) then click <strong>Paste Cover Letter Reply</strong> or <strong>Paste CV Reply</strong> in the Prompt Builder, right under the copy buttons. The tool reads it from your clipboard.</li>
         <li>Paste the cover letter reply, then copy the CV prompt, run it and paste that reply too. Once both are in, Export to Word opens. Switch between them with <strong>Cover Letter</strong> and <strong>CV</strong> above the preview.</li>
         <li>Check the <strong>preview</strong>. Click any text to edit it, add or remove bullet points and rows, and pick a colour and font. Your edits are saved.</li>
         <li>Click <strong>Download .docx</strong>, or <strong>Both</strong> for the two documents. Your name, contact details and links come from the Profile Builder.</li>
@@ -4381,23 +4373,25 @@ function _replyMsg(text, kind){
   el.textContent = text || '';
   el.dataset.kind = kind || '';
 }
+const _pasteLabels = { cl: ['Paste Cover Letter Reply', 'Cover Letter Reply Pasted'], cv: ['Paste CV Reply', 'CV Reply Pasted'] };
 function renderReplyState(){
   const d = _loadDrafts();
   ['cl', 'cv'].forEach(t => {
-    const chip = document.getElementById('reply-chip-' + t);
-    if (!chip) return;
+    const btn = document.getElementById('paste-' + t + '-btn');
+    if (!btn) return;
     const ok = _replyReady(d, t);
-    chip.classList.toggle('done', ok);
-    chip.textContent = (t === 'cl' ? '✉ Cover letter' : '📄 CV') + (ok ? ' ✓' : '');
-    chip.title = ok ? 'Ready in Export to Word' : 'Not pasted yet for this job';
+    btn.classList.toggle('is-done', ok);
+    btn.querySelector('.cp-icon').textContent = ok ? '✓' : '📋';
+    btn.querySelector('.cp-label').textContent = _pasteLabels[t][ok ? 1 : 0];
+    btn.title = ok ? 'In Export to Word. Click to paste a new reply.' : "Reads Claude's reply from your clipboard";
   });
   const go = document.getElementById('reply-go');
   if (go) go.hidden = !(_replyReady(d, 'cl') || _replyReady(d, 'cv'));
 }
-function handleReplyText(raw){
+function handleReplyText(raw, expected){
   const text = _sanitize(String(raw || ''));
   const kinds = _replyKind(text);
-  if (!kinds.length) { _replyMsg("That doesn't look like Claude's full reply: there are no [SALUTATION] or [SUMMARY] tags. Copy the whole reply and paste it again.", 'error'); return false; }
+  if (!kinds.length) { _replyMsg("What you copied isn't Claude's full reply: there are no [SALUTATION] or [SUMMARY] tags. Copy the whole reply in Claude and try again.", 'error'); return false; }
   _flushExportDraft();
   const d = _loadDrafts();
   d.jd = d.jd || {};
@@ -4415,16 +4409,32 @@ function handleReplyText(raw){
   exportData = d[exportType];
   renderReplyState();
   _renderExportExtras();
+  const manual = document.getElementById('reply-manual');
+  if (manual) manual.hidden = true;
+  if (expected && !got.includes(expected)) toast(`That was the ${_DOC_NAME[got[0]].toLowerCase()} reply, so it went in as the ${_DOC_NAME[got[0]].toLowerCase()}`, 'info');
   if (_replyReady(d, 'cl') && _replyReady(d, 'cv')) {
     _replyMsg('Cover letter and CV are ready ✓ Opening Export to Word…', 'ok');
     toast('Cover letter and CV ready ✔', 'success');
     setTimeout(() => switchView('export'), 700);
   } else {
     const next = got[0] === 'cl' ? 'CV' : 'Cover Letter';
-    _replyMsg(`${_DOC_NAME[got[0]]} ready ✓ Next: copy the ${next} prompt, run it in Claude and paste its reply here. Or open Export now.`, 'ok');
+    _replyMsg(`${_DOC_NAME[got[0]]} ready ✓ Next: copy the ${next} prompt, run it in Claude, copy its reply and click Paste ${next} Reply.`, 'ok');
     toast(_DOC_NAME[got[0]] + ' ready ✔', 'success');
   }
   return true;
+}
+// Paste buttons: read the reply straight from the clipboard
+async function pasteReply(which){
+  let text;
+  try { text = await navigator.clipboard.readText(); }
+  catch (e) {
+    const manual = document.getElementById('reply-manual');
+    if (manual) { manual.hidden = false; document.getElementById('reply-input').focus(); }
+    _replyMsg('', '');
+    return;
+  }
+  if (!text || !text.trim()) { _replyMsg(`Your clipboard is empty. Copy Claude's whole ${_DOC_NAME[which].toLowerCase()} reply first.`, 'error'); return; }
+  handleReplyText(text, which);
 }
 (() => {
   const box = document.getElementById('reply-input');
@@ -4686,8 +4696,8 @@ renderReplyState();
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261027c"></script>
-<script src="../js/section-rail.js?v=20261027c" defer></script>
-<script src="../js/nice-select.js?v=20261027c" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261027d"></script>
+<script src="../js/section-rail.js?v=20261027d" defer></script>
+<script src="../js/nice-select.js?v=20261027d" defer></script>
 </body>
 </html>
