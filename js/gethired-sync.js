@@ -7,7 +7,7 @@ const SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
 const KEYS = [
   'gethired_profile_v1', 'cv_content_bank', 'cl_prompt', 'cv_prompt', 'gethired_jd',
   'gethired_export_draft', 'gethired_export_style', 'gethired_signature',
-  'gethired_polish_snapshot', 'gethired_headshot',
+  'gethired_polish_snapshot', 'gethired_headshot', 'gethired_applications',
 ];
 const RETIRED = ['gethired_sample_sections'];
 const OWNER = 'gethired_owner';

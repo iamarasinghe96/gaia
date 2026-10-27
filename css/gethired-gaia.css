@@ -70,6 +70,7 @@ body > .gh-footer { grid-column: 2; }
 .main-nav-tab:nth-child(2) { --c1: #3b82f6; --c2: #2563eb; --tx: #fff; --sub: rgba(255, 255, 255, .75); }
 .main-nav-tab:nth-child(3) { --c1: #1e40af; --c2: #172f7a; --tx: #fff; --sub: rgba(255, 255, 255, .7); }
 .main-nav-tab:nth-child(4) { --c1: #172f7a; --c2: #0f1f52; --tx: #fff; --sub: rgba(255, 255, 255, .68); }
+.main-nav-tab:nth-child(5) { --c1: #0f1f52; --c2: #0a1538; --tx: #fff; --sub: rgba(255, 255, 255, .66); }
 a.main-nav-tab, a.main-nav-tab:hover { text-decoration: none; }
 .main-nav-tab:hover { filter: brightness(1.05) saturate(1.05); background: linear-gradient(160deg, var(--c1), var(--c2)); color: var(--tx); }
 .main-nav-tab.active {
@@ -596,3 +597,59 @@ textarea.jd-big::placeholder { font-style: normal; color: var(--muted); font-siz
 .exp-headshot input { width: 16px; height: 16px; accent-color: var(--navy); }
 .exp-headshot input:disabled + span { opacity: .55; }
 @media (max-width: 900px) { .exp-sticky { position: static; } .exp-pop-panel .swatches { flex-wrap: wrap; width: 230px; } }
+
+/* Applications tracker */
+.trk-wrap { max-width: 1280px; }
+.trk-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
+.trk-title { font-size: 26px; font-weight: 800; letter-spacing: -.02em; margin: 0; }
+.trk-sub { font-size: 13.5px; color: var(--slate); margin: 4px 0 0; }
+.trk-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.trk-actions .field-input { width: 200px; padding-top: 8px; padding-bottom: 8px; }
+.trk-wrap .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.trk-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.trk-chip { border: 1px solid var(--border); background: #fff; border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--slate); cursor: pointer; }
+.trk-chip.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.trk-table-wrap { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; }
+.trk-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1180px; }
+.trk-table[hidden] { display: none; }
+.trk-table th { position: sticky; top: 0; background: linear-gradient(160deg, #3b82f6, #2563eb); color: #fff; text-align: left; font-weight: 700; padding: 9px 8px; white-space: nowrap; font-size: 12.5px; }
+.trk-table td { border-top: 1px solid #eef1f6; padding: 4px 6px; vertical-align: top; }
+.trk-table tr:hover td { background: #fafcff; }
+.trk-in { width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px; padding: 6px 7px; font: inherit; font-size: 13px; color: var(--ink); }
+.trk-in:hover { border-color: #e2e8f0; }
+.trk-in:focus { outline: none; border-color: var(--navy); background: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, .12); }
+.trk-note-in { resize: vertical; min-height: 32px; line-height: 1.4; }
+.trk-c-n { width: 34px; color: #94a3b8; font-weight: 600; padding-top: 11px !important; text-align: center; }
+td.trk-c-status { min-width: 136px; }
+.trk-pill { width: 100%; border: 0; border-radius: 999px; padding: 6px 10px; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; background: #e8f0fe; color: #1d4ed8; }
+.trk-pill[data-status="To apply"] { background: #f1f5f9; color: #475569; }
+.trk-pill[data-status="Interview"] { background: #fff7ed; color: #c2410c; }
+.trk-pill[data-status="Offer"], .trk-pill[data-status="Accepted"] { background: #ecfdf5; color: #047857; }
+.trk-pill[data-status="Unsuccessful"] { background: #fef2f2; color: #b91c1c; }
+.trk-pill[data-status="Withdrawn"] { background: #f5f3ff; color: #6d28d9; }
+td.trk-c-title { min-width: 190px; } td.trk-c-company { min-width: 170px; } td.trk-c-location { min-width: 130px; }
+td.trk-c-applied, td.trk-c-followUp { width: 140px; } td.trk-c-salary { min-width: 120px; } td.trk-c-interviewer { min-width: 130px; }
+td.trk-c-notes { min-width: 220px; } td.trk-c-link { min-width: 150px; position: relative; } td.trk-c-link .trk-in { padding-right: 24px; }
+.trk-open { position: absolute; right: 10px; top: 9px; text-decoration: none; font-weight: 700; color: var(--navy); }
+.trk-open[hidden] { display: none; }
+td.trk-c-docs { min-width: 120px; padding-top: 10px !important; font-size: 12.5px; color: var(--ink); }
+td.trk-c-docs small { display: block; color: #94a3b8; font-size: 11px; margin-top: 2px; word-break: break-word; }
+.trk-sponsor { display: inline-block; margin: 0 0 4px 7px; font-size: 10.5px; font-weight: 700; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 1px 7px; border-radius: 999px; }
+td.trk-c-x { width: 30px; text-align: center; }
+.trk-del { border: 0; background: none; color: #94a3b8; font-size: 18px; cursor: pointer; padding: 4px 6px; border-radius: 6px; margin-top: 3px; }
+.trk-del:hover { color: #b91c1c; background: #fef2f2; }
+.trk-empty { background: #fff; border: 1.5px dashed #c7d6f5; border-radius: var(--radius); padding: 34px 20px; text-align: center; color: var(--slate); font-size: 14px; }
+.trk-empty[hidden] { display: none; }
+@media (max-width: 760px) {
+  .trk-actions { width: 100%; } .trk-actions .field-input { flex: 1 1 100%; width: auto; }
+  .trk-table-wrap { background: none; border: 0; overflow: visible; }
+  .trk-table, .trk-table tbody, .trk-table tr, .trk-table td { display: block; min-width: 0; width: auto; }
+  .trk-table thead { display: none; }
+  .trk-table tr { position: relative; background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; }
+  .trk-table td { border: 0; padding: 2px 0 !important; display: grid; grid-template-columns: 92px minmax(0, 1fr); align-items: center; gap: 8px; }
+  .trk-table td::before { content: attr(data-label); font-size: 11.5px; font-weight: 600; color: #94a3b8; }
+  .trk-table td.trk-c-n { display: none; }
+  .trk-table td.trk-c-x { position: absolute; top: 6px; right: 6px; display: block; }
+  .trk-table td.trk-c-x::before { content: none; }
+  td.trk-c-status { width: auto; padding-right: 34px !important; }
+}

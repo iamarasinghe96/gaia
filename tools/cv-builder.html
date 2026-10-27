@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028c">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261028c">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261028c">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028d">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261028d">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261028d">
 </head>
 <body>
 
@@ -256,6 +256,7 @@
   <button class="main-nav-tab active" id="nav-profile" onclick="switchView('profile')"><span class="step-n">2</span><span class="step-t">Profile Builder<small>Your details, once</small></span></button>
   <button class="main-nav-tab" id="nav-prompt" onclick="switchView('prompt')"><span class="step-n">3</span><span class="step-t">Prompt Builder<small>Paste the job ad</small></span></button>
   <button class="main-nav-tab" id="nav-export" onclick="switchView('export')"><span class="step-n">4</span><span class="step-t">Export to Word<small>Preview &amp; download</small></span></button>
+  <button class="main-nav-tab" id="nav-tracker" onclick="switchView('tracker')"><span class="step-n">5</span><span class="step-t">Applications<small>Track every job</small></span></button>
   <button class="main-nav-tab nav-help" id="nav-help" onclick="switchView('help')"><span class="step-n">?</span><span class="step-t">How it works</span></button>
 </nav>
 
@@ -456,6 +457,32 @@
   </div>
 </div>
 
+<!-- ══════════════════ VIEW: APPLICATIONS ══════════════════ -->
+<div id="view-tracker" class="view">
+  <div class="container trk-wrap">
+    <div class="trk-head">
+      <div>
+        <h2 class="trk-title" data-ctx="Applications">Applications</h2>
+        <p class="trk-sub">Every job you download a cover letter or CV for is added here. Click any cell to change it.</p>
+      </div>
+      <div class="trk-actions">
+        <label class="sr-only" for="trk-search">Search applications</label>
+        <input type="search" id="trk-search" class="field-input" placeholder="Search" autocomplete="off">
+        <button type="button" class="btn btn-outline" onclick="addApplication()">+ Add</button>
+        <button type="button" class="btn btn-outline" id="trk-csv" onclick="exportApplicationsCSV()">&#x2B07; Excel (.csv)</button>
+      </div>
+    </div>
+    <div class="trk-filters" id="trk-filters" role="group" aria-label="Filter by status"></div>
+    <div class="trk-table-wrap">
+      <table class="trk-table" id="trk-table">
+        <thead><tr id="trk-head-row"></tr></thead>
+        <tbody id="trk-body"></tbody>
+      </table>
+    </div>
+    <div class="trk-empty" id="trk-empty" hidden>No applications yet. Download a cover letter or CV in <a href="#" onclick="switchView('export');return false">Export to Word</a> and it appears here, or click <strong>+ Add</strong>.</div>
+  </div>
+</div>
+
 <!-- ══════════════════ VIEW: HOW IT WORKS ══════════════════ -->
 <div id="view-help" class="view">
   <div class="container help">
@@ -499,6 +526,7 @@
         <li>Paste the cover letter reply, then copy the CV prompt, run it and paste that reply too. Once both are in, Export to Word opens. Switch between them with <strong>Cover Letter</strong> and <strong>CV</strong> above the preview.</li>
         <li>Check the <strong>preview</strong>. Click any text to edit it, add or remove bullet points and rows, and pick a colour and font. Your edits are saved.</li>
         <li>Click <strong>Download .docx</strong>, or <strong>Both</strong> for the two documents. Your name, contact details and links come from the Profile Builder.</li>
+        <li>Every download adds the job to <strong>Applications</strong> (step 5), with the title, company and date filled in, plus the location, salary and ad link when the job came from Find sponsor jobs. Track its status, interviewer, follow-up date and notes there, or download the list for Excel.</li>
         <li>In Chrome or Edge on a computer, the first download offers to use a folder for your job applications. Each application is then saved in <strong>Company &#x203A; Position</strong>, read from Claude's reply, and an existing company folder is reused. Check or change both names in the <strong>File save path</strong> bar. The folder stays on your computer and is never uploaded.</li>
       </ol>
       <h3>Signature</h3>
@@ -510,7 +538,7 @@
     <section class="panel help-card" id="help-data">
       <h2>&#x1F512; Your data</h2>
       <ul>
-        <li><strong>Signed in with Google:</strong> your profile, job description, prompts, document edits, style and signature save to your account and follow you to any device. Security rules let only your account read or change them.</li>
+        <li><strong>Signed in with Google:</strong> your profile, job description, prompts, document edits, style, signature and applications save to your account and follow you to any device. Security rules let only your account read or change them.</li>
         <li><strong>Not signed in:</strong> everything stays in this browser only. Sign in later and it moves into your account.</li>
         <li>Signing out removes your data from this browser. It stays safe in your account.</li>
         <li>We never sell your data or use it for advertising. Read the full <a href="../privacy.html">Privacy Policy</a>.</li>
@@ -2097,6 +2125,7 @@ function switchView(view) {
   if (view === 'prompt') loadPromptBuilder();
   if (view === 'export') initExport();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (view === 'tracker') renderTracker();
   if (view === 'help') renderSignatureState();
 }
 
@@ -2126,7 +2155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load prompt builder fields
   restoreJD();
   loadPromptBuilder();
-  if (location.hash === '#prompt' || location.hash === '#export') {
+  if (location.hash === '#prompt' || location.hash === '#export' || location.hash === '#tracker') {
     const view = location.hash.slice(1);
     history.replaceState(null, '', location.pathname + location.search);
     switchView(view);
@@ -4644,12 +4673,12 @@ async function _deliverDoc(blob, fn, target){
       const w = await (await target.dir.getFileHandle(name, { create: true })).createWritable();
       await w.write(blob);
       await w.close();
-      toast('Saved ' + name + ' in ' + target.label + ' ✔', 'success');
+      toast('Saved ' + name + ' in ' + target.label + ' ✔' + _trackApplication(fn, target.label), 'success');
       return;
     } catch (e) { console.error(e); toast("Couldn't save into the folder, so it was downloaded instead", 'error'); }
   }
   _downloadBlob(blob, fn);
-  toast('Downloaded ' + fn + ' (' + Math.round(blob.size / 1024) + ' KB) ✔', 'success');
+  toast('Downloaded ' + fn + ' (' + Math.round(blob.size / 1024) + ' KB) ✔' + _trackApplication(fn, ''), 'success');
 }
 async function downloadBothDocx(){
   _flushExportDraft();
@@ -4755,10 +4784,198 @@ renderStyleControls = function(){
   if (dot) dot.style.background = '#' + _exportStyle().accent;
 };
 
+// ═══════════════════════════════════════════════════════════════
+// APPLICATIONS: every downloaded cover letter or CV adds (or updates) the job here.
+// Saved like the rest of the profile (to your account when signed in).
+// ═══════════════════════════════════════════════════════════════
+const APP_KEY = 'gethired_applications';
+const APP_STATUSES = ['To apply', 'Applied', 'Interview', 'Offer', 'Accepted', 'Unsuccessful', 'Withdrawn'];
+const APP_COLS = [
+  { k: 'n', label: '#' },
+  { k: 'status', label: 'Status', type: 'status' },
+  { k: 'title', label: 'Title' },
+  { k: 'company', label: 'Company' },
+  { k: 'location', label: 'Location' },
+  { k: 'applied', label: 'Applied', type: 'date' },
+  { k: 'salary', label: 'Salary' },
+  { k: 'interviewer', label: 'Interviewer' },
+  { k: 'followUp', label: 'Follow-up', type: 'date' },
+  { k: 'notes', label: 'Notes', type: 'long' },
+  { k: 'link', label: 'Ad link', type: 'url' },
+  { k: 'docs', label: 'Documents', type: 'docs' },
+];
+function _apps(){ try { const a = JSON.parse(localStorage.getItem(APP_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+function _saveApps(list){ try { localStorage.setItem(APP_KEY, JSON.stringify(list)); } catch (e) { toast('Could not save your applications (storage full)', 'error'); } }
+const _today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const _newAppId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+// Header lines a job from Find sponsor jobs carries ("Location: …"), or the same words in any ad
+function _jdMeta(jd){
+  const head = String(jd || '').split('\n').slice(0, 40).join('\n');
+  const line = re => { const m = head.match(re); return m ? m[1].trim().slice(0, 160) : ''; };
+  const employer = line(/^\s*Employer:\s*(.+)$/im);
+  return {
+    title: line(/^\s*Job title:\s*(.+)$/im),
+    company: employer.replace(/\s*\(on the Standard Business Sponsor list.*$/i, ''),
+    sponsor: /Standard Business Sponsor list/i.test(employer),
+    location: line(/^\s*(?:Location|Work location|Job location):\s*(.+)$/im),
+    salary: line(/^\s*(?:Salary|Remuneration|Pay):\s*(.+)$/im),
+    link: (head.match(/^\s*Ad link:\s*(https?:\/\/\S+)/im) || [])[1] || '',
+  };
+}
+// Returns a few words for the download message
+function _trackApplication(fn, folderLabel){
+  try {
+    const jd = document.getElementById('jd-input').value;
+    const job = _loadDrafts().job || {}, meta = _jdMeta(jd);
+    const title = job.position || meta.title, company = job.company || meta.company;
+    const key = _promptHash(jd);
+    const list = _apps();
+    let a = list.find(x => jd.trim() && x.jd === key)
+      || list.find(x => title && company && _nameKey(x.title) === _nameKey(title) && _nameKey(x.company) === _nameKey(company));
+    const fresh = !a;
+    if (!a) {
+      a = { id: _newAppId(), created: Date.now(), jd: key, status: 'Applied', title: '', company: '', location: '', applied: _today(), salary: '', interviewer: '', followUp: '', notes: '', link: '', docs: [], folder: '', sponsor: false };
+      list.push(a);
+    }
+    // Fill only what is still empty: your own edits are never overwritten
+    const fill = (k, v) => { if (v && !a[k]) a[k] = v; };
+    fill('title', title); fill('company', company); fill('location', meta.location); fill('salary', meta.salary); fill('link', meta.link);
+    if (meta.sponsor) a.sponsor = true;
+    const doc = /_CoverLetter/.test(fn) ? 'Cover letter' : 'CV';
+    a.docs = Array.isArray(a.docs) ? a.docs : [];
+    if (!a.docs.includes(doc)) a.docs.push(doc);
+    if (folderLabel) a.folder = folderLabel;
+    a.updated = Date.now();
+    _saveApps(list);
+    if (document.getElementById('view-tracker').classList.contains('active')) renderTracker();
+    return fresh ? ' · Added to Applications' : '';
+  } catch (e) { console.error('tracker', e); return ''; }
+}
+let _trkFilter = 'all';
+function _trkCell(a, col, n){
+  const td = document.createElement('td');
+  td.dataset.label = col.label;
+  td.className = 'trk-c-' + col.k;
+  // Each change is saved straight away (the account copy follows a moment later)
+  const save = v => { const list = _apps(), x = list.find(y => y.id === a.id); if (!x) return; x[col.k] = v; x.updated = Date.now(); a[col.k] = v; _saveApps(list); };
+  if (col.k === 'n') { td.textContent = n; return td; }
+  if (col.type === 'status') {
+    const sel = document.createElement('select');
+    sel.className = 'trk-pill'; sel.setAttribute('aria-label', 'Status');
+    APP_STATUSES.forEach(s => sel.add(new Option(s, s)));
+    if (a.status && !APP_STATUSES.includes(a.status)) sel.add(new Option(a.status, a.status));
+    sel.value = a.status || 'Applied'; sel.dataset.status = sel.value;
+    sel.onchange = () => { sel.dataset.status = sel.value; save(sel.value); _renderTrkFilters(); };
+    td.appendChild(sel); return td;
+  }
+  if (col.type === 'docs') {
+    const docs = (a.docs || []).join(' + ');
+    td.textContent = docs || '—';
+    if (a.folder) { const s = document.createElement('small'); s.textContent = a.folder; td.title = 'Saved in ' + a.folder; td.appendChild(s); }
+    return td;
+  }
+  if (col.type === 'long') {
+    const ta = document.createElement('textarea');
+    ta.className = 'trk-in trk-note-in'; ta.rows = 1; ta.value = a.notes || ''; ta.placeholder = 'Notes'; ta.setAttribute('aria-label', 'Notes');
+    const fit = () => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 160) + 'px'; };
+    ta.oninput = () => { fit(); save(ta.value); };
+    requestAnimationFrame(fit);
+    td.appendChild(ta); return td;
+  }
+  const inp = document.createElement('input');
+  inp.className = 'trk-in';
+  inp.type = col.type === 'date' ? 'date' : col.type === 'url' ? 'url' : 'text';
+  inp.value = a[col.k] || ''; inp.placeholder = col.type === 'date' ? '' : col.label; inp.setAttribute('aria-label', col.label);
+  inp.oninput = () => save(inp.value.trim());
+  td.appendChild(inp);
+  if (col.type === 'url') {
+    const go = document.createElement('a');
+    go.className = 'trk-open'; go.textContent = '↗'; go.target = '_blank'; go.rel = 'noopener noreferrer'; go.title = 'Open the ad';
+    const upd = () => { const ok = /^https?:\/\//i.test(inp.value.trim()); go.hidden = !ok; if (ok) go.href = inp.value.trim(); };
+    inp.addEventListener('input', upd); upd();
+    td.appendChild(go);
+  }
+  if (col.k === 'company' && a.sponsor) { const b = document.createElement('span'); b.className = 'trk-sponsor'; b.textContent = 'Sponsor'; b.title = 'On the Standard Business Sponsor list'; td.appendChild(b); }
+  return td;
+}
+function _renderTrkFilters(){
+  const box = document.getElementById('trk-filters');
+  if (!box) return;
+  const list = _apps(), counts = {};
+  list.forEach(a => { counts[a.status || 'Applied'] = (counts[a.status || 'Applied'] || 0) + 1; });
+  box.replaceChildren();
+  [['all', 'All', list.length]].concat(APP_STATUSES.filter(s => counts[s]).map(s => [s, s, counts[s]])).forEach(([v, label, c]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'trk-chip' + (_trkFilter === v ? ' on' : ''); b.dataset.status = v;
+    b.textContent = label + ' ' + c;
+    b.onclick = () => { _trkFilter = v; renderTracker(); };
+    box.appendChild(b);
+  });
+  if (_trkFilter !== 'all' && !counts[_trkFilter]) { _trkFilter = 'all'; }
+}
+function renderTracker(){
+  const body = document.getElementById('trk-body');
+  if (!body) return;
+  const head = document.getElementById('trk-head-row');
+  if (!head.children.length) {
+    APP_COLS.concat([{ k: 'x', label: '' }]).forEach(c => { const th = document.createElement('th'); th.textContent = c.label; th.className = 'trk-c-' + c.k; head.appendChild(th); });
+  }
+  const all = _apps();
+  const num = new Map(all.slice().sort((x, y) => (x.created || 0) - (y.created || 0)).map((a, i) => [a.id, i + 1]));
+  _renderTrkFilters();
+  const q = (document.getElementById('trk-search').value || '').trim().toLowerCase();
+  const rows = all
+    .filter(a => _trkFilter === 'all' || (a.status || 'Applied') === _trkFilter)
+    .filter(a => !q || ['title', 'company', 'location', 'interviewer', 'notes', 'salary', 'status'].some(k => String(a[k] || '').toLowerCase().includes(q)))
+    .sort((x, y) => (y.applied || '').localeCompare(x.applied || '') || (y.created || 0) - (x.created || 0));
+  body.replaceChildren();
+  rows.forEach(a => {
+    const tr = document.createElement('tr');
+    APP_COLS.forEach(c => tr.appendChild(_trkCell(a, c, num.get(a.id))));
+    const td = document.createElement('td'); td.className = 'trk-c-x';
+    const del = document.createElement('button');
+    del.type = 'button'; del.className = 'trk-del'; del.textContent = '×'; del.title = 'Remove this application'; del.setAttribute('aria-label', 'Remove this application');
+    del.onclick = () => {
+      if (!confirm('Remove "' + (a.title || 'this application') + (a.company ? ' at ' + a.company : '') + '" from your applications?')) return;
+      _saveApps(_apps().filter(x => x.id !== a.id)); renderTracker();
+    };
+    td.appendChild(del); tr.appendChild(td);
+    body.appendChild(tr);
+  });
+  document.getElementById('trk-empty').hidden = all.length > 0;
+  document.getElementById('trk-table').hidden = !all.length;
+  document.getElementById('trk-csv').disabled = !all.length;
+}
+function addApplication(){
+  const list = _apps();
+  list.push({ id: _newAppId(), created: Date.now(), jd: '', status: 'Applied', title: '', company: '', location: '', applied: _today(), salary: '', interviewer: '', followUp: '', notes: '', link: '', docs: [], folder: '', sponsor: false });
+  _saveApps(list);
+  _trkFilter = 'all'; document.getElementById('trk-search').value = '';
+  renderTracker();
+  const first = document.querySelector('#trk-body .trk-c-title input');
+  if (first) first.focus();
+}
+function exportApplicationsCSV(){
+  const list = _apps();
+  if (!list.length) return;
+  const num = new Map(list.slice().sort((x, y) => (x.created || 0) - (y.created || 0)).map((a, i) => [a.id, i + 1]));
+  const cols = APP_COLS.filter(c => c.k !== 'n');
+  const cell = v => { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; };   // no spreadsheet formulas from text
+  const lines = [['#'].concat(cols.map(c => c.label), ['Sponsor', 'Saved in']).map(cell).join(',')];
+  list.slice().sort((x, y) => num.get(x.id) - num.get(y.id)).forEach(a => {
+    lines.push([num.get(a.id)].concat(cols.map(c => c.k === 'docs' ? (a.docs || []).join(' + ') : a[c.k]), [a.sponsor ? 'Yes' : '', a.folder || '']).map(cell).join(','));
+  });
+  _downloadBlob(new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' }), 'Job_applications_' + _today() + '.csv');
+  toast('Downloaded your applications for Excel ✔', 'success');
+}
+document.getElementById('trk-search').addEventListener('input', () => renderTracker());
+const _gaiaReload2 = window.gethiredReloadFromStorage;
+window.gethiredReloadFromStorage = function(){ _gaiaReload2(); if (document.getElementById('view-tracker').classList.contains('active')) renderTracker(); };
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261028c"></script>
-<script src="../js/section-rail.js?v=20261028c" defer></script>
-<script src="../js/nice-select.js?v=20261028c" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261028d"></script>
+<script src="../js/section-rail.js?v=20261028d" defer></script>
+<script src="../js/nice-select.js?v=20261028d" defer></script>
 </body>
 </html>
