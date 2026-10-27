@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261027a">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261027a">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261027a">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261027b">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261027b">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261027b">
 </head>
 <body>
 
@@ -3612,7 +3612,7 @@ document.body.insertAdjacentHTML('beforeend',
   '<datalist id="gh-link-names">' + ['GitHub','Facebook','Instagram','X (Twitter)','YouTube','TikTok','Behance','Dribbble','Medium','Substack','Stack Overflow','GitLab','Google Scholar','ResearchGate','ORCID','Personal website','Blog'].map(v => `<option value="${v.replace(/[()]/g, '')}">`).join('') + '</datalist>');
 
 // ─── Prompt copies ───
-const _OLD_PROMPT_HASHES = {"cl_prompt": ["70d945a1", "777ac469", "b923b977", "c135b936"], "cv_prompt": ["49674a3d", "71db5458", "74a3af7", "8193e014", "c4bd1cd5", "d4ed76b8", "df91b59c", "f656ed9f", "f92911a5"]};
+const _OLD_PROMPT_HASHES = {"cl_prompt": ["70d945a1", "777ac469", "9c73fa5c", "af287941", "b923b977", "c135b936"], "cv_prompt": ["35ad1a14", "49674a3d", "71db5458", "74a3af7", "8193e014", "c4bd1cd5", "d4ed76b8", "df91b59c", "f656ed9f", "f92911a5"]};
 function _promptHash(text){
   const t = String(text || '').replace(/\r\n?/g, '\n').trim();
   let h = 0x811c9dc5;
@@ -4347,8 +4347,8 @@ function clearAllFields(){
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261027a"></script>
-<script src="../js/section-rail.js?v=20261027a" defer></script>
-<script src="../js/nice-select.js?v=20261027a" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261027b"></script>
+<script src="../js/section-rail.js?v=20261027b" defer></script>
+<script src="../js/nice-select.js?v=20261027b" defer></script>
 </body>
 </html>
