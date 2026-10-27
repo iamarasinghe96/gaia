@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028b">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261028b">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261028b">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028c">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261028c">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261028c">
 </head>
 <body>
 
@@ -410,17 +410,22 @@
 <!-- ══════════════════ VIEW: EXPORT TO WORD ══════════════════ -->
 <div id="view-export" class="view">
   <div class="container exp-wrap">
+    <div class="exp-sticky">
     <div class="exp-bar exp-toolbar">
       <div class="doc-switch" role="group" aria-label="Document">
         <button type="button" id="exp-type-cl" onclick="setExportType('cl')">&#x2709; Cover Letter</button>
         <button type="button" id="exp-type-cv" onclick="setExportType('cv')">&#x1F4C4; CV</button>
       </div>
       <div class="exp-style" aria-label="Style">
-        <div class="swatches" id="exp-swatches"></div>
+        <div class="exp-pop">
+          <button type="button" class="exp-pop-btn" id="exp-colour-btn" aria-expanded="false" aria-controls="exp-colour-pop" title="Colour"><span class="exp-dot" id="exp-colour-dot"></span><span class="exp-caret">&#x25BE;</span></button>
+          <div class="exp-pop-panel" id="exp-colour-pop" hidden><div class="swatches" id="exp-swatches"></div></div>
+        </div>
         <label class="sr-only" for="exp-font">Font</label>
         <select id="exp-font" class="field-input exp-font" title="Font" onchange="setExportStyle({font:this.value})"></select>
-        <label class="style-check exp-headshot" id="exp-headshot-row" hidden><input type="checkbox" id="exp-headshot" onchange="setExportStyle({headshot:this.checked})"><span><strong>Headshot</strong><small id="exp-headshot-hint"></small></span></label>
-        <a href="#" class="exp-sig" id="exp-sig-link" onclick="openSignature();return false" title="Add or change the signature on your cover letters (Personal Information)">&#x270D; Signature</a>
+        <label class="exp-headshot" id="exp-headshot-row" hidden><input type="checkbox" id="exp-headshot" onchange="setExportStyle({headshot:this.checked})"><span>Headshot</span></label>
+        <a href="#" class="exp-sig" id="exp-sig-link" onclick="openSignature();return false" title="Add or change your signature">&#x270D; Signature</a>
+        <button type="button" class="exp-pop-btn exp-path-btn" id="exp-path-btn" aria-expanded="false" aria-controls="exp-save-panel">&#x1F4C1; <span id="exp-path-label">File save path</span><span class="exp-caret">&#x25BE;</span></button>
       </div>
       <div class="exp-dl">
         <button class="btn btn-outline" id="exp-both-btn" onclick="downloadBothDocx()" hidden>&#x2B07; Both</button>
@@ -428,8 +433,7 @@
       </div>
     </div>
 
-    <div class="exp-bar exp-pathbar" id="exp-save-panel">
-      <span class="exp-path-label">&#x1F4C1; File save path</span>
+    <div class="exp-bar exp-pathbar" id="exp-save-panel" hidden>
       <div class="exp-path-fields" id="exp-save-fields">
         <span class="exp-path-root" id="exp-save-root"></span>
         <span class="exp-path-sep" aria-hidden="true">&#x203A;</span>
@@ -442,6 +446,7 @@
       </div>
       <div class="save-where" id="exp-save-where"></div>
       <div class="save-actions" id="exp-save-actions"></div>
+    </div>
     </div>
 
     <div class="doc-stage">
@@ -4215,8 +4220,7 @@ function _syncHeadshotOption(){
   row.hidden = exportType !== 'cv';
   box.disabled = !has;
   box.checked = has && _exportStyle().headshot;
-  const hint = document.getElementById('exp-headshot-hint');
-  if (hint) hint.innerHTML = has ? 'Round photo at the top right of page 1' : 'Add a headshot in <a href="#" onclick="openSignature();return false">Personal Information</a> first';
+  row.title = has ? 'Round photo at the top right of page 1' : 'Add a headshot in Personal Information first';
 }
 // Square crop for the round photo (centred, a little above the middle where the face usually is)
 function _squareHeadshot(h){
@@ -4691,6 +4695,8 @@ async function _renderSaveWhere(){
     return;
   }
   if (rootEl) { rootEl.textContent = root.name; rootEl.title = 'Your job applications folder'; }
+  const lbl = document.getElementById('exp-path-label');
+  if (lbl) lbl.textContent = root.name;
   acts.append(btn('Change folder', chooseSaveFolder), btn('Use Downloads', stopSaveFolder));
   // Suggest the company folders already there (only once this browser may read the folder)
   if (await _allowed(root, false)) {
@@ -4728,10 +4734,31 @@ function _renderExportExtras(){
 }
 renderReplyState();
 
+// ─── Style bar: colour and file save path open on click ───
+function _setPop(id, open){
+  const panel = document.getElementById(id), btn = document.querySelector('[aria-controls="' + id + '"]');
+  if (!panel || !btn) return;
+  panel.hidden = !open;
+  btn.setAttribute('aria-expanded', String(open));
+  btn.classList.toggle('on', open);
+}
+[['exp-colour-btn', 'exp-colour-pop'], ['exp-path-btn', 'exp-save-panel']].forEach(([b, p]) => {
+  const btn = document.getElementById(b);
+  if (btn) btn.addEventListener('click', e => { e.stopPropagation(); _setPop(p, document.getElementById(p).hidden); });
+});
+document.addEventListener('click', e => { if (!e.target.closest('#exp-colour-pop, #exp-colour-btn')) _setPop('exp-colour-pop', false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { _setPop('exp-colour-pop', false); _setPop('exp-save-panel', false); } });
+const _gaiaRenderStyle = renderStyleControls;
+renderStyleControls = function(){
+  _gaiaRenderStyle();
+  const dot = document.getElementById('exp-colour-dot');
+  if (dot) dot.style.background = '#' + _exportStyle().accent;
+};
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261028b"></script>
-<script src="../js/section-rail.js?v=20261028b" defer></script>
-<script src="../js/nice-select.js?v=20261028b" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261028c"></script>
+<script src="../js/section-rail.js?v=20261028c" defer></script>
+<script src="../js/nice-select.js?v=20261028c" defer></script>
 </body>
 </html>
