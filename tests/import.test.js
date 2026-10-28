@@ -108,3 +108,16 @@ test('extractProfile moves on to the next model when one is busy, retired or err
   await extractProfile(CV, { apiKey: 'k', fetchImpl: async (u, init) => { asked = JSON.parse(init.body).max_completion_tokens; return reply(AI); } });
   assert.ok(asked >= 2048 && asked <= 8192);
 });
+
+test('gpt-oss models go first, with short thinking and room for it', async () => {
+  const { CHAT_MODELS, groqBody } = await import('../lib/groq.js');
+  assert.match(CHAT_MODELS[0], /^openai\/gpt-oss-/);
+  const b = groqBody('openai/gpt-oss-120b', { model: 'openai/gpt-oss-120b', max_completion_tokens: 1200 });
+  assert.equal(b.reasoning_effort, 'low');
+  assert.equal(b.max_completion_tokens, 1200 + 2048);
+  assert.deepEqual(groqBody('llama-3.1-8b-instant', { max_completion_tokens: 1200 }), { max_completion_tokens: 1200 });
+  let sent;
+  await extractProfile(CV, { apiKey: 'k', fetchImpl: async (u, init) => { sent = JSON.parse(init.body); return reply(AI); } });
+  assert.equal(sent.model, CHAT_MODELS[0]);
+  assert.equal(sent.reasoning_effort, 'low');
+});
