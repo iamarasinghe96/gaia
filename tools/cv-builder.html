@@ -228,10 +228,10 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028g">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261028g">
-<link rel="stylesheet" href="../css/tool-menu.css?v=20261028g">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261028g">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028h">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261028h">
+<link rel="stylesheet" href="../css/tool-menu.css?v=20261028h">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261028h">
 </head>
 <body>
 
@@ -3460,7 +3460,7 @@ async function importFromCV(input){
     _setImportBusy(true, 'AI is reading your CV…');
     const payload = kind === 'pdf' ? { pdf: _b64(await _readAs(file, 'buffer')) } : { text: _sanitize(text) };
     const res = await window.gethiredImportCV(payload);
-    if (!res || !res.ok || !res.profile) { toast(IMPORT_ERRORS[res && res.error] || IMPORT_ERRORS.busy, 'error'); return; }
+    if (!res || !res.ok || !res.profile) { if (res && res.detail) console.warn('CV import:', res.error, res.detail); toast(IMPORT_ERRORS[res && res.error] || IMPORT_ERRORS.busy, 'error'); return; }
     _applyImportedProfile(res.profile);
     toast('CV imported ✔ Check every section: AI can miss or misplace details.', 'success');
   } catch (err) {
@@ -4983,9 +4983,9 @@ window.gethiredReloadFromStorage = function(){ _gaiaReload2(); if (document.getE
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261028g"></script>
-<script src="../js/section-rail.js?v=20261028g" defer></script>
-<script src="../js/nice-select.js?v=20261028g" defer></script>
-<script src="../js/tool-menu.js?v=20261028g" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261028h"></script>
+<script src="../js/section-rail.js?v=20261028h" defer></script>
+<script src="../js/nice-select.js?v=20261028h" defer></script>
+<script src="../js/tool-menu.js?v=20261028h" defer></script>
 </body>
 </html>

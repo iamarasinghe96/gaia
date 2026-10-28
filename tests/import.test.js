@@ -91,3 +91,20 @@ test('import handler requires sign-in, same site and limits use', async () => {
   for (let i = 0; i < 7; i++) { res = mockRes(); await h(req({ text: CV }), res); }
   assert.equal(res.code, 429);
 });
+
+test('extractProfile moves on to the next model when one is busy, retired or erroring', async () => {
+  const seen = [];
+  const codes = [429, 404, 500];
+  const p = await extractProfile(CV, { apiKey: 'k', sleep: async () => {}, fetchImpl: async (url, init) => {
+    seen.push(JSON.parse(init.body).model);
+    return seen.length <= codes.length ? status(codes[seen.length - 1], {}) : reply(AI);
+  } });
+  assert.equal(seen.length, 4);
+  assert.equal(new Set(seen).size, 4);
+  assert.equal(p.workHistory[0].employer, 'Kurunegala Holdings');
+  await assert.rejects(extractProfile(CV, { apiKey: 'k', fetchImpl: async () => status(413, {}) }),
+    e => e.code === 'busy' && /HTTP 413/.test(e.detail) && !/\bk\b/.test(e.detail.replace(/[a-z-]+\//g, '')));
+  let asked;
+  await extractProfile(CV, { apiKey: 'k', fetchImpl: async (u, init) => { asked = JSON.parse(init.body).max_completion_tokens; return reply(AI); } });
+  assert.ok(asked >= 2048 && asked <= 8192);
+});

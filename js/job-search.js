@@ -250,7 +250,7 @@
       const payload = kind === 'pdf' ? { pdf: b64(await readAs(file, 'buffer')) } : { text: kind === 'docx' ? await docxText(await readAs(file, 'buffer')) : String(await readAs(file, 'text')) };
       toast('AI is reading your CV…');
       const res = await window.gethiredImportCV(payload);
-      if (!res || !res.ok || !res.profile) { needSignIn(res && res.error); return; }
+      if (!res || !res.ok || !res.profile) { if (res && res.detail) console.warn('CV import:', res.error, res.detail); needSignIn(res && res.error); return; }
       // Fill the CV Builder profile in the background (asks first if one already exists)
       const existing = store.get('gethired_profile_v1');
       const next = toBuilderProfile(res.profile);
