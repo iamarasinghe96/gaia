@@ -122,3 +122,15 @@ body.app-shell {
   .app-shell .gh-user .hbtn { width: 30px; height: 30px; border: 0; background: transparent; padding: 0; display: inline-grid; place-items: center; }
 }
 @media (prefers-reduced-motion: reduce) { .app-shell * { transition: none !important; animation: none !important; } }
+
+/* Desktop: the step menu shows only its numbers and slides open over the page on hover or keyboard focus */
+@media (min-width: 901px) {
+  body.app-shell { grid-template-columns: 92px minmax(0, 1fr); }
+  .app-shell .main-nav { width: 92px; z-index: 95; transition: width .38s cubic-bezier(.16, 1, .3, 1); }
+  .app-shell .main-nav:hover, .app-shell .main-nav:focus-within { width: 262px; filter: drop-shadow(0 18px 30px rgba(11, 16, 32, .18)); }
+  .app-shell .main-nav-tab { overflow: hidden; }
+  .app-shell .main-nav-tab .step-t { white-space: nowrap; opacity: 0; transform: translateX(-8px); transition: opacity .18s, transform .3s cubic-bezier(.16, 1, .3, 1); }
+  .app-shell .main-nav:hover .step-t, .app-shell .main-nav:focus-within .step-t { opacity: 1; transform: none; transition-delay: .1s; }
+  .app-shell .main-nav-tab.nav-help { padding-left: 21px; padding-right: 21px; }
+}
+@media (min-width: 901px) and (prefers-reduced-motion: reduce) { .app-shell .main-nav, .app-shell .main-nav-tab .step-t { transition: none; } }
