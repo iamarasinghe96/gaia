@@ -491,6 +491,16 @@
     requestAnimationFrame(frame);
   }
 
+  // Signed out, or someone else signed in on this browser: start from an empty search
+  addEventListener('gethired:cleared', () => {
+    $('js-what').value = ''; aiSuggestions = [];
+    kw.set([]); cats.set([]);
+    $('js-where').value = ''; $('js-days').value = '30';
+    showSummary('');
+    try { localStorage.removeItem(STATE_KEY); sessionStorage.removeItem(RESULTS_KEY); } catch { /* blocked */ }
+    if ($('results')) $('results').hidden = true;
+    $('js-groups').innerHTML = '';
+  });
   restoreState();
   const saved = store.get(RESULTS_KEY, sessionStorage);
   if (saved && saved.groups) render(saved);

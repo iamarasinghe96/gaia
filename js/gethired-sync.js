@@ -55,9 +55,16 @@ function status(state) {
 const hasLocalData = () => KEYS.some(k => ls.get(k) !== null);
 const reloadApp = () => { if (typeof window.gethiredReloadFromStorage === 'function') window.gethiredReloadFromStorage(); };
 
+// Other tools' working data that belongs to whoever was signed in (the Job Search Assistant's
+// last search and results), cleared with the rest so the next person never sees it
+const ALSO_CLEAR = ['gaia_jobsearch'];
+const ALSO_CLEAR_SESSION = ['gaia_jobsearch_results'];
 function clearLocal() {
   KEYS.forEach(k => ls.remove(k));
+  ALSO_CLEAR.forEach(k => ls.remove(k));
+  ALSO_CLEAR_SESSION.forEach(k => { try { rawRemove.call(sessionStorage, k); } catch { /* blocked */ } });
   ls.remove(OWNER);
+  window.dispatchEvent(new Event('gethired:cleared'));
 }
 
 function showAccount(user) {
