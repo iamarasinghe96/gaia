@@ -228,10 +228,10 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028i">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261028i">
-<link rel="stylesheet" href="../css/tool-menu.css?v=20261028i">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261028i">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028j">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261028j">
+<link rel="stylesheet" href="../css/tool-menu.css?v=20261028j">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261028j">
 </head>
 <body>
 
@@ -448,6 +448,10 @@
       </div>
       <div class="save-where" id="exp-save-where"></div>
       <div class="save-actions" id="exp-save-actions"></div>
+      <div class="exp-loc" id="exp-loc-row" hidden>
+        <label for="exp-loc">Where this folder is on your computer <span>optional, for Copy path</span></label>
+        <input id="exp-loc" class="field-input" autocomplete="off" spellcheck="false" placeholder="e.g. C:\Users\you\OneDrive\Job applying">
+      </div>
     </div>
     </div>
 
@@ -4654,11 +4658,12 @@ async function _saveTarget(){
   if (!(await _allowed(root, true))) { toast("Folder access wasn't allowed, so this goes to Downloads", 'info'); return { kind: 'download' }; }
   const job = _jobFields();
   try {
-    if (!job.company) return { kind: 'folder', dir: root, label: root.name };
+    if (!job.company) return { kind: 'folder', dir: root, label: root.name, parts: [root.name] };
     const c = await _subfolder(root, job.company);
     const p = job.position ? await _subfolder(c, job.position) : c;
     _renderExportExtras();
-    return { kind: 'folder', dir: p, label: [root.name, c.name].concat(job.position ? [p.name] : []).join(' › ') };
+    const parts = [root.name, c.name].concat(job.position ? [p.name] : []);
+    return { kind: 'folder', dir: p, label: parts.join(' › '), parts };
   } catch (e) {
     console.error(e);
     toast("Couldn't open that folder, so this goes to Downloads", 'error');
@@ -4682,7 +4687,7 @@ async function _deliverDoc(blob, fn, target){
       const w = await (await target.dir.getFileHandle(name, { create: true })).createWritable();
       await w.write(blob);
       await w.close();
-      toast('Saved ' + name + ' in ' + target.label + ' ✔' + _trackApplication(fn, target.label), 'success');
+      _savedNotice(name, target, _trackApplication(fn, target.label));
       return;
     } catch (e) { console.error(e); toast("Couldn't save into the folder, so it was downloaded instead", 'error'); }
   }
@@ -4728,11 +4733,15 @@ async function _renderSaveWhere(){
   where.replaceChildren();
   const rootEl = document.getElementById('exp-save-root');
   if (!root) {
+    { const r = document.getElementById('exp-loc-row'); if (r) r.hidden = true; }
     if (rootEl) { rootEl.textContent = 'Downloads'; rootEl.title = 'No folder chosen yet: files go to your Downloads folder'; }
     acts.append(btn('📁 Choose folder', chooseSaveFolder, 'btn-outline'));
     return;
   }
   if (rootEl) { rootEl.textContent = root.name; rootEl.title = 'Your job applications folder'; }
+  const locRow = document.getElementById('exp-loc-row'), loc = document.getElementById('exp-loc');
+  if (locRow) locRow.hidden = false;
+  if (loc && document.activeElement !== loc) { try { loc.value = (await _idb.get(_saveKey('saveDirPath'))) || ''; } catch (e) {} }
   const lbl = document.getElementById('exp-path-label');
   if (lbl) lbl.textContent = root.name;
   acts.append(btn('Change folder', chooseSaveFolder), btn('Use Downloads', stopSaveFolder));
@@ -4981,11 +4990,67 @@ document.getElementById('trk-search').addEventListener('input', () => renderTrac
 const _gaiaReload2 = window.gethiredReloadFromStorage;
 window.gethiredReloadFromStorage = function(){ _gaiaReload2(); if (document.getElementById('view-tracker').classList.contains('active')) renderTracker(); };
 
+// ─── "Saved" notice with Copy path ───
+// Browsers never tell a page where a folder is on disk, so the full path needs the folder's
+// location typed once in File save path (kept on this computer only, like the folder itself).
+(() => {
+  const loc = document.getElementById('exp-loc');
+  if (loc) loc.addEventListener('input', () => { const v = loc.value.trim(); (v ? _idb.set(_saveKey('saveDirPath'), v.slice(0, 400)) : _idb.del(_saveKey('saveDirPath'))).catch(() => {}); });
+})();
+function _fullSavePath(parts, base){
+  const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  base = String(base || '').trim().replace(/["']/g, '');
+  const sep = base ? (base.includes('\\') || /^[A-Za-z]:/.test(base) ? '\\' : '/') : (mac ? '/' : '\\');
+  if (!base) return parts.join(sep);
+  base = base.replace(/[\\/]+$/, '');
+  const last = base.split(/[\\/]/).pop();
+  const rest = _nameKey(last) === _nameKey(parts[0]) ? parts.slice(1) : parts;   // pasted the folder itself, or the one above it
+  return [base].concat(rest).join(sep);
+}
+let _noticeTimer;
+function _savedNotice(fileName, target, extra){
+  const t = document.getElementById('toast'); if (t) t.className = '';
+  let box = document.getElementById('save-notice');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'save-notice'; box.className = 'save-notice'; box.setAttribute('role', 'status'); box.setAttribute('aria-live', 'polite');
+    box.addEventListener('mouseenter', () => clearTimeout(_noticeTimer));
+    box.addEventListener('mouseleave', () => { _noticeTimer = setTimeout(() => box.classList.remove('show'), 4000); });
+    document.body.appendChild(box);
+  }
+  const same = box.classList.contains('show') && box.dataset.label === target.label;
+  const files = same ? JSON.parse(box.dataset.files || '[]') : [];
+  if (!files.includes(fileName)) files.push(fileName);
+  extra = extra || (same ? box.dataset.extra || '' : '');
+  box.dataset.label = target.label; box.dataset.files = JSON.stringify(files); box.dataset.extra = extra;
+  box.replaceChildren();
+  const msg = document.createElement('div'); msg.className = 'save-notice-msg';
+  const head = document.createElement('strong'); head.textContent = '✔ Saved ' + files.join(' and ');
+  const where = document.createElement('span'); where.textContent = 'in ' + target.label + (extra || '');
+  msg.append(head, where);
+  const tip = document.createElement('small'); tip.className = 'save-notice-tip'; tip.hidden = true;
+  const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'save-notice-btn'; copy.textContent = '📋 Copy path';
+  copy.onclick = async () => {
+    let base = ''; try { base = (await _idb.get(_saveKey('saveDirPath'))) || ''; } catch (e) {}
+    const path = _fullSavePath(target.parts || [target.label], base);
+    try { await navigator.clipboard.writeText(path); copy.textContent = '✓ Copied'; }
+    catch (e) { copy.textContent = 'Copy blocked'; }
+    tip.textContent = base ? 'Paste it into File Explorer’s address bar.' : 'Tip: add where this folder is under File save path to copy the full path.';
+    tip.hidden = false;
+  };
+  const x = document.createElement('button'); x.type = 'button'; x.className = 'save-notice-x'; x.textContent = '×'; x.setAttribute('aria-label', 'Close');
+  x.onclick = () => box.classList.remove('show');
+  box.append(msg, copy, x, tip);
+  requestAnimationFrame(() => box.classList.add('show'));
+  clearTimeout(_noticeTimer);
+  _noticeTimer = setTimeout(() => box.classList.remove('show'), 12000);
+}
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261028i"></script>
-<script src="../js/section-rail.js?v=20261028i" defer></script>
-<script src="../js/nice-select.js?v=20261028i" defer></script>
-<script src="../js/tool-menu.js?v=20261028i" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261028j"></script>
+<script src="../js/section-rail.js?v=20261028j" defer></script>
+<script src="../js/nice-select.js?v=20261028j" defer></script>
+<script src="../js/tool-menu.js?v=20261028j" defer></script>
 </body>
 </html>
