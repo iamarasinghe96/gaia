@@ -665,3 +665,36 @@ td.trk-c-x { width: 30px; text-align: center; }
   .main-nav-tab.nav-help { padding-left: 21px; padding-right: 21px; }
 }
 @media (min-width: 901px) and (prefers-reduced-motion: reduce) { .main-nav, .main-nav-tab .step-t { transition: none; } }
+
+/* Headshot and signature side by side; explanations behind "?" */
+.media-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+.media-row .headshot { margin-bottom: 0; align-items: center; }
+.hint-btn { display: inline-grid; place-items: center; width: 20px; height: 20px; margin-left: 4px; vertical-align: 1px; border-radius: 50%; border: 1px solid #dbe5f7; background: #fff; color: var(--navy); font: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; padding: 0; }
+.hint-btn:hover, .hint-btn.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.hint-pop { margin: 4px 0 2px; }
+.hint-pop[hidden] { display: none; }
+.sig-preview { overflow: hidden; }
+.sig-slot .sig-preview img { max-height: 68px; }
+@media (max-width: 900px) { .media-row { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) { .media-row .headshot { flex-direction: row; text-align: left; align-items: center; } .media-row .headshot-actions { justify-content: flex-start; } .media-row .headshot-pic { width: 64px; height: 64px; } .sig-slot .sig-preview { width: 110px; height: 64px; } .sig-slot .sig-preview img { max-height: 52px; } }
+
+/* Colour dot: the colour comes from --dot, so it is never blank */
+.exp-dot { background: var(--dot, #156082) !important; }
+
+/* Phones: compact Export toolbar, prompt template headers, section headers */
+@media (max-width: 900px) {
+  .exp-toolbar { gap: 10px; }
+  .exp-toolbar .doc-switch { display: flex; width: 100%; }
+  .exp-toolbar .doc-switch button { flex: 1 1 0; }
+  .exp-style { width: 100%; gap: 8px; }
+  .exp-style .exp-font { flex: 1 1 150px; max-width: none; min-width: 0; }
+  .exp-path-btn { flex: 1 1 auto; max-width: none; justify-content: center; }
+}
+@media (max-width: 640px) {
+  .prompt-templates .panel-header { flex-wrap: wrap; gap: 8px; }
+  .prompt-templates .panel-desc { display: none; }
+  .prompt-templates .panel-badges { width: 100%; padding-left: 40px; flex-wrap: wrap; }
+  .sample-btn .sb-t { display: none; }
+  .sample-btn { padding-left: 11px; padding-right: 11px; }
+}
+.media-row .headshot-actions .btn { white-space: normal; text-align: left; max-width: 100%; }

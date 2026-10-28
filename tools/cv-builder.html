@@ -228,9 +228,9 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028e">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261028e">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261028e">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028f">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261028f">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261028f">
 </head>
 <body>
 
@@ -751,7 +751,7 @@ function toggleSample(id){
   // Showing the example should also open the section
   if (sampleSections.has(id) && !openSections.has(id)) toggleBuilderSection(id);
   const btn = document.getElementById('sb-' + id);
-  if (btn) { const on = sampleSections.has(id); btn.classList.toggle('on', on); btn.innerHTML = on ? '&#x2715; Hide example' : '&#x1F4A1; Show example'; }
+  if (btn) { const on = sampleSections.has(id); btn.classList.toggle('on', on); btn.innerHTML = on ? '<span class="sb-i">&#x2715;</span><span class="sb-t"> Hide example</span>' : '<span class="sb-i">&#x1F4A1;</span><span class="sb-t"> Show example</span>'; }
   renderSectionBody(id);
 }
 
@@ -794,7 +794,7 @@ function buildSectionShell(id, num, title) {
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
-          ${id === 'personal' ? '' : `<button class="btn btn-outline sample-btn${sampleSections.has(id) ? ' on' : ''}" id="sb-${id}" onclick="event.stopPropagation();toggleSample('${id}')" title="Show a filled-in example beside your fields">${sampleSections.has(id) ? '&#x2715; Hide example' : '&#x1F4A1; Show example'}</button>`}
+          ${id === 'personal' ? '' : `<button class="btn btn-outline sample-btn${sampleSections.has(id) ? ' on' : ''}" id="sb-${id}" onclick="event.stopPropagation();toggleSample('${id}')" title="Show a filled-in example beside your fields">${sampleSections.has(id) ? '<span class="sb-i">&#x2715;</span><span class="sb-t"> Hide example</span>' : '<span class="sb-i">&#x1F4A1;</span><span class="sb-t"> Show example</span>'}</button>`}
           <span class="section-toggle" id="st-${id}">${open ? '&#x25BE;' : '&#x25B8;'}</span>
         </div>
       </div>
@@ -855,8 +855,7 @@ function personalBodyHTML() {
   _ensureAddressParts(P.personal);
   delete P.personal.locationNote;
   return `
-    ${headshotHTML()}
-    ${signatureHTML()}
+    <div class="media-row">${headshotHTML()}${signatureHTML()}</div>
     ${fg(2,
       fi('Full Name <span class="req">*</span>', inp(`${p}.fullName`, 'e.g. Jane Smith')),
       fi('Date of Birth <span class="opt">optional</span>', inp(`${p}.dob`, 'e.g. 15th March 1990'))
@@ -4138,8 +4137,8 @@ function headshotHTML(){
   return `<div class="headshot" id="headshot-slot">
     <div class="headshot-pic">${h ? `<img src="${h.dataUrl}" alt="Your headshot">` : '<span aria-hidden="true">&#x1F464;</span>'}</div>
     <div class="headshot-body">
-      <div class="headshot-title">Headshot <span class="opt">optional</span></div>
-      <p class="field-hint">Want a cleaner, professional photo? Copy the prompt, paste it into ChatGPT with your clearest front-facing photo, then upload the result here. The prompt asks ChatGPT not to change your face or posture; check it still looks like you. If it changes your face, reply: “That changed my face. Start again from my original photo and change only the clothing and background.”</p>
+      <div class="headshot-title">Headshot <span class="opt">optional</span> <button type="button" class="hint-btn" aria-expanded="false" aria-controls="headshot-hint" title="How to get a professional headshot" onclick="toggleHint(this)">?</button></div>
+      <p class="field-hint hint-pop" id="headshot-hint" hidden>Want a cleaner, professional photo? Copy the prompt, paste it into ChatGPT with your clearest front-facing photo, then upload the result here. The prompt asks ChatGPT not to change your face or posture; check it still looks like you. If it changes your face, reply: “That changed my face. Start again from my original photo and change only the clothing and background.”</p>
       <div class="headshot-actions">
         <label class="btn btn-outline btn-sm" tabindex="0">${h ? 'Replace photo' : '&#x2191; Upload photo'}<input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden onchange="uploadHeadshot(this)"></label>
         <button type="button" class="btn btn-outline btn-sm" onclick="copyHeadshotPrompt(this)">&#x1F4CB; Copy ChatGPT headshot prompt</button>
@@ -4147,6 +4146,13 @@ function headshotHTML(){
       </div>
     </div>
   </div>`;
+}
+function toggleHint(btn){
+  const p = document.getElementById(btn.getAttribute('aria-controls'));
+  if (!p) return;
+  p.hidden = !p.hidden;
+  btn.setAttribute('aria-expanded', String(!p.hidden));
+  btn.classList.toggle('on', !p.hidden);
 }
 function _renderHeadshot(){ const el = document.getElementById('headshot-slot'); if (el) el.outerHTML = headshotHTML(); }
 async function uploadHeadshot(input){
@@ -4224,8 +4230,8 @@ function signatureHTML(){
   return `<div class="headshot sig-slot" id="exp-sig-row">
     <div class="sig-preview" id="exp-sig-wrap"><img id="exp-sig-preview" alt="Your signature" style="display:none"><span id="exp-sig-empty">No signature yet</span></div>
     <div class="headshot-body">
-      <div class="headshot-title">Signature <span class="opt">optional · added to exported cover letters</span></div>
-      <p class="field-hint">Upload a photo or scan of your signature. Any background works: white, grey or textured paper. The background is removed and only your ink is kept.</p>
+      <div class="headshot-title">Signature <span class="opt">optional</span> <button type="button" class="hint-btn" aria-expanded="false" aria-controls="sig-hint" title="About the signature" onclick="toggleHint(this)">?</button></div>
+      <p class="field-hint hint-pop" id="sig-hint" hidden>Added to your exported cover letters. Upload a photo or scan of your signature. Any background works: white, grey or textured paper. The background is removed and only your ink is kept.</p>
       <div class="headshot-actions">
         <label class="btn btn-outline btn-sm" tabindex="0"><span id="exp-sig-label">Upload signature photo</span><input type="file" accept="image/*" hidden onchange="handleSignatureUpload(this)"></label>
         <button type="button" class="btn btn-outline btn-sm headshot-remove" id="exp-sig-remove" style="display:none" onclick="removeSignature()">Remove</button>
@@ -4781,7 +4787,7 @@ const _gaiaRenderStyle = renderStyleControls;
 renderStyleControls = function(){
   _gaiaRenderStyle();
   const dot = document.getElementById('exp-colour-dot');
-  if (dot) dot.style.background = '#' + _exportStyle().accent;
+  if (dot) dot.style.setProperty('--dot', '#' + _exportStyle().accent);
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -4974,8 +4980,8 @@ window.gethiredReloadFromStorage = function(){ _gaiaReload2(); if (document.getE
 
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261028e"></script>
-<script src="../js/section-rail.js?v=20261028e" defer></script>
-<script src="../js/nice-select.js?v=20261028e" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261028f"></script>
+<script src="../js/section-rail.js?v=20261028f" defer></script>
+<script src="../js/nice-select.js?v=20261028f" defer></script>
 </body>
 </html>
