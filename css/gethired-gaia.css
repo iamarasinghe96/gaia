@@ -717,3 +717,7 @@ td.trk-c-x { width: 30px; text-align: center; }
 .exp-loc label span { color: #94a3b8; font-weight: 500; }
 .exp-loc .field-input { width: 100%; padding-top: 7px; padding-bottom: 7px; margin: 0; }
 @media (max-width: 520px) { .save-notice { grid-template-columns: minmax(0, 1fr) auto; } .save-notice-btn { grid-column: 1; grid-row: 2; justify-self: start; } .save-notice-x { grid-column: 2; grid-row: 1; } }
+.trk-import { max-width: 640px; }
+.trk-import .reply-input { margin: 4px 0 10px; font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+.trk-import-file { font-size: 13px; }
+.trk-import-info { margin-top: 10px !important; font-weight: 600; color: var(--ink) !important; }

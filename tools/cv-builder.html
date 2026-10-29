@@ -228,10 +228,10 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261028j">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261028j">
-<link rel="stylesheet" href="../css/tool-menu.css?v=20261028j">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261028j">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261029a">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261029a">
+<link rel="stylesheet" href="../css/tool-menu.css?v=20261029a">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261029a">
 </head>
 <body>
 
@@ -474,6 +474,7 @@
         <label class="sr-only" for="trk-search">Search applications</label>
         <input type="search" id="trk-search" class="field-input" placeholder="Search" autocomplete="off">
         <button type="button" class="btn btn-outline" onclick="addApplication()">+ Add</button>
+        <button type="button" class="btn btn-outline" onclick="openAppImport()">&#x2B06; Import</button>
         <button type="button" class="btn btn-outline" id="trk-csv" onclick="exportApplicationsCSV()">&#x2B07; Excel (.csv)</button>
       </div>
     </div>
@@ -531,7 +532,7 @@
         <li>Paste the cover letter reply, then copy the CV prompt, run it and paste that reply too. Once both are in, Export to Word opens. Switch between them with <strong>Cover Letter</strong> and <strong>CV</strong> above the preview.</li>
         <li>Check the <strong>preview</strong>. Click any text to edit it, add or remove bullet points and rows, and pick a colour and font. Your edits are saved.</li>
         <li>Click <strong>Download .docx</strong>, or <strong>Both</strong> for the two documents. Your name, contact details and links come from the Profile Builder.</li>
-        <li>Every download adds the job to <strong>Applications</strong> (step 5), with the title, company and date filled in, plus the location, salary and ad link when the job came from Find sponsor jobs. Track its status, interviewer, follow-up date and notes there, or download the list for Excel.</li>
+        <li>Every download adds the job to <strong>Applications</strong> (step 5), with the title, company and date filled in, plus the location, salary and ad link when the job came from Find sponsor jobs. Track its status, interviewer, follow-up date and notes there, download the list for Excel, or bring in a list you already keep with <strong>Import</strong> (paste rows from Excel, or choose an .xlsx or .csv file).</li>
         <li>In Chrome or Edge on a computer, the first download offers to use a folder for your job applications. Each application is then saved in <strong>Company &#x203A; Position</strong>, read from Claude's reply, and an existing company folder is reused. Check or change both names in the <strong>File save path</strong> bar. The folder stays on your computer and is never uploaded.</li>
       </ol>
       <h3>Signature</h3>
@@ -5046,11 +5047,157 @@ function _savedNotice(fileName, target, extra){
   _noticeTimer = setTimeout(() => box.classList.remove('show'), 12000);
 }
 
+// ─── Import applications from Excel (pasted rows, .xlsx or .csv) ───
+const _APP_HEAD = [
+  ['status', /^status$/], ['title', /^(title|job title|position|role)$/], ['company', /^(company|employer|organisation|organization)$/],
+  ['location', /^(location|city|where)$/], ['applied', /^(application date|applied|date applied|date)$/], ['salary', /^(salary|pay|remuneration)$/],
+  ['interviewer', /^(interviewer|contact)$/], ['followUp', /^(follow.?up|next step date)$/], ['notes', /^(notes?|comments?)$/],
+  ['link', /^(ad link|link|url|job link)$/], ['n', /^(#|no\.?|number)$/],
+];
+const _APP_DEFAULT_ORDER = ['n', 'status', 'title', 'company', 'location', 'applied', 'salary', 'interviewer', 'notes'];
+function _csvRows(text){
+  const delim = (text.split('\n')[0].match(/\t/g) || []).length ? '\t' : ',';
+  const rows = []; let row = [], cell = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (q) { if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += ch; continue; }
+    if (ch === '"' && cell === '') q = true;
+    else if (ch === delim) { row.push(cell); cell = ''; }
+    else if (ch === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
+    else if (ch !== '\r') cell += ch;
+  }
+  row.push(cell); rows.push(row);
+  return rows.filter(r => r.some(c => c.trim()));
+}
+const _APP_MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+// "3-Feb-26", "03/02/2026" (Australian day first), "2026-02-03" or an Excel day number → "2026-02-03"
+function _appDate(v){
+  v = String(v == null ? '' : v).trim();
+  if (!v) return '';
+  const two = y => (y.length === 2 ? '20' + y : y);
+  const iso = (y, m, d) => (m >= 1 && m <= 12 && d >= 1 && d <= 31 ? `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}` : '');
+  let m = v.match(/^(\d{1,2})[-\s/.]([A-Za-z]{3})[A-Za-z]*[-\s/.,]*(\d{2,4})$/);
+  if (m && _APP_MONTHS[m[2].toLowerCase()]) return iso(two(m[3]), _APP_MONTHS[m[2].toLowerCase()], +m[1]);
+  m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return iso(m[1], +m[2], +m[3]);
+  m = v.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{2,4})$/); if (m) return iso(two(m[3]), +m[2], +m[1]);
+  if (/^\d{5}(\.\d+)?$/.test(v)) { const d = new Date(Date.UTC(1899, 11, 30) + Math.floor(+v) * 86400000); return iso(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()); }
+  return '';
+}
+function _appStatus(v){
+  const s = String(v || '').trim(), l = s.toLowerCase();
+  if (!s || /pending|applied|submitted|waiting/.test(l)) return 'Applied';
+  if (/reject|unsuccessful|declined|not progress/.test(l)) return 'Unsuccessful';
+  if (/interview/.test(l)) return 'Interview';
+  if (/offer/.test(l)) return 'Offer';
+  if (/accept/.test(l)) return 'Accepted';
+  if (/withdr/.test(l)) return 'Withdrawn';
+  if (/to apply|draft|saved/.test(l)) return 'To apply';
+  return s.slice(0, 40);
+}
+function _rowsToApps(rows){
+  if (!rows.length) return [];
+  const norm = c => String(c || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  let map = rows[0].map(c => { const h = _APP_HEAD.find(([, re]) => re.test(norm(c))); return h ? h[0] : null; });
+  let body = rows.slice(1);
+  if (map.filter(Boolean).length < 2) { map = _APP_DEFAULT_ORDER; body = rows; }   // no header row: the usual column order
+  const base = Date.now();
+  return body.map((r, i) => {
+    const a = { id: _newAppId(), created: base + i, jd: '', status: 'Applied', title: '', company: '', location: '', applied: '', salary: '', interviewer: '', followUp: '', notes: '', link: '', docs: [], folder: '', sponsor: false, imported: true };
+    map.forEach((k, j) => {
+      if (!k || k === 'n') return;
+      const v = String(r[j] == null ? '' : r[j]).replace(/\s+/g, ' ').trim().slice(0, k === 'notes' ? 2000 : 300);
+      if (k === 'applied' || k === 'followUp') a[k] = _appDate(v);
+      else if (k === 'status') a.status = _appStatus(v);
+      else if (k === 'link') a.link = /^https?:\/\//i.test(v) ? v : '';
+      else a[k] = v;
+    });
+    return a;
+  }).filter(a => a.title || a.company);
+}
+// .xlsx: the first sheet, read with JSZip (already on the page for the Word export)
+async function _xlsxRows(buf){
+  const zip = await JSZip.loadAsync(buf);
+  const xml = async n => { const f = zip.file(n); return f ? new DOMParser().parseFromString(await f.async('string'), 'application/xml') : null; };
+  const ss = await xml('xl/sharedStrings.xml');
+  const strings = ss ? [...ss.getElementsByTagName('si')].map(si => [...si.getElementsByTagName('t')].map(t => t.textContent).join('')) : [];
+  const wb = await xml('xl/workbook.xml'), rels = await xml('xl/_rels/workbook.xml.rels');
+  let path = 'xl/worksheets/sheet1.xml';
+  try {
+    const first = wb.getElementsByTagName('sheet')[0], rid = first.getAttribute('r:id') || first.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id');
+    const rel = [...rels.getElementsByTagName('Relationship')].find(x => x.getAttribute('Id') === rid);
+    if (rel) path = 'xl/' + rel.getAttribute('Target').replace(/^\/?xl\//, '');
+  } catch (e) {}
+  const sheet = await xml(path);
+  if (!sheet) throw new Error('no sheet');
+  const col = ref => { let n = 0; for (const ch of ref.replace(/\d+/g, '')) n = n * 26 + ch.charCodeAt(0) - 64; return n - 1; };
+  return [...sheet.getElementsByTagName('row')].map(r => {
+    const out = [];
+    [...r.getElementsByTagName('c')].forEach(c => {
+      const t = c.getAttribute('t'), v = c.getElementsByTagName('v')[0];
+      let val = '';
+      if (t === 's') val = strings[+(v && v.textContent)] || '';
+      else if (t === 'inlineStr') val = [...c.getElementsByTagName('t')].map(x => x.textContent).join('');
+      else val = v ? v.textContent : '';
+      out[col(c.getAttribute('r') || '')] = val;
+    });
+    return Array.from(out, x => x || '');
+  }).filter(r => r.some(c => String(c).trim()));
+}
+function openAppImport(){
+  const dlg = document.createElement('dialog');
+  dlg.className = 'save-dlg trk-import';
+  const h = document.createElement('h3'); h.textContent = 'Import your applications';
+  const p = document.createElement('p'); p.textContent = 'In Excel, select your table including the header row, copy it and paste it below. Or choose the .xlsx or .csv file.';
+  const ta = document.createElement('textarea'); ta.className = 'reply-input'; ta.rows = 6; ta.placeholder = 'Paste rows from Excel here'; ta.setAttribute('aria-label', 'Rows from Excel');
+  const file = document.createElement('input'); file.type = 'file'; file.accept = '.xlsx,.csv,.tsv,.txt'; file.className = 'trk-import-file'; file.setAttribute('aria-label', 'Excel or CSV file');
+  const info = document.createElement('p'); info.className = 'trk-import-info'; info.setAttribute('role', 'status');
+  const acts = document.createElement('div'); acts.className = 'save-dlg-actions';
+  const cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'btn btn-ghost'; cancel.textContent = 'Cancel';
+  const go = document.createElement('button'); go.type = 'button'; go.className = 'btn btn-primary'; go.textContent = 'Import'; go.disabled = true;
+  acts.append(cancel, go);
+  dlg.append(h, p, ta, file, info, acts);
+  let found = [];
+  const show = apps => {
+    found = apps;
+    const existing = _apps(), key = a => _nameKey(a.title) + '|' + _nameKey(a.company) + '|' + (a.applied || '');
+    const have = new Set(existing.map(key));
+    const fresh = apps.filter(a => !have.has(key(a)));
+    found = fresh;
+    const dup = apps.length - fresh.length;
+    info.textContent = apps.length ? `${fresh.length} application${fresh.length === 1 ? '' : 's'} ready to import${dup ? ` (${dup} already in your list, skipped)` : ''}.` : 'No applications found. Copy the whole table, including the header row.';
+    go.disabled = !fresh.length;
+    go.textContent = fresh.length ? `Import ${fresh.length}` : 'Import';
+  };
+  let t;
+  ta.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => show(_rowsToApps(_csvRows(ta.value))), 250); });
+  file.addEventListener('change', async () => {
+    const f = file.files[0]; if (!f) return;
+    try {
+      const rows = /\.xlsx$/i.test(f.name) ? await _xlsxRows(await f.arrayBuffer()) : _csvRows(await f.text());
+      show(_rowsToApps(rows));
+    } catch (e) { console.error(e); info.textContent = "Couldn't read that file. Copy the rows in Excel and paste them instead."; go.disabled = true; }
+  });
+  const close = () => { dlg.close(); dlg.remove(); };
+  cancel.onclick = close;
+  dlg.addEventListener('cancel', e => { e.preventDefault(); close(); });
+  go.onclick = () => {
+    const list = _apps().concat(found);
+    _saveApps(list);
+    close();
+    _trkFilter = 'all'; document.getElementById('trk-search').value = '';
+    renderTracker();
+    toast(`Imported ${found.length} application${found.length === 1 ? '' : 's'} ✔`, 'success');
+  };
+  document.body.appendChild(dlg);
+  dlg.showModal();
+  ta.focus();
+}
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261028j"></script>
-<script src="../js/section-rail.js?v=20261028j" defer></script>
-<script src="../js/nice-select.js?v=20261028j" defer></script>
-<script src="../js/tool-menu.js?v=20261028j" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261029a"></script>
+<script src="../js/section-rail.js?v=20261029a" defer></script>
+<script src="../js/nice-select.js?v=20261029a" defer></script>
+<script src="../js/tool-menu.js?v=20261029a" defer></script>
 </body>
 </html>
