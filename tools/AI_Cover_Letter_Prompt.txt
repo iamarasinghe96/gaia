@@ -115,7 +115,7 @@ If the content bank contains an independent practice or consultancy, never refer
 Mirror the JD's exact phrase in the left column of every row.
 
 PRE-TABLE TRANSITION LINE — required, always included, placed as a standalone sentence immediately before the table begins. The default wording below is a personal, deliberately informal line; if it does not sound like you, edit it in the tool and it will be saved. Whatever wording is set here, use it exactly (do not paraphrase, do not add to it, do not make it more formal):
-"While I wanted to be professional and preserve the ordinary cover letter format, I thought of cloning the job description and laying out exactly how I can meet them, for your convenience."
+"While I wanted to be professional and preserve the ordinary cover letter format, I thought of cloning the job description and laying out exactly how I can meet each requirement, for your convenience."
 This line is deliberate and self-aware. It signals a real person, not a template. Do not smooth it out or make it sound more polished — its slightly informal, direct tone is the point.
 
 PART 4 — MOTIVATION & CLOSING
@@ -314,6 +314,7 @@ Common surviving tells to check for:
 - Does the introduction contain a rule-of-three list? If yes, break it or cut two of the three items.
 - Does the introduction end with a summary sentence? If yes, cut it.
 - Does any phrase in the introduction sound constructed rather than said? If yes, replace it with a plain fact.
+- Is anything grammatically wrong? Fix real errors only: a pronoun with nothing to match (such as "them" after a singular noun), a missing "that" or "in" that makes a sentence hard to follow, a verb that does not agree with its subject, a trailing phrase that could attach to the wrong thing, or an abbreviation not spelled out the first time. Leave deliberate short sentences, fragments and informal phrasing exactly as they are, and never change a line this prompt tells you to keep word for word.
 
 Final test: read the introduction and About Me paragraphs out loud. If you pause because a phrase sounds formal or constructed, that phrase is wrong. Replace it with the plainest version of the same idea. The test for the introduction specifically: could a real person say this sentence out loud in a normal conversation without it sounding weird? If not, rewrite it.
 

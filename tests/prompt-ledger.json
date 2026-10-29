@@ -53,6 +53,11 @@
           "why": "Owner-approved after comparing before/after outputs: the AI had widened timeframes (\"for six years\"), added unstated details (\"in Excel\") and generalised single examples, so every claim must stay tied to its source in the content bank.",
           "before": "The CV must feel like it was written specifically for this job — not a generic document with the job title swapped in\n",
           "after": "The CV must feel like it was written specifically for this job — not a generic document with the job title swapped in\nKeep every claim tied to the role, timeframe and wording it comes from in the content bank, and never stretch a fact: do not widen a timeframe (something done at one employer is not \"for six years\"), add a tool, method or detail the content bank does not name, or turn a single example into a general habit.\n"
+        },
+        {
+          "why": "Owner-approved after reviewing a cover letter's grammar: fix real errors only (pronoun or verb agreement, a missing \"that\" or \"in\", a phrase that attaches to the wrong thing, abbreviations not spelled out), and explicitly keep deliberate short sentences, fragments, informal phrasing and word-for-word lines, so the human writing style is not smoothed out.",
+          "before": "Keep every claim tied to the role, timeframe and wording it comes from in the content bank, and never stretch a fact: do not widen a timeframe (something done at one employer is not \"for six years\"), add a tool, method or detail the content bank does not name, or turn a single example into a general habit.\n",
+          "after": "Keep every claim tied to the role, timeframe and wording it comes from in the content bank, and never stretch a fact: do not widen a timeframe (something done at one employer is not \"for six years\"), add a tool, method or detail the content bank does not name, or turn a single example into a general habit.\nBefore delivering, proofread for real errors only: a pronoun with nothing to match, a missing \"that\" or \"in\" that makes a line hard to follow, a verb that does not agree with its subject, a phrase that could attach to the wrong thing, or an abbreviation not spelled out the first time. Fix those and leave the wording, tone and sentence length otherwise as they are.\n"
         }
       ]
     },
@@ -88,6 +93,16 @@
           "why": "Owner-approved after comparing before/after outputs: the AI had widened timeframes (\"for six years\"), added unstated details (\"in Excel\") and generalised single examples, so every claim must stay tied to its source in the content bank.",
           "before": "Specificity beats enthusiasm. \"I cut the reporting turnaround from ten days to two\" beats \"I am passionate about finance\" absolutely every time.\n",
           "after": "Specificity beats enthusiasm. \"I cut the reporting turnaround from ten days to two\" beats \"I am passionate about finance\" absolutely every time.\n\nKeep every claim tied to the role, timeframe and wording it comes from in the content bank, and never stretch a fact: do not widen a timeframe (something done at one employer is not \"for six years\"), add a tool, method or detail the content bank does not name, or turn a single example into a general habit.\n"
+        },
+        {
+          "why": "Owner-approved: the default transition line ended \"how I can meet them\", but \"them\" had nothing plural to refer to; it now reads \"meet each requirement\". Same informal tone.",
+          "before": "\"While I wanted to be professional and preserve the ordinary cover letter format, I thought of cloning the job description and laying out exactly how I can meet them, for your convenience.\"\n",
+          "after": "\"While I wanted to be professional and preserve the ordinary cover letter format, I thought of cloning the job description and laying out exactly how I can meet each requirement, for your convenience.\"\n"
+        },
+        {
+          "why": "Owner-approved after reviewing a cover letter's grammar: fix real errors only (pronoun or verb agreement, a missing \"that\" or \"in\", a phrase that attaches to the wrong thing, abbreviations not spelled out), and explicitly keep deliberate short sentences, fragments, informal phrasing and word-for-word lines, so the human writing style is not smoothed out.",
+          "before": "- Does any phrase in the introduction sound constructed rather than said? If yes, replace it with a plain fact.\n",
+          "after": "- Does any phrase in the introduction sound constructed rather than said? If yes, replace it with a plain fact.\n- Is anything grammatically wrong? Fix real errors only: a pronoun with nothing to match (such as \"them\" after a singular noun), a missing \"that\" or \"in\" that makes a sentence hard to follow, a verb that does not agree with its subject, a trailing phrase that could attach to the wrong thing, or an abbreviation not spelled out the first time. Leave deliberate short sentences, fragments and informal phrasing exactly as they are, and never change a line this prompt tells you to keep word for word.\n"
         }
       ]
     }
