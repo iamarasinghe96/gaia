@@ -228,10 +228,10 @@
     .main-nav{padding:0 16px;}
   }
 </style>
-<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261029a">
-<link rel="stylesheet" href="../css/section-rail.css?v=20261029a">
-<link rel="stylesheet" href="../css/tool-menu.css?v=20261029a">
-<link rel="stylesheet" href="../css/nice-select.css?v=20261029a">
+<link rel="stylesheet" href="../css/gethired-gaia.css?v=20261029b">
+<link rel="stylesheet" href="../css/section-rail.css?v=20261029b">
+<link rel="stylesheet" href="../css/tool-menu.css?v=20261029b">
+<link rel="stylesheet" href="../css/nice-select.css?v=20261029b">
 </head>
 <body>
 
@@ -478,7 +478,7 @@
         <button type="button" class="btn btn-outline" id="trk-csv" onclick="exportApplicationsCSV()">&#x2B07; Excel (.csv)</button>
       </div>
     </div>
-    <div class="trk-filters" id="trk-filters" role="group" aria-label="Filter by status"></div>
+    <div class="trk-filter-row"><div class="trk-filters" id="trk-filters" role="group" aria-label="Filter by status"></div><button type="button" class="btn btn-ghost btn-sm" id="trk-clear-filters" onclick="clearTrackerFilters()" hidden>&#x2715; Clear filters</button></div>
     <div class="trk-table-wrap">
       <table class="trk-table" id="trk-table">
         <thead><tr id="trk-head-row"></tr></thead>
@@ -4935,10 +4935,7 @@ function _renderTrkFilters(){
 function renderTracker(){
   const body = document.getElementById('trk-body');
   if (!body) return;
-  const head = document.getElementById('trk-head-row');
-  if (!head.children.length) {
-    APP_COLS.concat([{ k: 'x', label: '' }]).forEach(c => { const th = document.createElement('th'); th.textContent = c.label; th.className = 'trk-c-' + c.k; head.appendChild(th); });
-  }
+  _renderTrkHead();
   const all = _apps();
   const num = new Map(all.slice().sort((x, y) => (x.created || 0) - (y.created || 0)).map((a, i) => [a.id, i + 1]));
   _renderTrkFilters();
@@ -4946,7 +4943,10 @@ function renderTracker(){
   const rows = all
     .filter(a => _trkFilter === 'all' || (a.status || 'Applied') === _trkFilter)
     .filter(a => !q || ['title', 'company', 'location', 'interviewer', 'notes', 'salary', 'status'].some(k => String(a[k] || '').toLowerCase().includes(q)))
-    .sort((x, y) => (y.applied || '').localeCompare(x.applied || '') || (y.created || 0) - (x.created || 0));
+    .filter(_trkPassesColFilters)
+    .sort(_trkCompare);
+  const clear = document.getElementById('trk-clear-filters');
+  if (clear) clear.hidden = !Object.keys(_trkCol).length && !_trkSort;
   body.replaceChildren();
   rows.forEach(a => {
     const tr = document.createElement('tr');
@@ -5193,11 +5193,124 @@ function openAppImport(){
   ta.focus();
 }
 
+// ─── Column filters and sorting (like Excel's ▾ on each header) ───
+const _trkCol = {};          // key → Set of allowed values, or { text } for Notes
+let _trkSort = null;         // { k, dir: 1 | -1 }
+const _TRK_TEXT_FILTER = new Set(['notes']);
+const _MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// The value a column is filtered by: dates group by month, empty cells by "(Blank)"
+function _trkVal(a, k){
+  if (k === 'docs') return (a.docs || []).join(' + ') || '(Blank)';
+  const v = String(a[k] == null ? '' : a[k]).trim();
+  if (!v) return '(Blank)';
+  if (k === 'applied' || k === 'followUp') { const m = v.match(/^(\d{4})-(\d{2})/); return m ? _MON[+m[2] - 1] + ' ' + m[1] : v; }
+  if (k === 'status') return v || 'Applied';
+  return v;
+}
+function _trkPassesColFilters(a){
+  for (const [k, f] of Object.entries(_trkCol)) {
+    if (f instanceof Set) { if (!f.has(_trkVal(a, k))) return false; }
+    else if (f.text && !String(a[k] || '').toLowerCase().includes(f.text.toLowerCase())) return false;
+  }
+  return true;
+}
+function _trkCompare(x, y){
+  if (_trkSort) {
+    const k = _trkSort.k, d = _trkSort.dir;
+    const vx = String(x[k] == null ? '' : (k === 'docs' ? (x.docs || []).join(' + ') : x[k])).trim(), vy = String(y[k] == null ? '' : (k === 'docs' ? (y.docs || []).join(' + ') : y[k])).trim();
+    if (!vx !== !vy) return vx ? -1 : 1;                 // blanks always last
+    const n = k === 'n' ? (x.created || 0) - (y.created || 0) : vx.localeCompare(vy, undefined, { numeric: true, sensitivity: 'base' });
+    if (n) return n * d;
+  }
+  return (y.applied || '').localeCompare(x.applied || '') || (y.created || 0) - (x.created || 0);
+}
+function _renderTrkHead(){
+  const head = document.getElementById('trk-head-row');
+  head.replaceChildren();
+  APP_COLS.concat([{ k: 'x', label: '' }]).forEach(c => {
+    const th = document.createElement('th'); th.className = 'trk-c-' + c.k;
+    if (c.k === 'x') { head.appendChild(th); return; }
+    const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'trk-th-btn';
+    const on = !!_trkCol[c.k] || (_trkSort && _trkSort.k === c.k);
+    btn.classList.toggle('on', on);
+    const arrow = _trkSort && _trkSort.k === c.k ? (_trkSort.dir > 0 ? ' ↑' : ' ↓') : '';
+    btn.textContent = c.label + arrow;
+    const caret = document.createElement('span'); caret.className = 'trk-th-caret'; caret.textContent = _trkCol[c.k] ? '⏷' : '▾'; caret.setAttribute('aria-hidden', 'true');
+    btn.appendChild(caret);
+    btn.setAttribute('aria-label', 'Sort or filter ' + c.label);
+    btn.onclick = e => { e.stopPropagation(); _openTrkFilter(c, th); };
+    th.appendChild(btn); head.appendChild(th);
+  });
+}
+function _closeTrkFilter(){ const m = document.getElementById('trk-filter-pop'); if (m) m.remove(); }
+function _openTrkFilter(col, th){
+  const wasOpen = document.getElementById('trk-filter-pop');
+  const same = wasOpen && wasOpen.dataset.k === col.k;
+  _closeTrkFilter();
+  if (same) return;
+  const pop = document.createElement('div'); pop.id = 'trk-filter-pop'; pop.className = 'trk-pop'; pop.dataset.k = col.k;
+  pop.addEventListener('click', e => e.stopPropagation());
+  const sortBtn = (label, dir) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'trk-pop-sort' + (_trkSort && _trkSort.k === col.k && _trkSort.dir === dir ? ' on' : ''); b.textContent = label;
+    b.onclick = () => { _trkSort = _trkSort && _trkSort.k === col.k && _trkSort.dir === dir ? null : { k: col.k, dir }; _closeTrkFilter(); renderTracker(); }; return b; };
+  const isDate = col.type === 'date', isNum = col.k === 'n';
+  pop.append(sortBtn(isDate ? 'Oldest first' : isNum ? 'Smallest first' : 'Sort A → Z', 1), sortBtn(isDate ? 'Newest first' : isNum ? 'Largest first' : 'Sort Z → A', -1));
+  if (col.k !== 'n') {
+    if (_TRK_TEXT_FILTER.has(col.k)) {
+      const inp = document.createElement('input'); inp.type = 'search'; inp.className = 'field-input trk-pop-search'; inp.placeholder = col.label + ' contains…';
+      inp.value = (_trkCol[col.k] && _trkCol[col.k].text) || '';
+      inp.oninput = () => { if (inp.value.trim()) _trkCol[col.k] = { text: inp.value.trim() }; else delete _trkCol[col.k]; renderTracker(); };
+      pop.appendChild(inp);
+      setTimeout(() => inp.focus(), 0);
+    } else {
+      // Values from the rows the other filters leave, like Excel
+      const others = _apps().filter(a => { const keep = _trkCol[col.k]; delete _trkCol[col.k]; const ok = _trkPassesColFilters(a); if (keep) _trkCol[col.k] = keep; return ok; });
+      const counts = new Map(); others.forEach(a => { const v = _trkVal(a, col.k); counts.set(v, (counts.get(v) || 0) + 1); });
+      const order = isDate ? [...counts.keys()].sort((a, b) => { const p = v => { const m = v.match(/^(\w{3}) (\d{4})$/); return m ? m[2] + String(_MON.indexOf(m[1])).padStart(2, '0') : '0'; }; return p(b).localeCompare(p(a)); })
+        : [...counts.keys()].sort((a, b) => (a === '(Blank)') - (b === '(Blank)') || a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true }));
+      const search = document.createElement('input'); search.type = 'search'; search.className = 'field-input trk-pop-search'; search.placeholder = 'Search ' + col.label.toLowerCase();
+      const list = document.createElement('div'); list.className = 'trk-pop-list';
+      const chosen = _trkCol[col.k] instanceof Set ? new Set(_trkCol[col.k]) : new Set(order);
+      const all = document.createElement('label'); all.className = 'trk-pop-item trk-pop-all';
+      const allBox = document.createElement('input'); allBox.type = 'checkbox';
+      all.append(allBox, document.createTextNode(' (Select all)'));
+      const boxes = order.map(v => {
+        const l = document.createElement('label'); l.className = 'trk-pop-item'; l.dataset.v = v.toLowerCase();
+        const b = document.createElement('input'); b.type = 'checkbox'; b.checked = chosen.has(v);
+        const t = document.createElement('span'); t.textContent = v; const n = document.createElement('small'); n.textContent = counts.get(v);
+        b.onchange = () => { b.checked ? chosen.add(v) : chosen.delete(v); sync(); };
+        l.append(b, t, n); return { l, b, v };
+      });
+      const sync = () => { allBox.checked = boxes.every(x => x.b.checked); allBox.indeterminate = !allBox.checked && boxes.some(x => x.b.checked); };
+      allBox.onchange = () => { boxes.forEach(x => { if (!x.l.hidden) { x.b.checked = allBox.checked; allBox.checked ? chosen.add(x.v) : chosen.delete(x.v); } }); sync(); };
+      search.oninput = () => { const q = search.value.trim().toLowerCase(); boxes.forEach(x => { x.l.hidden = q && !x.l.dataset.v.includes(q); }); };
+      list.append(all, ...boxes.map(x => x.l));
+      sync();
+      const acts = document.createElement('div'); acts.className = 'trk-pop-acts';
+      const clr = document.createElement('button'); clr.type = 'button'; clr.className = 'btn btn-ghost btn-sm'; clr.textContent = 'Clear';
+      clr.onclick = () => { delete _trkCol[col.k]; _closeTrkFilter(); renderTracker(); };
+      const ok = document.createElement('button'); ok.type = 'button'; ok.className = 'btn btn-primary btn-sm'; ok.textContent = 'Apply';
+      ok.onclick = () => { if (order.every(v => chosen.has(v))) delete _trkCol[col.k]; else _trkCol[col.k] = new Set(chosen); _closeTrkFilter(); renderTracker(); };
+      acts.append(clr, ok);
+      pop.append(search, list, acts);
+      setTimeout(() => search.focus(), 0);
+    }
+  }
+  document.body.appendChild(pop);
+  const r = th.getBoundingClientRect(), w = Math.min(280, innerWidth - 16);
+  pop.style.width = w + 'px';
+  pop.style.left = Math.max(8, Math.min(r.left + scrollX, scrollX + innerWidth - w - 8)) + 'px';
+  pop.style.top = (r.bottom + scrollY + 4) + 'px';
+}
+function clearTrackerFilters(){ Object.keys(_trkCol).forEach(k => delete _trkCol[k]); _trkSort = null; _closeTrkFilter(); renderTracker(); }
+document.addEventListener('click', e => { if (!e.target.closest('#trk-filter-pop')) _closeTrkFilter(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') _closeTrkFilter(); });
+addEventListener('resize', _closeTrkFilter);
+
 document.getElementById('gh-year').textContent = new Date().getFullYear();
 </script>
-<script type="module" src="../js/gethired-sync.js?v=20261029a"></script>
-<script src="../js/section-rail.js?v=20261029a" defer></script>
-<script src="../js/nice-select.js?v=20261029a" defer></script>
-<script src="../js/tool-menu.js?v=20261029a" defer></script>
+<script type="module" src="../js/gethired-sync.js?v=20261029b"></script>
+<script src="../js/section-rail.js?v=20261029b" defer></script>
+<script src="../js/nice-select.js?v=20261029b" defer></script>
+<script src="../js/tool-menu.js?v=20261029b" defer></script>
 </body>
 </html>
