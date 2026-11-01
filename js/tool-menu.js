@@ -1,5 +1,6 @@
 /* The ☰ menu at the right end of every tool header: home, all tools, this tool's
-   How it works, privacy, and (when signed in) deleting your account. */
+   How it works, privacy, and (when signed in) deleting your account and signing out.
+   Sign out sits last, where a thumb lands; Delete is smaller and higher, away from it. */
 (() => {
   const actions = document.querySelector('body > header .header-actions');
   if (!actions || document.getElementById('tool-menu-btn')) return;
@@ -33,20 +34,25 @@
     if (typeof window.switchView === 'function') window.switchView('help');
     setTimeout(() => { const z = document.getElementById('delete-zone'); if (z) z.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 250);
   });
+  del.classList.add('is-quiet');
+  const out = item('⎋', 'Sign out', '#', 'is-signout');
+  out.querySelector('.tool-menu-ico').innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>';
+  out.addEventListener('click', e => { e.preventDefault(); close(); const b = document.getElementById('gh-sign-out'); if (b) b.click(); });
   const sep = document.createElement('div'); sep.className = 'tool-menu-sep'; sep.setAttribute('role', 'separator');
   menu.append(
     item('⌂', 'Gaia Symbiosis home', '/'),
     item('▦', 'All tools', '/services.html#tools'),
     how,
     item('🔒', 'Privacy Policy', '/privacy.html'),
-    sep, del,
+    del,
+    sep, out,
   );
   wrap.append(btn, menu);
   actions.appendChild(wrap);
 
   function open(){
     const s = signedIn();
-    del.hidden = !s; sep.hidden = !s;
+    del.hidden = !s; sep.hidden = !s; out.hidden = !s;
     menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); btn.classList.add('on');
   }
   function close(){ menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); btn.classList.remove('on'); }

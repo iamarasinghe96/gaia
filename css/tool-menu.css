@@ -14,3 +14,8 @@
 .tool-menu-sep { height: 1px; background: #eef1f6; margin: 6px 4px; }
 .tool-menu-sep[hidden] { display: none; }
 @media (max-width: 640px) { .tool-menu-btn { width: 36px; height: 36px; } }
+/* Delete is deliberately small and quiet; Sign out is the easy last item */
+.tool-menu-item.is-quiet { font-size: 12.5px; font-weight: 500; padding-top: 7px; padding-bottom: 7px; color: #b91c1c; opacity: .8; }
+.tool-menu-item.is-quiet .tool-menu-ico { font-size: 13px; }
+.tool-menu-item.is-signout { font-weight: 700; }
+.tool-menu-ico svg { display: inline-block; vertical-align: -2px; }
