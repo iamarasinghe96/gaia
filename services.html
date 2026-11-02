@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="css/styles.css?v=20261102a" />
+  <link rel="stylesheet" href="css/styles.css?v=20261102b" />
   <script>document.documentElement.classList.add('js')</script>
 
   <script type="application/ld+json">
@@ -89,6 +89,7 @@
   </header>
   <div class="mobile-menu" id="mobile-menu">
     <a href="services.html" aria-current="page">Services</a>
+    <a class="mobile-sub" href="services.html#laptop-rescue">Same-day laptop rescue</a>
     <p class="mobile-label">Tools</p>
     <a class="mobile-sub" href="tools/cv-builder.html">CV Prompt Builder</a>
     <a class="mobile-sub" href="tools/job-search.html">Job Search Assistant</a>
@@ -243,14 +244,41 @@
             <a href="mailto:iamarasinghe96@gmail.com?subject=Same-day%20laptop%20fix" class="btn btn-outline">Email me</a>
           </div>
         </div>
-        <div class="rescue-screen reveal" style="--d:.1s" aria-hidden="true">
-          <div class="bsod">
+        <div class="rescue-screen reveal" style="--d:.1s">
+          <div aria-hidden="true">
+            <div class="bsod">
             <p class="bsod-face">:(</p>
             <p class="bsod-msg">Your device ran into a problem and needs to restart.</p>
             <p class="bsod-pct">100% complete</p>
-            <p class="bsod-code">Stop code: SECURE_PCI_CONFIG_SPACE_ACCESS_VIOLATION<br>What failed: a driver, not your RAM</p>
+              <p class="bsod-code">Stop code: SECURE_PCI_CONFIG_SPACE_ACCESS_VIOLATION<br>What failed: a driver, not your RAM</p>
+            </div>
+            <div class="bsod-base"></div>
           </div>
-          <div class="bsod-base"></div>
+          <figure class="rescue-map">
+            <svg viewBox="0 0 400 250" role="img" aria-labelledby="rescue-map-title rescue-map-desc">
+              <title id="rescue-map-title">Service area: Albury and Wodonga</title>
+              <desc id="rescue-map-desc">A simple map of Albury in New South Wales and Wodonga in Victoria, either side of the Murray River, with Lake Hume to the east. The shaded service area covers Albury, Lavington, Thurgoona, Wodonga, West Wodonga, Bandiana and Baranduda.</desc>
+              <defs>
+                <linearGradient id="rm-water" x1="0" x2="1"><stop offset="0" stop-color="#7cc4f5"/><stop offset="1" stop-color="#4aa3e8"/></linearGradient>
+              </defs>
+              <rect x="0" y="0" width="400" height="250" rx="16" fill="#f3f7fd"/>
+              <text x="18" y="30" class="rm-state">NEW SOUTH WALES</text>
+              <text x="18" y="236" class="rm-state">VICTORIA</text>
+              <path d="M330 104c18-12 46-10 58 6 10 14 2 34-16 40-20 7-44 0-52-14-6-11-1-24 10-32z" fill="url(#rm-water)" opacity=".85"/>
+              <text x="358" y="92" text-anchor="middle" class="rm-water">Lake Hume</text>
+              <path d="M-4 146c34-10 58 8 92 2s50-26 86-18 40 34 76 30 46-22 78-12" fill="none" stroke="url(#rm-water)" stroke-width="7" stroke-linecap="round"/>
+              <text x="40" y="166" class="rm-water">Murray River</text>
+              <path d="M112 52c36-28 116-30 152-6 26 18 34 54 52 78 16 22 22 58 6 84-18 28-64 34-104 26-44-9-70-34-96-58-24-22-40-40-38-70 1-22 12-40 28-54z" class="rm-area"/>
+              <g class="rm-place"><circle cx="150" cy="78" r="4"/><text x="158" y="82">Lavington</text></g>
+              <g class="rm-place"><circle cx="232" cy="72" r="4"/><text x="240" y="76">Thurgoona</text></g>
+              <g class="rm-place rm-city"><circle cx="176" cy="118" r="7"/><text x="140" y="108">Albury</text></g>
+              <g class="rm-place rm-city"><circle cx="246" cy="184" r="7"/><text x="258" y="189">Wodonga</text></g>
+              <g class="rm-place"><circle cx="198" cy="190" r="4"/><text x="190" y="194" text-anchor="end">West Wodonga</text></g>
+              <g class="rm-place"><circle cx="292" cy="172" r="4"/><text x="300" y="168">Bandiana</text></g>
+              <g class="rm-place"><circle cx="270" cy="222" r="4"/><text x="278" y="226">Baranduda</text></g>
+            </svg>
+            <figcaption><strong>I come to you</strong> anywhere in Albury and Wodonga. Just outside? <a href="mailto:iamarasinghe96@gmail.com?subject=Same-day%20laptop%20fix">Ask me</a>. <span>Map not to scale.</span></figcaption>
+          </figure>
         </div>
       </div>
     </section>
