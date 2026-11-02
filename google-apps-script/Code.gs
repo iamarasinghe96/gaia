@@ -7,7 +7,7 @@
 const NOTIFY_EMAIL = 'iamarasinghe96@gmail.com';
 const SERVICES = [
   'AI & Intelligent Automation', 'Healthcare IT', 'Government & Compliance', 'Web Apps & Portals',
-  'Data Tools & ESG Reporting', 'Process Automation', 'Something else',
+  'Data Tools & ESG Reporting', 'Process Automation', 'Same-day Laptop Rescue', 'Something else',
 ];
 const MAX_PER_HOUR = 20;
 

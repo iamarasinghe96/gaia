@@ -255,6 +255,10 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    // A link like index.html?service=Same-day%20Laptop%20Rescue#contact picks that service (only an existing option)
+    const want = new URLSearchParams(location.search).get('service');
+    const svc = document.getElementById('f-service');
+    if (want && svc) { const o = [...svc.options].find(x => x.value === want || x.textContent === want); if (o) svc.value = o.value || o.textContent; }
     document.querySelectorAll('select[data-enhance]').forEach(enhanceSelect);
     document.querySelectorAll('input[type="datetime-local"][data-enhance]').forEach(enhanceDateTime);
   });
