@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="css/styles.css?v=20261102b" />
+  <link rel="stylesheet" href="css/styles.css?v=20261103a" />
   <script>document.documentElement.classList.add('js')</script>
 
   <script type="application/ld+json">
@@ -255,29 +255,31 @@
             <div class="bsod-base"></div>
           </div>
           <figure class="rescue-map">
-            <svg viewBox="0 0 400 250" role="img" aria-labelledby="rescue-map-title rescue-map-desc">
+            <svg viewBox="0 0 1180 1234" role="img" aria-labelledby="rescue-map-title rescue-map-desc">
               <title id="rescue-map-title">Service area: Albury and Wodonga</title>
-              <desc id="rescue-map-desc">A simple map of Albury in New South Wales and Wodonga in Victoria, either side of the Murray River, with Lake Hume to the east. The shaded service area covers Albury, Lavington, Thurgoona, Wodonga, West Wodonga, Bandiana and Baranduda.</desc>
-              <defs>
-                <linearGradient id="rm-water" x1="0" x2="1"><stop offset="0" stop-color="#7cc4f5"/><stop offset="1" stop-color="#4aa3e8"/></linearGradient>
-              </defs>
-              <rect x="0" y="0" width="400" height="250" rx="16" fill="#f3f7fd"/>
-              <text x="18" y="30" class="rm-state">NEW SOUTH WALES</text>
-              <text x="18" y="236" class="rm-state">VICTORIA</text>
-              <path d="M330 104c18-12 46-10 58 6 10 14 2 34-16 40-20 7-44 0-52-14-6-11-1-24 10-32z" fill="url(#rm-water)" opacity=".85"/>
-              <text x="358" y="92" text-anchor="middle" class="rm-water">Lake Hume</text>
-              <path d="M-4 146c34-10 58 8 92 2s50-26 86-18 40 34 76 30 46-22 78-12" fill="none" stroke="url(#rm-water)" stroke-width="7" stroke-linecap="round"/>
-              <text x="40" y="166" class="rm-water">Murray River</text>
-              <path d="M112 52c36-28 116-30 152-6 26 18 34 54 52 78 16 22 22 58 6 84-18 28-64 34-104 26-44-9-70-34-96-58-24-22-40-40-38-70 1-22 12-40 28-54z" class="rm-area"/>
-              <g class="rm-place"><circle cx="150" cy="78" r="4"/><text x="158" y="82">Lavington</text></g>
-              <g class="rm-place"><circle cx="232" cy="72" r="4"/><text x="240" y="76">Thurgoona</text></g>
-              <g class="rm-place rm-city"><circle cx="176" cy="118" r="7"/><text x="140" y="108">Albury</text></g>
-              <g class="rm-place rm-city"><circle cx="246" cy="184" r="7"/><text x="258" y="189">Wodonga</text></g>
-              <g class="rm-place"><circle cx="198" cy="190" r="4"/><text x="190" y="194" text-anchor="end">West Wodonga</text></g>
-              <g class="rm-place"><circle cx="292" cy="172" r="4"/><text x="300" y="168">Bandiana</text></g>
-              <g class="rm-place"><circle cx="270" cy="222" r="4"/><text x="278" y="226">Baranduda</text></g>
+              <desc id="rescue-map-desc">A map of the area I come to, outlined in white: Albury and Thurgoona in New South Wales, up towards Jindera, and Wodonga in Victoria, with Lake Hume along the east, the Hume Freeway (M31) running through, and Tallangatta beyond the area to the south-east.</desc>
+              <rect width="1180" height="1234" fill="#23455a"/>
+              <path class="rm-area" d="M712 105 790 118 840 130 850 165 885 185 905 215 930 262 975 350 1000 402 1028 488 1010 515 980 522 952 556 936 600 916 640 912 670 890 680 868 722 880 772 900 830 932 858 952 870 966 902 950 930 876 916 870 976 846 990 790 986 786 1050 690 1100 660 1052 636 1078 590 1030 506 1080 432 1134 390 1140 354 1140 350 1106 326 1056 300 1026 270 996 256 946 250 882 276 852 250 822 240 750 70 736 64 620 80 492 124 450 140 470 134 496 170 506 184 486 176 540 306 552 326 526 346 546 380 410 410 436 470 416 496 400 546 376 576 380 606 340 652 346 658 292 640 270 660 218 650 182 690 178Z"/>
+              <path class="rm-lake" d="M900 205 930 225 952 270 985 330 1010 360 1040 352 1065 342 1090 345 1130 372 1160 390 1180 410 1180 560 1150 548 1110 530 1088 500 1060 480 1040 498 1025 470 1004 432 990 400 965 350 935 290 910 245Z M880 690 905 660 925 640 950 600 975 572 1000 556 1015 590 1000 640 975 690 960 740 962 790 975 830 1002 860 1012 900 1030 935 1050 975 1040 1020 1030 1060 1015 1100 1000 1130 985 1100 990 1060 980 1015 960 970 940 935 910 905 880 860 868 800 862 750Z"/>
+              <g class="rm-road">
+                <path d="M0 362 130 382 240 416 300 470 352 520 430 590 520 640 562 700 600 770 640 830 690 900 730 980 770 1060 800 1140 820 1234"/>
+                <path d="M640 560 680 470 720 380 760 300 780 200 790 100 790 0"/>
+                <path d="M920 560 1000 550 1080 535 1180 540"/>
+                <path d="M0 640 120 610 250 600 352 620 450 660 520 690"/>
+                <path d="M690 900 760 880 850 880 930 920 1040 980 1180 990"/>
+                <path d="M350 1110 420 1060 500 1020 600 990 700 990"/>
+              </g>
+              <path class="rm-river" d="M0 440 60 432 130 440 175 470 205 520 260 560 330 600 400 615 470 640 540 690 590 670 650 640 720 620 800 620 840 650 870 680"/>
+              <g class="rm-shield" transform="translate(200 556)"><path d="M0 8 Q0 0 8 0 H148 Q156 0 156 8 V64 L78 94 L0 64Z"/><text x="78" y="54" text-anchor="middle">M31</text></g>
+              <g class="rm-label">
+                <text x="515" y="250" text-anchor="middle">Jindera</text>
+                <text x="765" y="510" text-anchor="middle">Thurgoona</text>
+                <text x="572" y="604" text-anchor="middle">Albury</text>
+                <text x="515" y="760" text-anchor="middle">Wodonga</text>
+                <text x="1166" y="1038" text-anchor="end">Tallangatta</text>
+              </g>
             </svg>
-            <figcaption><strong>I come to you</strong> anywhere in Albury and Wodonga. Just outside? <a href="mailto:iamarasinghe96@gmail.com?subject=Same-day%20laptop%20fix">Ask me</a>. <span>Map not to scale.</span></figcaption>
+            <figcaption><strong>I come to you</strong> anywhere in Albury and Wodonga. Just outside? <a href="mailto:iamarasinghe96@gmail.com?subject=Same-day%20laptop%20fix">Ask me</a>. <span>Approximate area.</span></figcaption>
           </figure>
         </div>
       </div>

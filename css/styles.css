@@ -653,15 +653,15 @@ a.contact-item:hover { border-color: var(--blue); transform: translateX(4px); }
 .rescue-strip-text span { font-size: .86rem; color: rgba(255, 255, 255, .7); }
 .rescue-strip-go { margin-left: auto; font-size: 1.2rem; opacity: .8; }
 
-/* Laptop rescue: service-area map */
+/* Laptop rescue: service-area map (dark map style) */
 .rescue-map { margin: 1.5rem 0 0; }
-.rescue-map svg { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--border); background: #f3f7fd; }
-.rescue-map .rm-state { font: 700 10px/1 Inter, system-ui, sans-serif; letter-spacing: .16em; fill: #94a3b8; }
-.rescue-map .rm-water { font: italic 600 10px/1 Inter, system-ui, sans-serif; fill: #2b84c9; }
-.rescue-map .rm-area { fill: rgba(37, 99, 235, .1); stroke: var(--blue); stroke-width: 1.6; stroke-dasharray: 6 5; }
-.rescue-map .rm-place circle { fill: #fff; stroke: var(--blue); stroke-width: 2; }
-.rescue-map .rm-place text { font: 600 11px/1 Inter, system-ui, sans-serif; fill: #334155; paint-order: stroke; stroke: #f3f7fd; stroke-width: 3px; }
-.rescue-map .rm-city circle { fill: var(--blue); stroke: #fff; stroke-width: 2.5; }
-.rescue-map .rm-city text { font-size: 14px; font-weight: 800; fill: var(--text); }
+.rescue-map svg { display: block; width: 100%; height: auto; border-radius: 16px; background: #23455a; box-shadow: 0 18px 40px rgba(5, 7, 13, .22); }
+.rescue-map .rm-area { fill: rgba(17, 33, 46, .45); stroke: #fff; stroke-width: 5; stroke-linejoin: round; }
+.rescue-map .rm-lake { fill: #08143a; }
+.rescue-map .rm-road path { fill: none; stroke: #5c7fae; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
+.rescue-map .rm-river { fill: none; stroke: #b9a98e; stroke-width: 3.5; stroke-dasharray: 10 12; opacity: .6; }
+.rescue-map .rm-shield path { fill: #2f3d33; stroke: #c9bd6b; stroke-width: 4; }
+.rescue-map .rm-shield text { font: 700 44px/1 Inter, system-ui, sans-serif; fill: #e6d97a; }
+.rescue-map .rm-label text { font: 600 70px/1 Inter, system-ui, sans-serif; fill: #fff; paint-order: stroke; stroke: #0d1b26; stroke-width: 10px; stroke-linejoin: round; }
 .rescue-map figcaption { margin-top: .6rem; font-size: .88rem; color: var(--muted); line-height: 1.5; }
 .rescue-map figcaption span { color: var(--faint); font-size: .8rem; }
